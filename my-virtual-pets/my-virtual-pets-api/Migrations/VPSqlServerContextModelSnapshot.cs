@@ -181,6 +181,9 @@ namespace my_virtual_pets_api.Migrations
                     b.Property<int?>("Personality")
                         .HasColumnType("int");
 
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 

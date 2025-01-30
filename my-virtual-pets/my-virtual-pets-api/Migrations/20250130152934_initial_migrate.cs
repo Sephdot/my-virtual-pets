@@ -93,6 +93,7 @@ namespace my_virtual_pets_api.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Personality = table.Column<int>(type: "int", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Type = table.Column<int>(type: "int", nullable: false),
                     ImageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>

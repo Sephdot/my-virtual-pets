@@ -1,4 +1,7 @@
-﻿namespace my_virtual_pets_api.Entities
+﻿using my_virtual_pets_class_library.Enums;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace my_virtual_pets_api.Entities
 {
     public class Pet
     {
@@ -14,6 +17,9 @@
 
         public string? Description { get; set; }
 
+        [Column(TypeName ="int")]
+        public PetType Type { get; set; }
+        
         public Guid ImageId { get; set; }
 
         public Image Image { get; set; }

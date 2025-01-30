@@ -12,7 +12,7 @@ using my_virtual_pets_api.Data;
 namespace my_virtual_pets_api.Migrations
 {
     [DbContext(typeof(VPSqlServerContext))]
-    [Migration("20250130125520_initial_migrate")]
+    [Migration("20250130152934_initial_migrate")]
     partial class initial_migrate
     {
         /// <inheritdoc />
@@ -182,6 +182,9 @@ namespace my_virtual_pets_api.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("Personality")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
                         .HasColumnType("int");
 
                     b.Property<Guid>("UserId")
