@@ -11,24 +11,21 @@ if (builder.Environment.IsDevelopment())
     string memoryDbConnectionString = "Data Source=:memory:";
     var sqlConnection = new SqliteConnection(memoryDbConnectionString);
     sqlConnection.Open();
-    builder.Services.AddDbContext<VPSqliteContext>(options => options.UseSqlite(sqlConnection));
+    builder.Services.AddDbContext<IDbContext, VPSqliteContext>(options => options.UseSqlite(sqlConnection));
     builder.Services.AddSwaggerGen();
+    builder.Services.AddEndpointsApiExplorer();
 }
 else if (builder.Environment.IsProduction())
 {
     var connectionString = Environment.GetEnvironmentVariable("ConnectionString__my_virtual_pets");
-    builder.Services.AddDbContext<VPSqlServerContext>(options => options.UseSqlServer(connectionString)); 
+    Console.WriteLine(connectionString); 
+    builder.Services.AddDbContext<IDbContext, VPSqlServerContext>(options => options.UseSqlServer(connectionString)); 
 }
 
 
 builder.Services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
-builder.Services.AddEndpointsApiExplorer();
-
-
 var app = builder.Build();
-
-// Configure the HTTP request pipeline.
 
 if (app.Environment.IsDevelopment())
 {
