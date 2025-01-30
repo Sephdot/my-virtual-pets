@@ -33,8 +33,10 @@ namespace my_virtual_pets_api.Data
             modelBuilder.Entity<Pet>().Property(e => e.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<Image>().Property(e => e.Id).ValueGeneratedOnAdd();
 
-            // Populate with dummy data later 
             modelBuilder.Entity<GlobalUser>().HasData(JsonSerializer.Deserialize<List<GlobalUser>>(File.ReadAllText("Resources/DummyData/GlobalUsers.json")));
+            modelBuilder.Entity<LocalUser>().HasData(JsonSerializer.Deserialize<List<LocalUser>>(File.ReadAllText("Resources/DummyData/LocalUsers.json")));
+            modelBuilder.Entity<Image>().HasData(JsonSerializer.Deserialize<List<Image>>(File.ReadAllText("Resources/DummyData/Images.json")));
+            modelBuilder.Entity<Pet>().HasData(JsonSerializer.Deserialize<List<Pet>>(File.ReadAllText("Resources/DummyData/Pets.json")));
 
         }
 

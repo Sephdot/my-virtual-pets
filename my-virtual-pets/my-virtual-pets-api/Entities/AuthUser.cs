@@ -7,7 +7,7 @@ namespace my_virtual_pets_api.Entities
     {
         public Guid Id { get; set; }
 
-        public Guid UserId { get; set; }
+        public Guid GlobalUserId { get; set; }
 
         public GlobalUser GlobalUser { get; set; }
 
