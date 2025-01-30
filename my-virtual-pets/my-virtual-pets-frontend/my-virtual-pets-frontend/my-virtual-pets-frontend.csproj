@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\my-virtual-pets-class-library\my-virtual-pets-class-library.csproj" />
     <ProjectReference Include="..\my-virtual-pets-frontend.Client\my-virtual-pets-frontend.Client.csproj" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.7" />
   </ItemGroup>
