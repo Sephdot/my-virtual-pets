@@ -1,0 +1,24 @@
+﻿[
+  {
+    "id": "cb7153f7-3101-444b-a91d-8c45280672d6",
+    "username": "PetLover123",
+    "email": "petlover123@example.com",
+    "gdprpermissions": true,
+    "datejoined": "2024-01-01T00:00:00Z"
+  },
+  {
+    "id": "f3922887-7fc2-447b-a08f-4fbbc663ba81",
+    "username": "FurryFriendFan",
+    "email": "furryfan@example.com",
+    "gdprpermissions": false,
+    "datejoined": "2023-12-01T00:00:00Z"
+  },
+  {
+    "id": "3e2db5ff-0ac8-48b9-b341-e14371c42e7a",
+    "username": "AnimalEnthusiast",
+    "email": "animalenthusiast@example.com",
+    "gdprpermissions": true,
+    "datejoined": "2023-11-01T00:00:00Z"
+  }
+]
+

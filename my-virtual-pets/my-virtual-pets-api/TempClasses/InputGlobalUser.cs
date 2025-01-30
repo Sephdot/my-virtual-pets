@@ -1,12 +1,11 @@
-﻿using System.Text.Json.Serialization;
+﻿using my_virtual_pets_api.Entities;
+using System.Text.Json.Serialization;
 
-namespace my_virtual_pets_api.Entities
+namespace my_virtual_pets_api.TempClasses
 {
-    public class GlobalUser
+    public class InputGlobalUser
     {
-        [JsonPropertyName("id")]
-        public Guid Id { get; set; }
-
+     
         [JsonPropertyName("username")]
         public string Username { get; set; }
 
@@ -19,6 +18,5 @@ namespace my_virtual_pets_api.Entities
         [JsonPropertyName("datejoined")]
         public DateTime DateJoined { get; set; }
 
-        public List<Pet> Pets { get; set; }
-    }
+      }
 }

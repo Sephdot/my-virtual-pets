@@ -2,6 +2,7 @@
 {
     public class AuthUser
     {
+
         public Guid Id { get; set; }
 
         public Guid UserId { get; set; }
