@@ -16,7 +16,7 @@ if (builder.Environment.IsDevelopment())
 }
 else if (builder.Environment.IsProduction())
 {
-    string connectionString = "";
+    var connectionString = Environment.GetEnvironmentVariable("ConnectionString__my_virtual_pets");
     builder.Services.AddDbContext<VPSqlServerContext>(options => options.UseSqlServer(connectionString)); 
 }
 

@@ -7,10 +7,7 @@ namespace my_virtual_pets_api.Data
     {
         public VPSqlServerContext CreateDbContext(string[] args)
         {
-            // connection string 
-
-            var connectionString = ""; 
-
+            var connectionString = Environment.GetEnvironmentVariable("ConnectionString__my_virtual_pets");
             var optionsBuilder = new DbContextOptionsBuilder<VPSqlServerContext>();
             optionsBuilder.UseSqlServer(connectionString);
 
