@@ -4,7 +4,7 @@ using System.Text.Json;
 
 namespace my_virtual_pets_api.Data
 {
-    public class VPSqliteContext : DbContext 
+    public class VPSqliteContext : DbContext, IDbContext
     {
         public DbSet<GlobalUser> GlobalUsers { get; set; }
 

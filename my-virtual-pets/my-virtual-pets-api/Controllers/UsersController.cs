@@ -9,9 +9,9 @@ namespace my_virtual_pets_api.Controllers
     [Route("api/[controller]")]
     public class UsersController : ControllerBase 
     {
-        private readonly VPSqliteContext _context;
+        private readonly IDbContext _context;
 
-        public UsersController(VPSqliteContext context)
+        public UsersController(IDbContext context)
         {
             _context = context;
         }

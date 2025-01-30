@@ -6,18 +6,24 @@ using System.Text.Json.Serialization;
 var builder = WebApplication.CreateBuilder(args);
 
 
-string memoryDbConnectionString = "Data Source=:memory:";
+if (builder.Environment.IsDevelopment())
+{
+    string memoryDbConnectionString = "Data Source=:memory:";
+    var sqlConnection = new SqliteConnection(memoryDbConnectionString);
+    sqlConnection.Open();
+    builder.Services.AddDbContext<VPSqliteContext>(options => options.UseSqlite(sqlConnection));
+    builder.Services.AddSwaggerGen();
+}
+else if (builder.Environment.IsProduction())
+{
+    string connectionString = "";
+    builder.Services.AddDbContext<VPSqlServerContext>(options => options.UseSqlServer(connectionString)); 
+}
 
-var sqlConnection = new SqliteConnection(memoryDbConnectionString);
-
-sqlConnection.Open();
-
-builder.Services.AddDbContext<VPSqliteContext>(options => options.UseSqlite(sqlConnection));
 
 builder.Services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 
 var app = builder.Build();
