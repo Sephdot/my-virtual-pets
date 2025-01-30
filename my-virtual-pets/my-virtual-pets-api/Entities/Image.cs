@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection.Metadata;
 using System.Text.Json.Serialization;
 
@@ -10,7 +11,8 @@ namespace my_virtual_pets_api.Entities
         public Guid Id { get; set; }
 
         [JsonPropertyName("imageobj")]
-        [Column(TypeName = "byte[]")]
+        [MaxLength(8000)]
+        [Column(TypeName = "Binary")]
         public byte[] ImageObj { get; set; }
 
     }

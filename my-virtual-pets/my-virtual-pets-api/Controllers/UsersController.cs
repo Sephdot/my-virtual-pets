@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using my_virtual_pets_api.Data;
 using my_virtual_pets_api.Entities;
 using my_virtual_pets_api.TempClasses;
+using System.Drawing.Imaging;
 
 namespace my_virtual_pets_api.Controllers
 {
@@ -54,6 +55,16 @@ namespace my_virtual_pets_api.Controllers
             _context.SaveChanges();
             return Ok(newGlobalUser);
         }
+
+        [HttpGet("/image")]
+        public IActionResult GetImage()
+        {
+            var image = _context.Images.First();
+            //MemoryStream ms = new MemoryStream(image.ImageObj);
+            //System.Drawing.Image returnImage = System.Drawing.Image.FromStream(ms);
+            return Ok(File(image.ImageObj, "image/jpeg"));
+        }
+
 
     }
 }

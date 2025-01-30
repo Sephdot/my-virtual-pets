@@ -12,7 +12,7 @@ using my_virtual_pets_api.Data;
 namespace my_virtual_pets_api.Migrations
 {
     [DbContext(typeof(VPSqlServerContext))]
-    [Migration("20250130152934_initial_migrate")]
+    [Migration("20250130163346_initial_migrate")]
     partial class initial_migrate
     {
         /// <inheritdoc />
@@ -40,9 +40,6 @@ namespace my_virtual_pets_api.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("GlobalUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -121,74 +118,116 @@ namespace my_virtual_pets_api.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasAnnotation("Relational:JsonPropertyName", "id");
 
                     b.Property<byte[]>("ImageObj")
                         .IsRequired()
-                        .HasColumnType("varbinary(max)");
+                        .HasMaxLength(8000)
+                        .HasColumnType("Binary")
+                        .HasAnnotation("Relational:JsonPropertyName", "imageobj");
 
                     b.HasKey("Id");
 
                     b.ToTable("Images");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("550e8400-e29b-41d4-a716-446655440000"),
+                            ImageObj = new byte[] { 137, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 13, 73, 72, 68, 82, 0, 0, 0, 2, 0, 0, 0, 2, 8, 2, 0, 0, 0, 253, 212, 154, 115, 0, 0, 0, 22, 73, 68, 65, 84, 120, 218, 99, 252, 255, 159, 161, 63, 51, 50, 50, 50, 0, 6, 16, 1, 1, 253, 159, 2, 8, 102, 90, 89, 0, 0, 0, 0, 73, 69, 78, 68, 174, 66, 96, 130 }
+                        });
                 });
 
             modelBuilder.Entity("my_virtual_pets_api.Entities.LocalUser", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasAnnotation("Relational:JsonPropertyName", "id");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("Relational:JsonPropertyName", "firstname");
 
                     b.Property<Guid>("GlobalUserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasAnnotation("Relational:JsonPropertyName", "userid");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("Relational:JsonPropertyName", "lastname");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("Relational:JsonPropertyName", "password");
 
                     b.HasKey("Id");
 
                     b.HasIndex("GlobalUserId");
 
                     b.ToTable("LocalUsers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("a1b2c3d4-5678-9101-1121-314151617181"),
+                            FirstName = "Alex",
+                            GlobalUserId = new Guid("cb7153f7-3101-444b-a91d-8c45280672d6"),
+                            LastName = "Johnson",
+                            Password = "hashedpassword123"
+                        },
+                        new
+                        {
+                            Id = new Guid("b2c3d4e5-6789-0123-4567-890123456789"),
+                            FirstName = "Jamie",
+                            GlobalUserId = new Guid("f3922887-7fc2-447b-a08f-4fbbc663ba81"),
+                            LastName = "Smith",
+                            Password = "securepassword456"
+                        },
+                        new
+                        {
+                            Id = new Guid("c3d4e5f6-7890-1234-5678-901234567890"),
+                            FirstName = "Taylor",
+                            GlobalUserId = new Guid("3e2db5ff-0ac8-48b9-b341-e14371c42e7a"),
+                            LastName = "Brown",
+                            Password = "randompassword789"
+                        });
                 });
 
             modelBuilder.Entity("my_virtual_pets_api.Entities.Pet", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasAnnotation("Relational:JsonPropertyName", "id");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("Relational:JsonPropertyName", "Description");
 
                     b.Property<Guid>("GlobalUserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasAnnotation("Relational:JsonPropertyName", "userid");
 
                     b.Property<Guid>("ImageId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasAnnotation("Relational:JsonPropertyName", "imageid");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("Relational:JsonPropertyName", "name");
 
-                    b.Property<int?>("Personality")
-                        .HasColumnType("int");
+                    b.Property<int>("Personality")
+                        .HasColumnType("int")
+                        .HasAnnotation("Relational:JsonPropertyName", "personality");
 
                     b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int")
+                        .HasAnnotation("Relational:JsonPropertyName", "type");
 
                     b.HasKey("Id");
 
@@ -197,6 +236,35 @@ namespace my_virtual_pets_api.Migrations
                     b.HasIndex("ImageId");
 
                     b.ToTable("Pets");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("d1e2f3a4-5678-9101-1121-314151617181"),
+                            GlobalUserId = new Guid("cb7153f7-3101-444b-a91d-8c45280672d6"),
+                            ImageId = new Guid("550e8400-e29b-41d4-a716-446655440000"),
+                            Name = "Whiskers",
+                            Personality = 2,
+                            Type = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("e2f3a4b5-6789-0123-4567-890123456789"),
+                            GlobalUserId = new Guid("f3922887-7fc2-447b-a08f-4fbbc663ba81"),
+                            ImageId = new Guid("550e8400-e29b-41d4-a716-446655440000"),
+                            Name = "Buddy",
+                            Personality = 3,
+                            Type = 1
+                        },
+                        new
+                        {
+                            Id = new Guid("f3a4b5c6-7890-1234-5678-901234567890"),
+                            GlobalUserId = new Guid("3e2db5ff-0ac8-48b9-b341-e14371c42e7a"),
+                            ImageId = new Guid("550e8400-e29b-41d4-a716-446655440000"),
+                            Name = "Floppy",
+                            Personality = 1,
+                            Type = 2
+                        });
                 });
 
             modelBuilder.Entity("my_virtual_pets_api.Entities.AuthUser", b =>
