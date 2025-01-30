@@ -6,7 +6,7 @@ namespace my_virtual_pets_api.Entities
     {
         public Guid Id { get; set; }
 
-        public byte[] ImageObj { get; set; }
+        public required byte[] ImageObj { get; set; }
 
     }
 }

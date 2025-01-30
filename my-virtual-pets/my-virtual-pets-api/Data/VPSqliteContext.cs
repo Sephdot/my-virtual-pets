@@ -20,6 +20,11 @@ namespace my_virtual_pets_api.Data
             Database.EnsureCreated(); 
         }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseValidationCheckConstraints();
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<GlobalUser>().Property(e => e.Id).ValueGeneratedOnAdd();

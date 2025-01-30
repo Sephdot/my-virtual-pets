@@ -18,8 +18,8 @@ namespace my_virtual_pets_api.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Username = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     GDPRPermissions = table.Column<bool>(type: "bit", nullable: false),
                     DateJoined = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -47,7 +47,7 @@ namespace my_virtual_pets_api.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     GlobalUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Auth0Id = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Auth0Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     FullName = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -90,9 +90,9 @@ namespace my_virtual_pets_api.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     GlobalUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Personality = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Personality = table.Column<int>(type: "int", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ImageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -123,9 +123,27 @@ namespace my_virtual_pets_api.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_AuthUsers_Auth0Id",
+                table: "AuthUsers",
+                column: "Auth0Id",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AuthUsers_GlobalUserId",
                 table: "AuthUsers",
                 column: "GlobalUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GlobalUsers_Email",
+                table: "GlobalUsers",
+                column: "Email",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GlobalUsers_Username",
+                table: "GlobalUsers",
+                column: "Username",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_LocalUsers_GlobalUserId",

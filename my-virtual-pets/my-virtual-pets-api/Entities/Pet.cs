@@ -8,11 +8,11 @@
 
         public GlobalUser GlobalUser { get; set; }
 
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
-        public int Personality { get; set; }
+        public int? Personality { get; set; }
 
-        public string Description { get; set; } = "";
+        public string? Description { get; set; }
 
         public Guid ImageId { get; set; }
 

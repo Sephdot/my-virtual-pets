@@ -30,7 +30,7 @@ namespace my_virtual_pets_api.Migrations
 
                     b.Property<string>("Auth0Id")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("FullName")
                         .IsRequired()
@@ -43,6 +43,9 @@ namespace my_virtual_pets_api.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Auth0Id")
+                        .IsUnique();
 
                     b.HasIndex("GlobalUserId");
 
@@ -62,7 +65,7 @@ namespace my_virtual_pets_api.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
+                        .HasColumnType("nvarchar(450)")
                         .HasAnnotation("Relational:JsonPropertyName", "email");
 
                     b.Property<bool>("GDPRPermissions")
@@ -71,10 +74,16 @@ namespace my_virtual_pets_api.Migrations
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
+                        .HasColumnType("nvarchar(450)")
                         .HasAnnotation("Relational:JsonPropertyName", "username");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.HasIndex("Username")
+                        .IsUnique();
 
                     b.ToTable("GlobalUsers");
 
@@ -158,7 +167,6 @@ namespace my_virtual_pets_api.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("GlobalUserId")
@@ -168,10 +176,9 @@ namespace my_virtual_pets_api.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Personality")
+                    b.Property<int?>("Personality")
                         .HasColumnType("int");
 
                     b.Property<Guid>("UserId")
