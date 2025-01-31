@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using my_virtual_pets_api.Services;
+using my_virtual_pets_api.Cloud;
 
 namespace my_virtual_pets_api.Controllers;
 
@@ -7,29 +8,24 @@ namespace my_virtual_pets_api.Controllers;
 [Route("api/[controller]")]
 public class ImagesController : ControllerBase
 {
-    private IImagesService imagesService;
+    private IImagesService _imagesService;
+    private IStorageService _storageService;
 
-    public ImagesController(IImagesService imagesService)
+    public ImagesController(IImagesService imagesService, IStorageService storageService)
     {
-        this.imagesService = imagesService;
+        _imagesService = imagesService;
+        _storageService = storageService;
     }
 
     [HttpPost]
     [Route("test")]
-    public async Task<IActionResult> GetTestImage(string inputImageUrl)
+    public async Task<IActionResult> GetTestImage(string inputImageUrl, string key)
     {
-        //string inputImagePath = "Resources/TestImages/DogWithBackground.jpg";
-        //byte[] inputImage = await System.IO.File.ReadAllBytesAsync(inputImagePath);
-        //if (outputImage == null) return BadRequest("Output image was null");
-        //return File(outputImage, "image/png");
-
-        //string? outputImageUrl = await imagesService.RemoveBackground(inputImageUrl);
         try
         {
-            byte[]? outputImage = await imagesService.RemoveBackgroundAsync(inputImageUrl);
+            byte[]? outputImage = await _imagesService.RemoveBackgroundAsync(inputImageUrl);
             if (outputImage == null) return BadRequest("Output image was null");
-            Cloud.S3StorageService s3 = new();
-            await s3.UploadObject(outputImage, "testKey");
+            await _storageService.UploadObject(outputImage, key);
             return Ok();
         }
         catch (Exception e)
