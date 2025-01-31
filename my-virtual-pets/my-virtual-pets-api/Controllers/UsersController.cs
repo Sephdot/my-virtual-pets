@@ -31,13 +31,6 @@ namespace my_virtual_pets_api.Controllers
             return Ok(users);
         }
 
-        [HttpGet("/pets")]
-        public IActionResult GetPets()
-        {
-            var pets = _context.Pets.Include(u => u.Image).ToList();
-            return Ok(pets);
-        }
-
         [HttpPut("/s3")]
         public async Task<IActionResult> UploadImageTest([FromBody] string keyName)
         {
@@ -70,16 +63,5 @@ namespace my_virtual_pets_api.Controllers
             _context.SaveChanges();
             return Ok(newGlobalUser);
         }
-
-        [HttpGet("/image")]
-        public IActionResult GetImage()
-        {
-            var image = _context.Images.First();
-            //MemoryStream ms = new MemoryStream(image.ImageObj);
-            //System.Drawing.Image returnImage = System.Drawing.Image.FromStream(ms);
-            return Ok(File(image.ImageObj, "image/jpeg"));
-        }
-
-
     }
 }

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace my_virtual_pets_api.Migrations
 {
     /// <inheritdoc />
-    public partial class initial_migrate : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -33,7 +33,7 @@ namespace my_virtual_pets_api.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ImageObj = table.Column<byte[]>(type: "Binary(8000)", maxLength: 8000, nullable: false)
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -122,8 +122,8 @@ namespace my_virtual_pets_api.Migrations
 
             migrationBuilder.InsertData(
                 table: "Images",
-                columns: new[] { "Id", "ImageObj" },
-                values: new object[] { new Guid("550e8400-e29b-41d4-a716-446655440000"), new byte[] { 137, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 13, 73, 72, 68, 82, 0, 0, 0, 2, 0, 0, 0, 2, 8, 2, 0, 0, 0, 253, 212, 154, 115, 0, 0, 0, 22, 73, 68, 65, 84, 120, 218, 99, 252, 255, 159, 161, 63, 51, 50, 50, 50, 0, 6, 16, 1, 1, 253, 159, 2, 8, 102, 90, 89, 0, 0, 0, 0, 73, 69, 78, 68, 174, 66, 96, 130 } });
+                columns: new[] { "Id", "ImageUrl" },
+                values: new object[] { new Guid("550e8400-e29b-41d4-a716-446655440000"), "https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/dogyesyes" });
 
             migrationBuilder.InsertData(
                 table: "LocalUsers",
