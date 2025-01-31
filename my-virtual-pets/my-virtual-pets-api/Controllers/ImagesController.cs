@@ -24,10 +24,17 @@ public class ImagesController : ControllerBase
         //return File(outputImage, "image/png");
 
         //string? outputImageUrl = await imagesService.RemoveBackground(inputImageUrl);
-        byte[]? outputImage = await imagesService.RemoveBackgroundAsync(inputImageUrl);
-        if (outputImage == null) return BadRequest("Output image was null");
-        Cloud.S3StorageService s3 = new();
-        s3.UploadObject(outputImage, "testKey");
-        return Ok(outputImage);
+        try
+        {
+            byte[]? outputImage = await imagesService.RemoveBackgroundAsync(inputImageUrl);
+            if (outputImage == null) return BadRequest("Output image was null");
+            Cloud.S3StorageService s3 = new();
+            await s3.UploadObject(outputImage, "testKey");
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return StatusCode(500, e.Message);
+        }
     }
 }
