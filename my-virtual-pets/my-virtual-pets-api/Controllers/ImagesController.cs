@@ -14,18 +14,20 @@ public class ImagesController : ControllerBase
         this.imagesService = imagesService;
     }
 
-    [HttpGet]
+    [HttpPost]
     [Route("test")]
     public async Task<IActionResult> GetTestImage(string inputImageUrl)
     {
         //string inputImagePath = "Resources/TestImages/DogWithBackground.jpg";
         //byte[] inputImage = await System.IO.File.ReadAllBytesAsync(inputImagePath);
-        //byte[]? outputImage = await imagesService.RemoveBackground(inputImage);
         //if (outputImage == null) return BadRequest("Output image was null");
         //return File(outputImage, "image/png");
 
-        string? outputImageUrl = await imagesService.RemoveBackground(inputImageUrl);
-        if (outputImageUrl == null) return BadRequest("Output image was null");
-        return Ok(outputImageUrl);
+        //string? outputImageUrl = await imagesService.RemoveBackground(inputImageUrl);
+        byte[]? outputImage = await imagesService.RemoveBackgroundAsync(inputImageUrl);
+        if (outputImage == null) return BadRequest("Output image was null");
+        Cloud.S3StorageService s3 = new();
+        s3.UploadObject(outputImage, "testKey");
+        return Ok(outputImage);
     }
 }
