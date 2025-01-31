@@ -39,6 +39,14 @@ namespace my_virtual_pets_api.Controllers
             return Ok(pets);
         }
 
+        [HttpGet("/s3")]
+        public async Task<IActionResult> UploadImageTest()
+        {
+            Cloud.S3StorageService s3 = new();
+            var returnedMessage = await s3.UploadFileAsync();
+            return Ok(returnedMessage);
+        }
+
 
 
         [HttpPost(Name = "PostGlobalUser")]
