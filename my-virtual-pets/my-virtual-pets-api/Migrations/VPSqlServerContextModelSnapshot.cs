@@ -118,11 +118,10 @@ namespace my_virtual_pets_api.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasAnnotation("Relational:JsonPropertyName", "id");
 
-                    b.Property<byte[]>("ImageObj")
+                    b.Property<string>("ImageUrl")
                         .IsRequired()
-                        .HasMaxLength(8000)
-                        .HasColumnType("Binary")
-                        .HasAnnotation("Relational:JsonPropertyName", "imageobj");
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("Relational:JsonPropertyName", "imageurl");
 
                     b.HasKey("Id");
 
@@ -132,7 +131,7 @@ namespace my_virtual_pets_api.Migrations
                         new
                         {
                             Id = new Guid("550e8400-e29b-41d4-a716-446655440000"),
-                            ImageObj = new byte[] { 137, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 13, 73, 72, 68, 82, 0, 0, 0, 2, 0, 0, 0, 2, 8, 2, 0, 0, 0, 253, 212, 154, 115, 0, 0, 0, 22, 73, 68, 65, 84, 120, 218, 99, 252, 255, 159, 161, 63, 51, 50, 50, 50, 0, 6, 16, 1, 1, 253, 159, 2, 8, 102, 90, 89, 0, 0, 0, 0, 73, 69, 78, 68, 174, 66, 96, 130 }
+                            ImageUrl = "https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/dogyesyes"
                         });
                 });
 

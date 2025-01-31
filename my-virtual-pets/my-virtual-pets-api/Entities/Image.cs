@@ -10,10 +10,8 @@ namespace my_virtual_pets_api.Entities
         [JsonPropertyName("id")]
         public Guid Id { get; set; }
 
-        [JsonPropertyName("imageobj")]
-        [MaxLength(8000)]
-        [Column(TypeName = "Binary")]
-        public byte[] ImageObj { get; set; }
+        [JsonPropertyName("imageurl")]
+        public string ImageUrl { get; set; }
 
     }
 }
