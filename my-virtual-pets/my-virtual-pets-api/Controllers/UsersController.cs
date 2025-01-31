@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using my_virtual_pets_api.Data;
 using my_virtual_pets_api.Entities;
 using my_virtual_pets_api.TempClasses;
-using System.Drawing.Imaging;
 
 namespace my_virtual_pets_api.Controllers
 {
@@ -39,12 +38,20 @@ namespace my_virtual_pets_api.Controllers
             return Ok(pets);
         }
 
-        [HttpGet("/s3")]
-        public async Task<IActionResult> UploadImageTest()
+        [HttpPut("/s3")]
+        public async Task<IActionResult> UploadImageTest([FromBody] string keyName)
         {
             Cloud.S3StorageService s3 = new();
-            var returnedMessage = await s3.UploadFileAsync();
-            return Ok(returnedMessage);
+            var result = await s3.UploadFileAsync(keyName);
+            if (result.Item1 == true)
+            {
+                // if operation was successful
+                return Ok(result.Item2);
+            }
+            else
+            {
+                return StatusCode(500, result.Item2);
+            }
         }
 
 
