@@ -30,7 +30,7 @@ namespace my_virtual_pets_api.Cloud
             {
                 await _fileTransferUtility.UploadAsync(_filePath, BUCKET_NAME, keyName);
                 return (true, URI_BEGINNING + keyName);
-                
+
             }
             catch (AmazonS3Exception e)
             {
@@ -41,6 +41,20 @@ namespace my_virtual_pets_api.Cloud
             {
                 Console.WriteLine(e.Message);
                 return (false, "");
+            }
+        }
+
+        public async Task UploadObject(byte[] imgToUpload, string key)
+        {
+            var request = new Amazon.S3.Model.PutObjectRequest
+            {
+                BucketName = BUCKET_NAME,
+                Key = key
+            };
+            using (var ms = new MemoryStream(imgToUpload))
+            {
+                request.InputStream = ms;
+                _s3Client.PutObjectAsync(request);
             }
         }
     }
