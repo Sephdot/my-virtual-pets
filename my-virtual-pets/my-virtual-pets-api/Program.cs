@@ -1,5 +1,7 @@
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
+using my_virtual_pets_api.Cloud;
 using my_virtual_pets_api.Data;
 using my_virtual_pets_api.Services;
 using System.Text.Json.Serialization;
@@ -27,6 +29,7 @@ else if (builder.Environment.IsProduction())
 builder.Services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 builder.Services.AddScoped<IImagesService, ImagesService>();
+builder.Services.AddScoped<IStorageService, S3StorageService>();
 
 var app = builder.Build();
 

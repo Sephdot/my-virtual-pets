@@ -4,7 +4,7 @@ using Amazon.S3.Transfer;
 
 namespace my_virtual_pets_api.Cloud
 {
-    public class S3StorageService : IS3StorageService
+    public class S3StorageService : IStorageService
     {
         private TransferUtility _fileTransferUtility;
         private AmazonS3Client _s3Client;
