@@ -5,7 +5,18 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>my_virtual_pets_api</RootNamespace>
+    <UserSecretsId>b2abae33-5c23-4ce2-945b-a5c49c3760e1</UserSecretsId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\TestImages\DogWithBackground.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\TestImages\DogWithBackground.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="EFCore.CheckConstraints" Version="8.0.1" />
