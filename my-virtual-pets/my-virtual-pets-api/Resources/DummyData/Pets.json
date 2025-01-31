@@ -1,0 +1,28 @@
+﻿[
+  {
+    "id": "d1e2f3a4-5678-9101-1121-314151617181",
+    "userid": "cb7153f7-3101-444b-a91d-8c45280672d6",
+    "name": "Whiskers",
+    "personality": 2,
+    "description": "A playful and curious tabby cat.",
+    "type": 0,
+    "imageid": "550e8400-e29b-41d4-a716-446655440000" },
+  {
+    "id": "e2f3a4b5-6789-0123-4567-890123456789",
+    "userid": "f3922887-7fc2-447b-a08f-4fbbc663ba81",
+    "name": "Buddy",
+    "personality": 3,
+    "description": "A loyal golden retriever who loves fetch.",
+    "type": 1,
+    "imageid": "550e8400-e29b-41d4-a716-446655440000"
+  },
+  {
+    "id": "f3a4b5c6-7890-1234-5678-901234567890",
+    "userid": "3e2db5ff-0ac8-48b9-b341-e14371c42e7a",
+    "name": "Floppy",
+    "personality": 1,
+    "description": "A shy but affectionate rabbit.",
+    "type": 2,
+    "imageid": "550e8400-e29b-41d4-a716-446655440000"
+  }
+]
