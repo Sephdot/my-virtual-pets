@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Net.Http.Headers;
 
 namespace ImageRecognition
 {
@@ -37,13 +38,15 @@ namespace ImageRecognition
                 var content = new MultipartFormDataContent();
 
                 bool imageIsUrl = await CheckIfUrl(imageLocation);
-                if (imageLocation != null)
+
+                if (imageIsUrl)
                 {
                     content.Add(new StringContent(imageLocation), "image_url");
                 }
-                else if (imageData != null)
+                else
                 {
-                    content.Add(new ByteArrayContent(imageData), "image_file");
+                    content.Add(new ByteArrayContent(imageData), "image_file", "image.jpeg");
+
                 }
 
                 content.Add(new StringContent($"dragoneye/animals"), "model_name");
