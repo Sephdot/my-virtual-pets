@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Net.Http.Headers;
 
 namespace ImageRecognition
 {
     public class RecognitionService : IRecognitionService
     {
         public string Model { get; set; }
-        private string ApiKey { get; set;  }
-            public RecognitionService(IConfiguration configuration)
+        private string ApiKey { get; set; }
+        public RecognitionService(IConfiguration configuration)
         {
             Model = "animals";
             ApiKey = configuration["dragoneyeApiKey"] ?? throw new Exception("DragonEye API Key could not be found.");
@@ -44,11 +38,13 @@ namespace ImageRecognition
                 request.Headers.Add("Authorization", $"Bearer {ApiKey}");
                 var content = new MultipartFormDataContent();
 
-                bool imageIsUrl = await CheckIfUrl(imageLocation);
-
-                if (imageIsUrl)
+                if (imageLocation != null)
                 {
-                    content.Add(new StringContent(imageLocation), "image_url");
+                    bool imageIsUrl = await CheckIfUrl(imageLocation);
+                    if (imageIsUrl && imageLocation != null)
+                    {
+                        content.Add(new StringContent(imageLocation), "image_url");
+                    }
                 }
                 else
                 {
@@ -60,7 +56,7 @@ namespace ImageRecognition
                 request.Content = content;
                 var response = await client.SendAsync(request);
                 response.EnsureSuccessStatusCode();
-                var result =  await response.Content.ReadAsStringAsync();
+                var result = await response.Content.ReadAsStringAsync();
                 return result;
             }
             catch (Exception ex)
