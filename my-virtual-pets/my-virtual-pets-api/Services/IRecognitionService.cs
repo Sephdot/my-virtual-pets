@@ -5,8 +5,8 @@ namespace ImageRecognition
     {
         string Model { get; set; }
 
-        Task<string> CheckImageInput(byte[] imageData);
-        Task<string> CheckImageInput(string imageLocation);
+        Task<IPredicted> CheckImageInput(byte[] imageData);
+        Task<IPredicted> CheckImageInput(string imageLocation);
         Task<IPredicted?> Deserialize(string predictionJson);
     }
 }

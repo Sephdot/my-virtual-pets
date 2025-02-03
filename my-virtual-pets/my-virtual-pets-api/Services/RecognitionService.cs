@@ -19,13 +19,20 @@ namespace ImageRecognition
             ApiKey = configuration["dragoneyeApiKey"] ?? throw new Exception("DragonEye API Key could not be found.");
 
         }
-        public async Task<string> CheckImageInput(string imageLocation)
+        public async Task<IPredicted?> CheckImageInput(string imageLocation)
         {
-            return await CheckImage(imageLocation, null);
+            var result = await CheckImage(imageLocation, null);
+            var deserializedResult = await Deserialize(result);
+            if (CheckIfAnimal(deserializedResult).Result) return deserializedResult;
+            return null;
         }
-        public async Task<string> CheckImageInput(byte[] imageData)
+        public async Task<IPredicted?> CheckImageInput(byte[] imageData)
         {
-            return await CheckImage(null, imageData);
+            //return await CheckImage(null, imageData);
+            var result = await CheckImage(null, imageData);
+            var deserializedResult = await Deserialize(result);
+            if (CheckIfAnimal(deserializedResult).Result) return deserializedResult;
+            return null;
         }
 
         private async Task<string?> CheckImage(string? imageLocation, byte[]? imageData)
@@ -94,6 +101,14 @@ namespace ImageRecognition
             {
                 return null;
             }
+        }
+
+        public async Task<bool> CheckIfAnimal(IPredicted animal)
+        {
+            List<string> validAnimals = new List<string>{  "cat", "dog" };
+
+            return validAnimals.Contains(animal.name);
+
         }
     }
 

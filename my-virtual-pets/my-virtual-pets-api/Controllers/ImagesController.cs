@@ -45,6 +45,6 @@ public class ImagesController : ControllerBase
         {
             return BadRequest();
         }
-        return Ok(result);
+        return Ok(result.name);
     }
 }
