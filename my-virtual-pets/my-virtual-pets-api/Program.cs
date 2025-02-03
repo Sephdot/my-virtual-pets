@@ -5,6 +5,9 @@ using my_virtual_pets_api.Cloud;
 using my_virtual_pets_api.Data;
 using my_virtual_pets_api.Services;
 using System.Text.Json.Serialization;
+using my_virtual_pets_api.Repositories;
+using my_virtual_pets_api.Repositories.Interfaces;
+using my_virtual_pets_api.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +31,8 @@ else if (builder.Environment.IsProduction())
 
 builder.Services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IImagesService, ImagesService>();
 builder.Services.AddScoped<IStorageService, S3StorageService>();
 
