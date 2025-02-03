@@ -9,6 +9,7 @@ using System.Text.Json.Serialization;
 using my_virtual_pets_api.Repositories;
 using my_virtual_pets_api.Repositories.Interfaces;
 using my_virtual_pets_api.Services.Interfaces;
+using PixelationTest;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +38,8 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IImagesService, ImagesService>();
 builder.Services.AddScoped<IStorageService, S3StorageService>();
 builder.Services.AddScoped<IRecognitionService, RecognitionService>();
+builder.Services.AddScoped<IPixelate, Pixelate>();
+
 
 var app = builder.Build();
 

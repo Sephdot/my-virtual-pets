@@ -1,13 +1,15 @@
 ﻿//using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using my_virtual_pets_api.Services.Interfaces;
 
 namespace PixelationTest
 {
-    public class Pixelate
-    {
 
-        public static Bitmap PixelateImage(Bitmap image, int blockSize)
+    public class Pixelate : IPixelate
+    {
+      
+        public  Bitmap PixelateImage(Bitmap image, int blockSize)
         {
             Bitmap result = new Bitmap(image.Width, image.Height);
 
@@ -17,7 +19,7 @@ namespace PixelationTest
                 for (int y = 0; y < image.Height; y += blockSize)
                 {
                     // Calculate the average color of the block
-                    Color averageColor = GetAverageColor(image, x, y, blockSize);
+                    Color averageColor = GetAverageColour(image, x, y, blockSize);
 
                     Color blockColor = averageColor;
 
@@ -39,7 +41,7 @@ namespace PixelationTest
         }
 
         // average colour of a block within the image
-        public static Color GetAverageColor(Bitmap image, int startX, int startY, int blockSize)
+        public Color GetAverageColour(Bitmap image, int startX, int startY, int blockSize)
         {
             int r = 0, g = 0, b = 0, count = 0;
 
