@@ -7,37 +7,12 @@
     font-family: sans-serif;
 }
 
-p {
-    margin: 0 auto;
-    max-width: 60ch;
-}
-
-h1 {
-    margin: 1rem;
-    font-size: 2.5rem;
-    text-align: center;
-}
-
-.footer-content-container {
-    text-align: center;
-    background: #DCE1E9;
-    color: #363732;
-    margin: 1rem 0;
-    padding: 0.6rem;
+main > .container {
+    padding: 60px 15px 0;
 }
 
 h1:focus {
     outline: none;
-}
-
-.home-welcome-title {
-    text-align: center;
-}
-
-.home-welcome-content {
-    margin: 0.5rem;
-    padding: 1rem;
-    text-align: left;
 }
 
 .valid.modified:not([type=checkbox]) {
