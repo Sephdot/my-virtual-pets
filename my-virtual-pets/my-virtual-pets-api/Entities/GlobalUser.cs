@@ -1,6 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
+using my_virtual_pets_class_library.DTO;
 
 namespace my_virtual_pets_api.Entities
 {
@@ -12,17 +13,34 @@ namespace my_virtual_pets_api.Entities
         public Guid Id { get; set; }
 
         [JsonPropertyName("username")]
-        public required string Username { get; set; }
+        [Required]
+        public string Username { get; set; }
 
         [JsonPropertyName("email")]
-        public required string Email { get; set; }
+        [Required]
+        public string Email { get; set; }
 
         [JsonPropertyName("gdprpermissions")]
-        public required bool GDPRPermissions { get; set; }
+        [Required]
+        public bool GDPRPermissions { get; set; }
 
         [JsonPropertyName("datejoined")]
-        public required DateTime DateJoined { get; set; }
+        [Required]
+        public DateTime DateJoined { get; set; }
 
         public List<Pet> Pets { get; set; }
+
+        public GlobalUser()
+        {
+        }
+
+        public GlobalUser(NewUserDTO newUserDto)
+        {
+            Username = newUserDto.Username;
+            Email = newUserDto.Email;
+            GDPRPermissions = newUserDto.GDPRPermissions;
+            DateJoined = DateTime.UtcNow;
+        }
+
     }
 }
