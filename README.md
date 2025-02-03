@@ -1,6 +1,6 @@
-# my-virtual-pets
+# /ᐠ - ˕ -マ  my-virtual-pets  ૮･ﻌ･ა
 
-### Database set-up: 
+## 📋 Database set-up: 
 
 Running in Development Mode: 
 
@@ -22,3 +22,13 @@ Value: `Server=<server_name>;Database=my_virtual_pets;User Id=sa;Password=<your_
 
 6. Go to launch settings and change the environment to 'Production'
 7. Run Program.cs 
+
+__________________________________
+
+## 👥 Dummy Data: 
+
+The following logins have been prepopulated:
+
+` { "username": "PetLover123", "password": "hashedpassword123" `
+` { "username": "FurryFriendFan", "password": "securepassword456" `
+` { "username": "AnimalEnthusiast", "password": "randompassword789" `
