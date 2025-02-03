@@ -17,26 +17,26 @@
     </div>
     @foreach (var x in DummyUsers.OrderByDescending(x => x.TotalScore).ToList())
     {
-        <div class="row">
-            <div class="col-sm">
-                INSERT RANKING HERE
-            </div>
-            <div class="col-sm">
-                @x.Username
-            </div>
-            <div class="col-sm">
-                @x.TotalScore
-            </div>
-            <div class="col-sm">
-                @x.TopPet <button @onclick="() => HandleViewPet(x.TopPet)">View</button>
-            </div>
+    <div class="row">
+        <div class="col-sm">
+            @(_rankingCounter++)
         </div>
+        <div class="col-sm">
+            @x.Username
+        </div>
+        <div class="col-sm">
+            @x.TotalScore
+        </div>
+        <div class="col-sm">
+            @x.TopPet <button @onclick="() => HandleViewPet(x.TopPet)">View</button>
+        </div>
+    </div>
     }
+    
 </div>
-
 @code {
-
-    public List<DummyUser> DummyUsers { get; set; } = new()
+    private int _rankingCounter = 1;
+        public List<DummyUser> DummyUsers { get; set; } = new()
     {
         new(), new(), new(), new(), new()
     };
