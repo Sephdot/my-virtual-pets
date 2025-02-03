@@ -1,6 +1,56 @@
 @page "/leaderboard"
 <PageTitle>Leaderboard | MyVirtualPets</PageTitle>
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            Ranking
+        </div>
+        <div class="col-sm">
+            Username
+        </div>
+        <div class="col-sm">
+            Total Score
+        </div>
+        <div class="col-sm">
+            Top Pet
+        </div>
+    </div>
+    @foreach (var x in DummyUsers.OrderByDescending(x => x.TotalScore).ToList())
+    {
+        <div class="row">
+            <div class="col-sm">
+                INSERT RANKING HERE
+            </div>
+            <div class="col-sm">
+                @x.Username
+            </div>
+            <div class="col-sm">
+                @x.TotalScore
+            </div>
+            <div class="col-sm">
+                @x.TopPet <button @onclick="() => HandleViewPet(x.TopPet)">View</button>
+            </div>
+        </div>
+    }
+</div>
 
 @code {
+
+    public List<DummyUser> DummyUsers { get; set; } = new()
+    {
+        new(), new(), new(), new(), new()
+    };
     
+    public class DummyUser
+    {
+        public string Username = $"superuser{new Random().Next(1, 10000)}";
+        public int TotalScore = new Random().Next(1, 10000);
+        public string TopPet = $"excellentpet{new Random().Next(1, 10000)}";
+    }
+
+    public void HandleViewPet(string petName)
+    {
+        throw new NotImplementedException(); 
+        // TODO: open a card of some kind to check out the pet? maybe a window to the pet's enclosure to be able to pet it?
+    }
 }
