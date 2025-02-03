@@ -11,12 +11,12 @@ namespace ImageRecognition
     public class RecognitionService : IRecognitionService
     {
         public string Model { get; set; }
-        private string ApiKey;
-            public RecognitionService(string model, IConfiguration configuration)
+        private string ApiKey { get; set;  }
+            public RecognitionService(IConfiguration configuration)
         {
-            Model = model;
-            ApiKey = configuration["dragoneyeApiKey"] ?? throw new ArgumentNullException("DragonEye Api key could not be found.");
-            
+            Model = "animals";
+            ApiKey = configuration["dragoneyeApiKey"] ?? throw new Exception("DragonEye API Key could not be found.");
+
         }
         public async Task<string> CheckImageInput(string imageLocation)
         {
@@ -46,11 +46,12 @@ namespace ImageRecognition
                     content.Add(new ByteArrayContent(imageData), "image_file");
                 }
 
-                content.Add(new StringContent($"dragoneye/{Model}"), "model_name");
+                content.Add(new StringContent($"dragoneye/animals"), "model_name");
                 request.Content = content;
                 var response = await client.SendAsync(request);
                 response.EnsureSuccessStatusCode();
-                return await response.Content.ReadAsStringAsync();
+                var result =  await response.Content.ReadAsStringAsync();
+                return result;
             }
             catch (Exception ex)
             {
