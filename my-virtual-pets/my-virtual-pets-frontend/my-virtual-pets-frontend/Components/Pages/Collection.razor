@@ -1,0 +1,17 @@
+@page "/collection"
+<PageTitle>Collection | MyVirtualPets</PageTitle>
+
+@if (!_isLoggedIn)
+{
+    <div>
+        <h3>You're not logged in!</h3>
+    </div>
+}
+else
+{
+
+}
+
+@code {
+    private bool _isLoggedIn = false; //TODO: add auth checking
+}
