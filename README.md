@@ -29,6 +29,9 @@ __________________________________
 
 The following logins have been prepopulated:
 
-` { "username": "PetLover123", "password": "hashedpassword123" `
-` { "username": "FurryFriendFan", "password": "securepassword456" `
-` { "username": "AnimalEnthusiast", "password": "randompassword789" `
+` { "username": "PetLover123", "password": "hashedpassword123" } `
+<br/>
+` { "username": "FurryFriendFan", "password": "securepassword456" } `
+<br/>
+` { "username": "AnimalEnthusiast", "password": "randompassword789" } `
+<br/>
