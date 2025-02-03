@@ -80,4 +80,23 @@ public class ImagesController : ControllerBase
 
         return File(pixelResult, "image/png");
     }
+
+    [HttpPost]
+    [Route("transparencyTest")]
+    public IActionResult TestTransparency()
+    {
+        byte[] inputImage = System.IO.File.ReadAllBytes("Resources/Images/DogWithBackground.jpg");
+        Bitmap inputBitmap;
+
+        using (var ms = new MemoryStream(inputImage))
+        {
+            inputBitmap = new Bitmap(ms);
+        }
+
+        Bitmap pixelatedImage = _pixelateService.PixelateImage(inputBitmap, 12, false);
+        ImageConverter converter = new ImageConverter();
+        byte[] pixelResult = (byte[])converter.ConvertTo(pixelatedImage, typeof(byte[]));
+
+        return File(pixelResult, "image/png");
+    }
 }

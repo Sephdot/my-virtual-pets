@@ -9,10 +9,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Images\DogWithoutBackground.jpg" />
     <None Remove="Resources\TestImages\DogWithBackground.jpg" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Resources\Images\DogWithoutBackground.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\TestImages\DogWithBackground.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -36,10 +40,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\my-virtual-pets-class-library\my-virtual-pets-class-library.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Resources\Images\" />
   </ItemGroup>
 
 </Project>
