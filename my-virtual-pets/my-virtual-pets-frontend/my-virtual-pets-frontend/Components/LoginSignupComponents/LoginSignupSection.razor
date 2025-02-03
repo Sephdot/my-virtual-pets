@@ -1,0 +1,19 @@
+<h3>LoginSignupSection</h3>
+<div>
+    <button @onclick="() => IsSigningUp = false">Log In</button>
+    <button @onclick="() => IsSigningUp = true">Sign Up</button>
+    
+    @if (!IsSigningUp)
+    {
+        <LoginForm/>
+    }
+    else
+    {
+        <SignupForm/>
+    }
+</div>
+
+
+@code {
+    [CascadingParameter] public bool IsSigningUp { get; set; }
+}
