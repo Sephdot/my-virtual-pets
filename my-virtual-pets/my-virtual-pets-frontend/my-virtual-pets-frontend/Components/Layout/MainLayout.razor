@@ -1,9 +1,20 @@
 ﻿@inherits LayoutComponentBase
+<div class="page-container">
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+    @* horizontal NavBar across top of screen *@
+    <header>
+        <h1>🐈‍⬛ MyVirtualPets 🐩</h1>
+        <p><em>Collect 'em all!</em></p>
+    </header>
+    @Body
+    <footer>
+        <p><em>MyVirtualPets 2025</em></p>
+    </footer>
 
-@Body
-
-<div id="blazor-error-ui">
-    An unhandled error has occurred.
-    <a href="" class="reload">Reload</a>
-    <a class="dismiss">🗙</a>
 </div>
+
+
