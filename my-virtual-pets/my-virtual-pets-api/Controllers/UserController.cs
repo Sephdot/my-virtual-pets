@@ -1,15 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using my_virtual_pets_api.Data;
-using my_virtual_pets_api.Entities;
 using my_virtual_pets_api.Services.Interfaces;
-using my_virtual_pets_api.TempClasses;
 
 namespace my_virtual_pets_api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class UserController : ControllerBase 
+    public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
 
@@ -21,15 +17,15 @@ namespace my_virtual_pets_api.Controllers
         [HttpPost(Name = "AddUser")]
         public IActionResult NewUser() // user DTO required
         {
-            return Created(); 
+            return Created();
         }
 
-        [HttpPost(Name = "UserLogin")]
-        public IActionResult Login() // login DTO required 
-        {
-            return Ok();
-        }
-        
+        //[HttpPost(Name = "UserLogin")]
+        //public IActionResult Login() // login DTO required 
+        //{
+        //    return Ok();
+        //}
+
         //
         // [HttpPost(Name = "PostGlobalUser")]
         // public IActionResult PostGlobalUser(InputGlobalUser userInput)
@@ -59,10 +55,10 @@ namespace my_virtual_pets_api.Controllers
         //     var users = _context.LocalUsers.Include(u => u.GlobalUser).ToList();
         //     return Ok(users);
         // }
-        
-        
 
-        
+
+
+
         [HttpPut("/s3")]
         public async Task<IActionResult> UploadImageTest([FromBody] string keyName)
         {

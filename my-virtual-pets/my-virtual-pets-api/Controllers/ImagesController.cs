@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using my_virtual_pets_api.Services;
+﻿using ImageRecognition;
+using Microsoft.AspNetCore.Mvc;
 using my_virtual_pets_api.Cloud;
-using ImageRecognition;
+using my_virtual_pets_api.Services;
+using my_virtual_pets_api.Services.Interfaces;
+using System.Drawing;
 
 namespace my_virtual_pets_api.Controllers;
 
@@ -12,12 +14,14 @@ public class ImagesController : ControllerBase
     private IImagesService _imagesService;
     private IStorageService _storageService;
     private IRecognitionService _recognitionService;
+    private IPixelate _pixelateService;
 
-    public ImagesController(IImagesService imagesService, IStorageService storageService, IRecognitionService recognitionService)
+    public ImagesController(IImagesService imagesService, IStorageService storageService, IRecognitionService recognitionService, IPixelate pixelateService)
     {
         _imagesService = imagesService;
         _storageService = storageService;
         _recognitionService = recognitionService;
+        _pixelateService = pixelateService;
     }
 
     [HttpPost]
@@ -46,5 +50,34 @@ public class ImagesController : ControllerBase
             return BadRequest();
         }
         return Ok(result.name);
+    }
+
+    [HttpPost]
+    [Route("pipelineTest")]
+    public async Task<IActionResult> TestPipeline()
+    {
+        byte[] inputImage = System.IO.File.ReadAllBytes("Resources/Images/testimage.png");
+
+        var recognitionResult = await _recognitionService.CheckImageInput(inputImage);
+
+        if (recognitionResult == null)
+        {
+            return BadRequest();
+        }
+
+        var removeBgResult = await _imagesService.RemoveBackground(inputImage);
+        Bitmap inputBitmap;
+
+        using (var ms = new MemoryStream(removeBgResult))
+        {
+            inputBitmap = new Bitmap(ms);
+        }
+
+        Bitmap pixelatedImage = _pixelateService.PixelateImage(inputBitmap, 5);
+
+        ImageConverter converter = new ImageConverter();
+        byte[] pixelResult = (byte[])converter.ConvertTo(pixelatedImage, typeof(byte[]));
+
+        return File(pixelResult, "image/png");
     }
 }
