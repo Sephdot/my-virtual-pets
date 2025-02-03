@@ -1,3 +1,49 @@
+*,
+*:before,
+*:after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+nav {
+    height: 70px;
+    background: #000;
+    color: #FFF;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+}
+
+.logo h2 {
+    margin: 0 0.5rem;
+    cursor: pointer;
+}
+
+nav li {
+    list-style: none;
+    margin: 0 0.5rem;
+}
+
+.nav-items {
+    display: flex;
+}
+
+nav a {
+    text-decoration: none;
+    transition-duration: 0.1s;
+    color: rgb(230, 211, 211)
+}
+
+nav a:hover {
+    font-size: 1.1rem;
+    color: rgb(240, 221, 221)
+}
+
 h1:focus {
     outline: none;
 }
