@@ -61,6 +61,21 @@ h1:focus {
     outline: none;
 }
 
+.home-welcome-title {
+    text-align: center;
+}
+
+.home-welcome-content {
+    margin: 0.5rem;
+    padding: 1rem;
+    text-align: left;
+}
+
+.home-welcome-content p {
+    margin: 0 auto;
+    max-width: 60ch;
+}
+
 .valid.modified:not([type=checkbox]) {
     outline: 1px solid #26b050;
 }
