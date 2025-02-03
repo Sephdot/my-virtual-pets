@@ -1,16 +1,18 @@
-<h3>LoginSignupSection</h3>
-<div>
-    <button @onclick="() => IsSigningUp = false">Log In</button>
-    <button @onclick="() => IsSigningUp = true">Sign Up</button>
-    
-    @if (!IsSigningUp)
-    {
-        <LoginForm/>
-    }
-    else
-    {
-        <SignupForm/>
-    }
+<div class="login-signup-container">
+    <div class="login-signup-buttons-container">
+        <button class="login-button" @onclick="() => IsSigningUp = false">Log In</button>
+        <button class="signup-button" @onclick="() => IsSigningUp = true">Sign Up</button>
+    </div>
+    <div class="login-signup-forms">
+        @if (!IsSigningUp)
+        {
+            <LoginForm/>
+        }
+        else
+        {
+            <SignupForm/>
+        }
+    </div>
 </div>
 
 
