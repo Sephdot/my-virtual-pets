@@ -1,4 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+using my_virtual_pets_class_library.DTO;
 
 namespace my_virtual_pets_api.Entities
 {
@@ -13,13 +15,26 @@ namespace my_virtual_pets_api.Entities
         public GlobalUser GlobalUser { get; set; }
 
         [JsonPropertyName("firstname")]
-        public required string FirstName { get; set; }
+        [Required]
+        public string FirstName { get; set; }
 
         [JsonPropertyName("lastname")]
-        public required string LastName { get; set; }
+        [Required]
+        public string LastName { get; set; }
 
         [JsonPropertyName("password")]
-        public required string Password { get; set; }
+        [Required]
+        public string Password { get; set; }
 
+        public LocalUser() { }
+
+        public LocalUser(NewUserDTO newUserDto, Guid userId)
+        {
+            GlobalUserId = userId;
+            FirstName = newUserDto.FirstName;
+            LastName = newUserDto.LastName;
+            Password = newUserDto.Password;
+        }
+        
     }
 }

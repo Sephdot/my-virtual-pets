@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using my_virtual_pets_api.Data;
-using my_virtual_pets_api.Entities;
-using my_virtual_pets_api.TempClasses;
 
 namespace my_virtual_pets_api.Controllers
 {
