@@ -7,17 +7,6 @@
     font-family: sans-serif;
 }
 
-nav {
-    height: 70px;
-    background: #DCE1E9;
-    padding: 0 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: sticky;
-    top: 0;
-}
-
 p {
     margin: 0 auto;
     max-width: 60ch;
@@ -29,32 +18,12 @@ h1 {
     text-align: center;
 }
 
-nav li {
-    list-style: none;
-    margin: 0 0.5rem;
-}
-
-.nav-items {
-    display: flex;
-}
-
 .footer-content-container {
     text-align: center;
     background: #DCE1E9;
     color: #363732;
     margin: 1rem 0;
     padding: 0.6rem;
-}
-
-nav a {
-    text-decoration: none;
-    transition-duration: 0.1s;
-    color: #9A275A
-}
-
-nav a:hover {
-    font-size: 1.1rem;
-    color: #E36588;
 }
 
 h1:focus {
