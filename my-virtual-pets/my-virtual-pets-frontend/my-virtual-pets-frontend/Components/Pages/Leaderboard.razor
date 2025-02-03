@@ -2,32 +2,32 @@
 <PageTitle>Leaderboard | MyVirtualPets</PageTitle>
 <div class="container">
     <div class="row">
-        <div class="col-sm">
+        <div class="col">
             Ranking
         </div>
-        <div class="col-sm">
+        <div class="col">
             Username
         </div>
-        <div class="col-sm">
+        <div class="col">
             Total Score
         </div>
-        <div class="col-sm">
+        <div class="col">
             Top Pet
         </div>
     </div>
     @foreach (var x in DummyUsers.OrderByDescending(x => x.TotalScore).ToList())
     {
     <div class="row">
-        <div class="col-sm">
+        <div class="col">
             @(_rankingCounter++)
         </div>
-        <div class="col-sm">
+        <div class="col">
             @x.Username
         </div>
-        <div class="col-sm">
+        <div class="col">
             @x.TotalScore
         </div>
-        <div class="col-sm">
+        <div class="col">
             @x.TopPet <button @onclick="() => HandleViewPet(x.TopPet)">View</button>
         </div>
     </div>
