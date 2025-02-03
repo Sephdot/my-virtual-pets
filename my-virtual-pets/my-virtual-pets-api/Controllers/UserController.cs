@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using my_virtual_pets_api.Services.Interfaces;
 using my_virtual_pets_class_library.DTO;
 
@@ -14,7 +18,8 @@ namespace my_virtual_pets_api.Controllers
         {
             _userService = userService;
         }
-
+        
+        
         [HttpPost("register")]
         public IActionResult NewLocalUser(NewUserDTO newUserDto) 
         {
@@ -27,33 +32,52 @@ namespace my_virtual_pets_api.Controllers
             return Created("/register", "New local user created"); 
         }
 
+        [HttpGet("login")]
+        public IActionResult Forbidden()
+        {
+            return Ok("You need to log in"); 
+        }
+        
         [HttpPost("login")]
-        public IActionResult Login(UserLoginDTO userLoginDto) 
+        public async Task<IActionResult> LoginAsync(UserLoginDTO userLoginDto) 
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             if (!_userService.ExistsByUsername(userLoginDto.Username)) return BadRequest("This username does not exist");
             if (!_userService.DoesPasswordMatch(userLoginDto)) return BadRequest("Password is incorrect");
-
-            // return token for sessions?
+            
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, userLoginDto.Username),
+                new Claim(ClaimTypes.Role, "User"),
+            };
+            
+            var claimsIdentity = new ClaimsIdentity(
+                claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            
+            var authProperties = new AuthenticationProperties
+            {
+                AllowRefresh = true,
+                ExpiresUtc = DateTimeOffset.UtcNow.AddHours(2),
+                IsPersistent = true,
+                IssuedUtc = DateTimeOffset.UtcNow,
+            };
+            
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme, 
+                new ClaimsPrincipal(claimsIdentity), 
+                authProperties);
+            
             return Ok("You are logged in.");
         }
 
-        
-        // [HttpGet(Name = "GetGlobalUsers")]
-        // public IActionResult GetGlobalUsers()
-        // {
-        //     var users = _context.GlobalUsers.Include(g => g.Pets).ToList();
-        //     return Ok(users);
-        // }
-        
-        // [HttpGet("/local")]
-        // public IActionResult GetLocalUsers()
-        // {
-        //     var users = _context.LocalUsers.Include(u => u.GlobalUser).ToList();
-        //     return Ok(users);
-        // }
-        
-        
+        [HttpGet("logout")]
+        public async Task LogoutAsync()
+        {
+            await HttpContext.SignOutAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme);
+        }
+
+        // [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
         [HttpPut("/s3")]
         public async Task<IActionResult> UploadImageTest([FromBody] string keyName)
         {
