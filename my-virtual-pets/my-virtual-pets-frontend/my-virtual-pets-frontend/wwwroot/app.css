@@ -29,11 +29,6 @@ h1 {
     text-align: center;
 }
 
-.logo h2 {
-    margin: 0 0.5rem;
-    cursor: pointer;
-}
-
 nav li {
     list-style: none;
     margin: 0 0.5rem;
