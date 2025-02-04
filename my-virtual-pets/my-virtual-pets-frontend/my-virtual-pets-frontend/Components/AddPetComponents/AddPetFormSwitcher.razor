@@ -1,0 +1,22 @@
+<div id="formcenter">
+    @if (!IsSuccessfulUpload)
+    {
+        <AddPetDetailsForm></AddPetDetailsForm>
+        @*<UploadImageForm></UploadImageForm>*@
+    }
+    else
+    {
+        <AddPetDetailsForm></AddPetDetailsForm>
+    }
+</div>
+
+@code{
+
+    public bool IsSuccessfulUpload { get; set; } = false; 
+    
+    public void ToggleForm()
+    {
+        IsSuccessfulUpload = !IsSuccessfulUpload;
+    }
+    
+}
