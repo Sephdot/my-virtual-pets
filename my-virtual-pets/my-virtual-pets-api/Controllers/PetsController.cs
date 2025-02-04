@@ -9,26 +9,14 @@ namespace my_virtual_pets_api.Controllers
     [Route("api/[controller]")]
     public class PetsController : ControllerBase 
     {
-        private readonly IDbContext _context;
         private readonly IPetService _petService;
-
-
-
-        public PetsController(IDbContext context, IPetService petService)
+        
+        public PetsController(IPetService petService)
         {
-            _context = context;
             _petService = petService;
         }
-
-
-        [HttpGet("/pets")]
-        public IActionResult GetPets()
-        {
-            var pets = _context.Pets.Include(u => u.Image).ToList();
-            return Ok(pets);
-        }
-
-        [HttpGet("user/{userId}")]
+        
+        [HttpGet("{userId}")]
         public IActionResult GetAllPetsByUserID(Guid userId)
         {
             var petCards = _petService.GetPetsByUser(userId);
