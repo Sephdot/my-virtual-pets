@@ -36,6 +36,10 @@ body {
     font-family: "Pixelify_Sans", serif;
 }
 
+.robottext {
+    font-family: "Roboto_Mono", serif;
+}
+
 h1:focus {
     outline: none;
     font-family: "Pixelify_Sans", serif;
@@ -57,9 +61,6 @@ h1:focus {
     padding: 10px;
     border: 1px double #ccc;
     border-radius: 25px;
-    width: 475px;
-    margin-top: 10%; 
-    margin-left: 33%;
 }
 
 #formcenter:hover {
@@ -136,4 +137,10 @@ h1:focus {
 .runner-up:hover {
     transform: scale(1.01);
     box-shadow: 2px 2px 2px #141514;
+}
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
