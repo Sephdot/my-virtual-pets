@@ -1,6 +1,7 @@
 ﻿using ImageRecognition;
 using my_virtual_pets_api.Cloud;
 using my_virtual_pets_api.Services.Interfaces;
+using my_virtual_pets_class_library;
 using System.Drawing;
 
 namespace my_virtual_pets_api.Services;
@@ -20,19 +21,19 @@ public class ImagesService : IImagesService
         _removeBackgroundService = removeBackgroundService;
     }
 
-    public async Task<byte[]?> ProcessImageAsync(byte[] inputImage)
+    public async Task<ImagesResponseDto?> ProcessImageAsync(byte[] inputImage)
     {
         //Recognise image
         //TO DO: Ask Callum about error handling in recognitionService
         var recognitionResult = await _recognitionService.CheckImageInput(inputImage);
 
-        if (recognitionResult == null)
-        {
-            return null;
-        }
+        if (recognitionResult == null) return null;
+
 
         //Remove backround
         var removeBgResult = await _removeBackgroundService.RemoveBackgroundAsync(inputImage);
+        if (removeBgResult == null) return null;
+
         Bitmap inputBitmap;
 
         //Pixelate image
@@ -48,9 +49,10 @@ public class ImagesService : IImagesService
 
 
         //TO DO: upload image to bucket
-        //TO DO: Save image to database
-        //return image id to Pets controller? Also needs IPredicted
-
-        return pixelResult;
+        string imageId = Guid.NewGuid().ToString();
+        var uploadResult = await _storageService.UploadObjectAsync(pixelResult, imageId);
+        //return string image url and string pet type
+        if (!uploadResult.Item1) return null;
+        return new ImagesResponseDto { imageUrl = uploadResult.imageUrl, animalType = recognitionResult.displayName };
     }
 }
