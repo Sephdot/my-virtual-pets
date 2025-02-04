@@ -34,5 +34,25 @@ namespace my_virtual_pets_api.Repositories
                 })
                 .ToList();
         }
+
+        public PetCardDataDTO GetPetById(Guid petId)
+        {
+            return _context.Pets
+                .Include(p => p.GlobalUser)
+                .Include(p => p.Image)
+                .Where(p => p.Id == petId)
+                .Select(p => new PetCardDataDTO
+                {
+                    PetId = p.Id,
+                    PetName = p.Name,
+                    ImageUrl = p.Image.ImageUrl,
+                    OwnerUsername = p.GlobalUser.Username,
+                    Score = 0,
+                    Personality = p.Personality,
+                    PetType = p.Type,
+                    Description = p.Description,
+                    IsFavourited = false
+                }).FirstOrDefault();
+        }
     }
 }

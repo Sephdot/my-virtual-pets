@@ -17,5 +17,10 @@ namespace my_virtual_pets_api.Services
         {
             return _petRepository.GetAllPetsByUserID(userId);
         }
+
+        public PetCardDataDTO GetPetById(Guid petId)
+        {
+            return _petRepository.GetPetById(petId);
+        }
     }
 }
