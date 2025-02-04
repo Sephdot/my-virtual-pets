@@ -1,4 +1,6 @@
-﻿using System.Text.Json;
+﻿using Microsoft.VisualBasic;
+using System.Text;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 
 namespace ImageRecognition
@@ -65,7 +67,7 @@ namespace ImageRecognition
             }
         }
 
-        private async Task<bool> CheckIfUrl(string imageLocation)
+        private static async Task<bool> CheckIfUrl(string imageLocation)
         {
             var urlRegex = new Regex(
                             @"^(https?|ftps?):\/\/(?:[a-zA-Z0-9]" +
@@ -74,14 +76,17 @@ namespace ImageRecognition
                     @"|65[0-4]\d{2}|655[0-2]\d|6553[0-5]))?" +
                     @"(?:\/(?:[-a-zA-Z0-9@%_\+.~#?&=]+\/?)*)?$",
             RegexOptions.IgnoreCase);
-            return urlRegex.IsMatch(imageLocation);
+            bool result = urlRegex.IsMatch(imageLocation);
+            return result;
         }
 
         public async Task<IPredicted?> Deserialize(string predictionJson)
         {
             try
             {
-                Root predictionObj = JsonSerializer.Deserialize<Root>(predictionJson);
+                byte[] byteArray = Encoding.UTF8.GetBytes(predictionJson);
+                MemoryStream stream = new MemoryStream(byteArray);
+                Root predictionObj = await JsonSerializer.DeserializeAsync<Root>(stream);
                 Console.WriteLine(predictionObj.predictions);
 
                 IPredicted jsonData = predictionObj.predictions[0].category;
@@ -103,7 +108,8 @@ namespace ImageRecognition
         {
             List<string> validAnimals = new List<string>{  "cat", "dog" };
 
-            return validAnimals.Contains(animal.name);
+            var result = validAnimals.Contains(animal.name);
+            return result;
 
         }
     }
