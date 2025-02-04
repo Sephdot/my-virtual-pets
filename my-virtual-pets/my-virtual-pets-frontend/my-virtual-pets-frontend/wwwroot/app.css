@@ -123,3 +123,17 @@ h1:focus {
 .purple {
     background-color: #82578c;
 }
+
+.runner-up {
+    margin: 20px;
+    border: 5px dashed #fefedf;
+    border-radius: 5px;
+    background-color:  #D18BE0;
+    position: relative;
+    padding: 10px;
+}
+
+.runner-up:hover {
+    transform: scale(1.01);
+    box-shadow: 2px 2px 2px #141514;
+}

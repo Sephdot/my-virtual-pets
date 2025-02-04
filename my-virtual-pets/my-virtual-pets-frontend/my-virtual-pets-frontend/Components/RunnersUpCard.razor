@@ -1,0 +1,28 @@
+@using my_virtual_pets_class_library.DTO
+
+
+
+<div class="container">
+        <div class="row">
+            <div class="col">
+                @petdisplay.PetName
+            </div>
+            <div class="col">
+                @petdisplay.Personality
+            </div>
+            <div class="col">
+                @petdisplay.OwnerUsername
+            </div>
+            <div class="col">
+                @petdisplay.PetType
+            </div>
+        </div>
+</div>
+
+
+@code {
+    
+    [Parameter]
+    public PetCardDataDTO petdisplay { get; set; }
+    
+}
