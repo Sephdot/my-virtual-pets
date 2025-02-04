@@ -1,0 +1,50 @@
+@using my_virtual_pets_class_library.DTO
+@using my_virtual_pets_frontend.Components.Icons;
+
+<div class="leadercard">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-6">
+                <div class="award">
+                    @if (winner)
+                    {
+                        <First_svg></First_svg>
+                    }
+                    else if (second)
+                    {
+                        <Second_svg></Second_svg>
+                    }
+                    else
+                    {
+                        <Third_svg></Third_svg>
+                    }
+                </div>
+                <div style="display:flex;justify-content:center;align-items:center;">
+                    <img   class="leaderimage" src="@petCard.ImageUrl">
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-6">
+                <div class="leaderstats"  style="display:flex;justify-content:center;align-items:center;">
+                <p>Stats...</p>
+                <p>@petCard.Score</p>
+                <p>@petCard.OwnerUsername</p>
+                <p>@petCard.Personality</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    
+    [Parameter]
+    public PetCardDataDTO petCard { get; set; }
+    
+    [Parameter] 
+    public bool winner { get; set; }
+    
+    [Parameter]
+    public bool second { get; set; }
+    
+    
+}
