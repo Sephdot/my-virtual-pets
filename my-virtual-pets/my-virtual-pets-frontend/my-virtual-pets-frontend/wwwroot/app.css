@@ -1,18 +1,58 @@
+@font-face {
+    font-family: "Pixelify_Sans";
+    src: url("./fonts/Pixelify_Sans/PixelifySans-VariableFont_wght.ttf") format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Roboto_Mono";
+    src: url("./fonts/Roboto_Mono/RobotoMono-VariableFont_wght.ttf") format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+
 *,
 *:before,
 *:after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: sans-serif;
 }
 
 main > .container {
     padding: 60px 15px 0;
 }
 
+/*.roboto-mono-pets {*/
+/*                  font-family: "Roboto Mono", serif;*/
+/*                  font-optical-sizing: auto;*/
+/*                  font-weight: 100;*/
+/*                  font-style: normal;*/
+/* }*/
+
+/*.pixelify-sans-pets {*/
+/*                    font-family: "Pixelify Sans", serif;*/
+/*                    font-optical-sizing: auto;*/
+/*                    font-weight:  400;*/
+/*                    font-style: normal;*/
+/*}*/
+
+
+body {
+    background: #FDCFD7;
+    font-family: "Roboto_Mono", serif;
+}
+
+.pixeltext {
+    font-family: "Pixelify_Sans", serif;
+}
+
 h1:focus {
     outline: none;
+    font-family: "Pixelify_Sans", serif;
 }
 
 .valid.modified:not([type=checkbox]) {
@@ -46,4 +86,46 @@ h1:focus {
     font-size: 10px;
     color: #c404c4;
     text-decoration: underline;
+}
+
+.award {
+    color: #141514;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-top: -50px;
+    margin-left: -65px;
+    z-index: 1000;
+}
+
+.leadercard {
+    margin: 20px;
+    border: 20px groove #D18BE0;
+    border-radius: 25px;
+    background-color:  #fefedf;
+    position: relative;
+}
+
+
+.leadercard:hover {
+    transform: scale(1.01);    
+    box-shadow: 2px 2px 2px #141514;
+}
+
+.leaderimage {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    height: 200px;
+}
+
+.leaderstats {
+    border: 1px dashed black;
+    box-shadow: 2px 2px 2px #141514;
+    border-radius: 25px;
+    margin: 10px; 
+    height: 75px; 
+}
+
+.purple {
+    background-color: #82578c;
 }
