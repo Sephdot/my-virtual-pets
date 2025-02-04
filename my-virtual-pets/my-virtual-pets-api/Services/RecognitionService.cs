@@ -19,7 +19,7 @@ namespace ImageRecognition
         {
             var result = await CheckImage(imageLocation, null);
             var deserializedResult = await Deserialize(result);
-            if (CheckIfAnimal(deserializedResult).Result) return deserializedResult;
+            if (CheckIfAnimal(deserializedResult)) return deserializedResult;
             return null;
         }
         public async Task<IPredicted?> CheckImageInput(byte[] imageData)
@@ -27,7 +27,7 @@ namespace ImageRecognition
             //return await CheckImage(null, imageData);
             var result = await CheckImage(null, imageData);
             var deserializedResult = await Deserialize(result);
-            if (CheckIfAnimal(deserializedResult).Result) return deserializedResult;
+            if (CheckIfAnimal(deserializedResult)) return deserializedResult;
             return null;
         }
 
@@ -42,7 +42,7 @@ namespace ImageRecognition
 
                 if (imageLocation != null)
                 {
-                    bool imageIsUrl = await CheckIfUrl(imageLocation);
+                    bool imageIsUrl = CheckIfUrl(imageLocation);
                     if (imageIsUrl && imageLocation != null)
                     {
                         content.Add(new StringContent(imageLocation), "image_url");
@@ -67,7 +67,7 @@ namespace ImageRecognition
             }
         }
 
-        private static async Task<bool> CheckIfUrl(string imageLocation)
+        private static  bool CheckIfUrl(string imageLocation)
         {
             var urlRegex = new Regex(
                             @"^(https?|ftps?):\/\/(?:[a-zA-Z0-9]" +
@@ -104,7 +104,7 @@ namespace ImageRecognition
             }
         }
 
-        public async Task<bool> CheckIfAnimal(IPredicted animal)
+        public bool CheckIfAnimal(IPredicted animal)
         {
             List<string> validAnimals = new List<string>{  "cat", "dog" };
 
