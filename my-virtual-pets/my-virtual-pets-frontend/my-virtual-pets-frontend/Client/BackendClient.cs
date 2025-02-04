@@ -9,9 +9,19 @@ public class BackendClient<T>
 
         public HttpClient client { get; init; }
 
-        public BackendClient(string endpoint) { 
-            Url = "http://localhost:5027/" + endpoint;
-            client = new HttpClient(); 
+        public CookieContainer cookieContainer { get; init; }
+        
+        public BackendClient(string endpoint) {
+            cookieContainer = new CookieContainer();
+            var handler = new HttpClientHandler
+            {
+                CookieContainer = cookieContainer,
+                UseCookies = true,  
+                AllowAutoRedirect = true  
+            };
+            
+            Url = "http://localhost:5138/" + endpoint;
+            client = new HttpClient(handler); 
         }
 
         public async Task<T> GetRequest()

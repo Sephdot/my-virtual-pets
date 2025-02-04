@@ -26,3 +26,24 @@ h1:focus {
 .validation-message {
     color: #e50000;
 }
+
+#formcenter {
+    padding: 10px;
+    border: 1px double #ccc;
+    border-radius: 25px;
+    width: 475px;
+    margin-top: 10%; 
+    margin-left: 33%;
+}
+
+#formcenter:hover {
+    transform: scale(1.01);
+    box-shadow: 2px 2px 2px #c404c4;
+}
+
+#formcenter a {
+    font-style: italic;
+    font-size: 10px;
+    color: #c404c4;
+    text-decoration: underline;
+}

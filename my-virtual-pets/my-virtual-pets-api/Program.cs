@@ -41,6 +41,7 @@ builder.Services.AddScoped<IStorageService, S3StorageService>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
+        options.Cookie.Name  = "my_virtual_pets_api";
         options.Cookie.HttpOnly = true;
         options.Cookie.SameSite = SameSiteMode.None;
         options.ExpireTimeSpan = TimeSpan.FromHours(2);
@@ -52,15 +53,15 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 // need to configure Google OAuth here 
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy(name: "Frontend",
-        policy  =>
-        {
-            policy.WithOrigins("https://localhost:7247", "http://localhost:5092");
-        });
-});
+//
+// builder.Services.AddCors(options =>
+// {
+//     options.AddPolicy(name: "Frontend",
+//         policy  =>
+//         {
+//             policy.WithOrigins("https://localhost:7247", "http://localhost:5092");
+//         });
+// });
 
 var app = builder.Build();
 
@@ -77,7 +78,7 @@ var cookiePolicyOptions = new CookiePolicyOptions
     MinimumSameSitePolicy = SameSiteMode.Strict,
 };
 
-app.UseCors("Frontend");
+// app.UseCors("Frontend");
 
 app.UseCookiePolicy(cookiePolicyOptions);
 
