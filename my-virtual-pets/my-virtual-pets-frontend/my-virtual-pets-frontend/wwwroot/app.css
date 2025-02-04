@@ -26,20 +26,6 @@ main > .container {
     padding: 60px 15px 0;
 }
 
-/*.roboto-mono-pets {*/
-/*                  font-family: "Roboto Mono", serif;*/
-/*                  font-optical-sizing: auto;*/
-/*                  font-weight: 100;*/
-/*                  font-style: normal;*/
-/* }*/
-
-/*.pixelify-sans-pets {*/
-/*                    font-family: "Pixelify Sans", serif;*/
-/*                    font-optical-sizing: auto;*/
-/*                    font-weight:  400;*/
-/*                    font-style: normal;*/
-/*}*/
-
 
 body {
     background: #FDCFD7;
@@ -123,8 +109,16 @@ h1:focus {
     box-shadow: 2px 2px 2px #141514;
     border-radius: 25px;
     margin: 10px; 
-    height: 75px; 
+    height: 175px;
+    flex-direction: column;
+    padding: 10px;
 }
+
+.leaderstats p {
+    text-wrap: wrap;
+    margin-left: 22px;
+}
+
 
 .purple {
     background-color: #82578c;
