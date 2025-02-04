@@ -19,7 +19,10 @@ namespace ImageRecognition
         {
             var result = await CheckImage(imageLocation, null);
             var deserializedResult = await Deserialize(result);
-            if (CheckIfAnimal(deserializedResult)) return deserializedResult;
+            if (deserializedResult != null)
+            {
+                if (CheckIfAnimal(deserializedResult)) return deserializedResult;
+            }
             return null;
         }
         public async Task<IPredicted?> CheckImageInput(byte[] imageData)
@@ -27,7 +30,10 @@ namespace ImageRecognition
             //return await CheckImage(null, imageData);
             var result = await CheckImage(null, imageData);
             var deserializedResult = await Deserialize(result);
-            if (CheckIfAnimal(deserializedResult)) return deserializedResult;
+            if (deserializedResult != null)
+            {
+                if (CheckIfAnimal(deserializedResult)) return deserializedResult;
+            }
             return null;
         }
 
@@ -88,7 +94,10 @@ namespace ImageRecognition
                 MemoryStream stream = new MemoryStream(byteArray);
                 Root predictionObj = await JsonSerializer.DeserializeAsync<Root>(stream);
                 Console.WriteLine(predictionObj.predictions);
-
+                if (predictionObj.predictions.Count > 1)
+                {
+                    throw new Exception("Image contains more than one subject.");
+                }
                 IPredicted jsonData = predictionObj.predictions[0].category;
                 while (jsonData.children.Count > 0)
                 {
@@ -107,9 +116,15 @@ namespace ImageRecognition
         public bool CheckIfAnimal(IPredicted animal)
         {
             List<string> validAnimals = new List<string>{  "cat", "dog" };
-
+            try
+            {
             var result = validAnimals.Contains(animal.name);
             return result;
+            }
+            catch (System.NullReferenceException ex)
+            {
+                return false;
+            }
 
         }
     }
