@@ -134,13 +134,35 @@ h1:focus {
     padding: 10px;
 }
 
-.runner-up:hover {
-    transform: scale(1.01);
-    box-shadow: 2px 2px 2px #141514;
-}
+/*.runner-up:hover {*/
+/*    transform: scale(1.01);*/
+/*    box-shadow: 2px 2px 2px #141514;*/
+/*}*/
 
 .navbar {
     position: sticky;
     top: 0;
     z-index: 1000;
+}
+
+
+#popupcard {
+    position: absolute;
+    z-index: 3000;
+    width: 400px;
+    
+}
+
+#popupboard {
+    border: 1px dashed #D18BE0;
+    background-color:  #fefedf;
+}
+
+#popuptext {
+    border: 1px dashed black;
+}
+
+#popupimage {
+    border: 1px dotted black;
+
 }
