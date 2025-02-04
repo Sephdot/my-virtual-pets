@@ -11,17 +11,25 @@
 }
 else
 {
-    
-    <div class="container">
-        <div class="row">
-            @foreach (var petCardDataDTO in _petCardDataDTOs)
-            {
-                <div class="col-sm-12 col-md-4">
-                    <PetCard PetCardData="petCardDataDTO"/>
-                </div>
-            }
+    <section class="container text-center">
+        <div class="container">
+            <h1 class="fw-bold py-6">My Collection</h1>
+            <button onclick="() => HandleAddPet" class="btn btn-primary my-2">Add Pet</button>
+            <hr class="my-4"/>
         </div>
-    </div>
+        <div class="album py-5">
+            <div class="container">
+                <div class="row">
+                    @foreach (var petCardDataDTO in _petCardDataDTOs)
+                    {
+                        <div class="col-md-4">
+                            <PetCard PetCardData="petCardDataDTO"/>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
 }
 
 @code {
@@ -46,7 +54,7 @@ else
         {
             PetId = Guid.NewGuid(),
             PetName = "Whiskers",
-            ImageUrl = "https://placekitten.com/300/200",
+            ImageUrl = "https://placedog.net/300/200",
             OwnerUsername = "BobCat",
             Score = 72,
             Personality = Personality.QUIET,
@@ -58,7 +66,7 @@ else
         {
             PetId = Guid.NewGuid(),
             PetName = "Hopper",
-            ImageUrl = "https://via.placeholder.com/300x200?text=Rabbit",
+            ImageUrl = "https://placedog.net/300/200",
             OwnerUsername = "RabbitLover",
             Score = 65,
             Personality = Personality.CALM,
@@ -70,7 +78,7 @@ else
         {
             PetId = Guid.NewGuid(),
             PetName = "Chirpy",
-            ImageUrl = "https://via.placeholder.com/300x200?text=Bird",
+            ImageUrl = "https://placedog.net/300/200",
             OwnerUsername = "BirdWatcher",
             Score = 90,
             Personality = Personality.BRAVE,
@@ -82,7 +90,7 @@ else
         {
             PetId = Guid.NewGuid(),
             PetName = "Bubbles",
-            ImageUrl = "https://via.placeholder.com/300x200?text=Fish",
+            ImageUrl = "https://placedog.net/300/200",
             OwnerUsername = "FishTankPro",
             Score = 55,
             Personality = Personality.TIMID,
@@ -94,7 +102,7 @@ else
         {
             PetId = Guid.NewGuid(),
             PetName = "Max",
-            ImageUrl = "https://placedog.net/301/201",
+            ImageUrl = "https://placedog.net/300/200",
             OwnerUsername = "DogLover99",
             Score = 88,
             Personality = Personality.BOLD,
@@ -106,7 +114,7 @@ else
         {
             PetId = Guid.NewGuid(),
             PetName = "Mittens",
-            ImageUrl = "https://placekitten.com/301/201",
+            ImageUrl = "https://placedog.net/300/200",
             OwnerUsername = "CatQueen",
             Score = 74,
             Personality = Personality.SASSY,
@@ -118,7 +126,7 @@ else
         {
             PetId = Guid.NewGuid(),
             PetName = "Snowball",
-            ImageUrl = "https://via.placeholder.com/300x200?text=Rabbit",
+            ImageUrl = "https://placedog.net/300/200",
             OwnerUsername = "BunnyFan",
             Score = 68,
             Personality = Personality.CAREFUL,
@@ -130,7 +138,7 @@ else
         {
             PetId = Guid.NewGuid(),
             PetName = "Sunny",
-            ImageUrl = "https://via.placeholder.com/300x200?text=Bird",
+            ImageUrl = "https://placedog.net/300/200",
             OwnerUsername = "Birdie",
             Score = 92,
             Personality = Personality.JOLLY,
@@ -142,7 +150,7 @@ else
         {
             PetId = Guid.NewGuid(),
             PetName = "Splash",
-            ImageUrl = "https://via.placeholder.com/300x200?text=Fish",
+            ImageUrl = "https://placedog.net/300/200",
             OwnerUsername = "AquariumKing",
             Score = 60,
             Personality = Personality.SERIOUS,
@@ -150,6 +158,11 @@ else
             Description = "A calm betta fish with bright blue scales.",
             IsFavourited = false
         }
-    }; 
+    };
+
+    public async Task HandleAddPet()
+    {
+        throw new NotImplementedException();
+    }
 
 }
