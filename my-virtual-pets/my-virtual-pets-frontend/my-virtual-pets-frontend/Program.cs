@@ -1,4 +1,5 @@
 using my_virtual_pets_frontend.Components;
+using BlazorBootstrap;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
+
+builder.Services.AddBlazorBootstrap();
 
 var app = builder.Build();
 

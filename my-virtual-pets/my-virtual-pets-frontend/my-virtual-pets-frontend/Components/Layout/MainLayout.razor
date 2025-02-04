@@ -1,9 +1,14 @@
 ﻿@inherits LayoutComponentBase
+<header>
+    <NavMenu />
+</header>
+<main class="flex-shrink-0">
+    @Body
+</main>
+<footer class="footer mt-auto py-3 bg-light">
+    <div class="container">
+        <div class="text-center">MyVirtualPets: Submarine 2025</div>
+    </div>
+</footer>
 
-@Body
 
-<div id="blazor-error-ui">
-    An unhandled error has occurred.
-    <a href="" class="reload">Reload</a>
-    <a class="dismiss">🗙</a>
-</div>

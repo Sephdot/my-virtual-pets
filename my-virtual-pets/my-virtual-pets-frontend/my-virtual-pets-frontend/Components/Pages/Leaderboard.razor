@@ -1,0 +1,104 @@
+@page "/leaderboard"
+@using my_virtual_pets_class_library.DTO
+@using my_virtual_pets_class_library.Enums
+<PageTitle>Leaderboard | MyVirtualPets</PageTitle>
+
+<!----- Top Three things here ---->
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+        </div>
+        <div class="leader col-sm-12 col-md-6 col-lg-4 col-xl-6">
+            <LeadershipCard petCard="testPet" winner="@true" second="@false"></LeadershipCard>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+        </div>
+    </div>
+    <div class="row">
+        <div class="leader col-sm-12 col-md-6 col-lg-6 col-xl-6">
+            <LeadershipCard petCard="testPet" winner="@false" second="@true"></LeadershipCard>
+        </div>
+        <div class="leader col-sm-12 col-md-6 col-lg-6 col-xl-6">
+
+            <LeadershipCard petCard="testPet" winner="@false" second="@false"></LeadershipCard>
+        </div>
+    </div>
+    
+</div>
+
+
+@* *@
+@* <div class="container"> *@
+@*     <div class="row"> *@
+@*         <div class="col"> *@
+@*             Ranking *@
+@*         </div> *@
+@*         <div class="col"> *@
+@*             Username *@
+@*         </div> *@
+@*         <div class="col"> *@
+@*             Total Score *@
+@*         </div> *@
+@*         <div class="col"> *@
+@*             Top Pet *@
+@*         </div> *@
+@*     </div> *@
+@*     @foreach (var x in DummyUsers.OrderByDescending(x => x.TotalScore).ToList()) *@
+@*     { *@
+@*         <div class="row"> *@
+@*             <div class="col"> *@
+@*                 @(_rankingCounter++) *@
+@*             </div> *@
+@*             <div class="col"> *@
+@*                 @x.Username *@
+@*             </div> *@
+@*             <div class="col"> *@
+@*                 @x.TotalScore *@
+@*             </div> *@
+@*             <div class="col"> *@
+@*                 @x.TopPet <button @onclick="() => HandleViewPet(x.TopPet)">View</button> *@
+@*             </div> *@
+@*         </div> *@
+@*     } *@
+@*      *@
+@* </div> *@
+
+
+@code {
+    
+    // on page initialised we'll call the backend 
+
+    public PetCardDataDTO testPet = new PetCardDataDTO()
+    {
+        PetId = new Guid(),
+        PetName = "jok",
+        Description = "",
+        IsFavourited = true,
+        PetType = PetType.CAT,
+        ImageUrl = "https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/5e0fe0be-ca81-4b76-b4bf-349a1bf215c8.png",
+        Score = 100,
+        OwnerUsername = "Jonny",
+        Personality = Personality.SERIOUS
+    };
+    
+    // private int _rankingCounter = 1;
+    //     public List<DummyUser> DummyUsers { get; set; } = new()
+    // {
+    //     new(), new(), new(), new(), new()
+    // };
+    //
+    // public class DummyUser
+    // {
+    //     public string Username = $"superuser{new Random().Next(1, 10000)}";
+    //     public int TotalScore = new Random().Next(1, 10000);
+    //     public string TopPet = $"excellentpet{new Random().Next(1, 10000)}";
+    // }
+    //
+    // public void HandleViewPet(string petName)
+    // {
+    //     throw new NotImplementedException(); 
+    //     // TODO: open a card of some kind to check out the pet? maybe a window to the pet's enclosure to be able to pet it?
+    // }
+}
