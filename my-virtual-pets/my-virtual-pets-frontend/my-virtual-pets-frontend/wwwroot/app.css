@@ -1,7 +1,18 @@
 @font-face {
     font-family: "Pixelify_Sans";
-    src: url("./fonts/Pixelify_Sans/PixelifySans-VariableFont_wght.ttf");
+    src: url("./fonts/Pixelify_Sans/PixelifySans-VariableFont_wght.ttf") format('truetype');
+    font-weight: normal;
+    font-style: normal;
 }
+
+@font-face {
+    font-family: "Roboto_Mono";
+    src: url("./fonts/Roboto_Mono/RobotoMono-VariableFont_wght.ttf") format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
 
 *,
 *:before,
@@ -9,7 +20,6 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: sans-serif;
 }
 
 main > .container {
@@ -33,11 +43,16 @@ main > .container {
 
 body {
     background: #FDCFD7;
-    font-family: "Pixelify Sans", serif;
+    font-family: "Roboto_Mono", serif;
+}
+
+.pixeltext {
+    font-family: "Pixelify_Sans", serif;
 }
 
 h1:focus {
     outline: none;
+    font-family: "Pixelify_Sans", serif;
 }
 
 .valid.modified:not([type=checkbox]) {
@@ -109,4 +124,8 @@ h1:focus {
     border-radius: 25px;
     margin: 10px; 
     height: 75px; 
+}
+
+.purple {
+    background-color: #82578c;
 }
