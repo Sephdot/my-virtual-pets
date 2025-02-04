@@ -1,4 +1,5 @@
 @page "/collection"
+@using my_virtual_pets_class_library.DTO
 @using my_virtual_pets_class_library.Enums
 
 <PageTitle>Collection | MyVirtualPets</PageTitle>
@@ -11,21 +12,158 @@
 }
 else
 {
-    foreach (var dummyPet in _dummyPets)
-    {
-        <PetCard DummyPet="@dummyPet"/>
-    }
+    <section class="container text-center">
+        <div class="container">
+            <h1 class="fw-bold py-6">My Collection</h1>
+            <button onclick="() => HandleAddPet" class="btn btn-primary my-2">Add Pet</button>
+            <hr class="my-4"/>
+        </div>
+        <div class="album py-5">
+            <div class="container">
+                <div class="row">
+                    @foreach (var petCardDataDTO in _petCardDataDTOs)
+                    {
+                        <div class="col-md-4">
+                            <PetCard PetCardData="petCardDataDTO"/>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
 }
 
 @code {
     private bool _isLoggedIn = false; //TODO: add auth checking
-    private List<DummyPet> _dummyPets = new() { new(), new(), new(), new() };
 
-    public class DummyPet
+    private List<PetCardDataDTO> _petCardDataDTOs = new()
+    // seed data for practice
     {
-        public string Name = "afhouambf";
-        public PetType PetType = (PetType)new Random().Next(0, 6);
-        public Personality Personality = (Personality)new Random().Next(0, 11);
-        public string Description = "ariuvnehuigbmahwviucanr m cgrvugqnchoug asroughaerou ghaouh aoi haheoigaouRH !! OAUERH GOUT";
+        new PetCardDataDTO
+        {
+            PetId = Guid.NewGuid(),
+            PetName = "Fluffy",
+            ImageUrl = "https://placedog.net/300/200",
+            OwnerUsername = "Alice123",
+            Score = 85,
+            Personality = Personality.JOLLY,
+            PetType = PetType.DOG,
+            Description = "A cheerful golden retriever who loves playing fetch.",
+            IsFavourited = false
+        },
+        new PetCardDataDTO
+        {
+            PetId = Guid.NewGuid(),
+            PetName = "Whiskers",
+            ImageUrl = "https://placedog.net/300/200",
+            OwnerUsername = "BobCat",
+            Score = 72,
+            Personality = Personality.QUIET,
+            PetType = PetType.CAT,
+            Description = "A curious tabby cat that loves sunbathing by the window.",
+            IsFavourited = false
+        },
+        new PetCardDataDTO
+        {
+            PetId = Guid.NewGuid(),
+            PetName = "Hopper",
+            ImageUrl = "https://placedog.net/300/200",
+            OwnerUsername = "RabbitLover",
+            Score = 65,
+            Personality = Personality.CALM,
+            PetType = PetType.RABBIT,
+            Description = "A fluffy bunny that enjoys munching on carrots.",
+            IsFavourited = false
+        },
+        new PetCardDataDTO
+        {
+            PetId = Guid.NewGuid(),
+            PetName = "Chirpy",
+            ImageUrl = "https://placedog.net/300/200",
+            OwnerUsername = "BirdWatcher",
+            Score = 90,
+            Personality = Personality.BRAVE,
+            PetType = PetType.BIRD,
+            Description = "A colorful parrot that mimics human speech.",
+            IsFavourited = false
+        },
+        new PetCardDataDTO
+        {
+            PetId = Guid.NewGuid(),
+            PetName = "Bubbles",
+            ImageUrl = "https://placedog.net/300/200",
+            OwnerUsername = "FishTankPro",
+            Score = 55,
+            Personality = Personality.TIMID,
+            PetType = PetType.FISH,
+            Description = "A small goldfish that loves swimming in circles.",
+            IsFavourited = false
+        },
+        new PetCardDataDTO
+        {
+            PetId = Guid.NewGuid(),
+            PetName = "Max",
+            ImageUrl = "https://placedog.net/300/200",
+            OwnerUsername = "DogLover99",
+            Score = 88,
+            Personality = Personality.BOLD,
+            PetType = PetType.DOG,
+            Description = "A loyal German Shepherd with high energy.",
+            IsFavourited = false
+        },
+        new PetCardDataDTO
+        {
+            PetId = Guid.NewGuid(),
+            PetName = "Mittens",
+            ImageUrl = "https://placedog.net/300/200",
+            OwnerUsername = "CatQueen",
+            Score = 74,
+            Personality = Personality.SASSY,
+            PetType = PetType.CAT,
+            Description = "A spoiled Persian cat with a regal attitude.",
+            IsFavourited = false
+        },
+        new PetCardDataDTO
+        {
+            PetId = Guid.NewGuid(),
+            PetName = "Snowball",
+            ImageUrl = "https://placedog.net/300/200",
+            OwnerUsername = "BunnyFan",
+            Score = 68,
+            Personality = Personality.CAREFUL,
+            PetType = PetType.RABBIT,
+            Description = "A timid white rabbit that enjoys hiding in blankets.",
+            IsFavourited = false
+        },
+        new PetCardDataDTO
+        {
+            PetId = Guid.NewGuid(),
+            PetName = "Sunny",
+            ImageUrl = "https://placedog.net/300/200",
+            OwnerUsername = "Birdie",
+            Score = 92,
+            Personality = Personality.JOLLY,
+            PetType = PetType.BIRD,
+            Description = "A chirpy canary that sings beautifully in the morning.",
+            IsFavourited = false
+        },
+        new PetCardDataDTO
+        {
+            PetId = Guid.NewGuid(),
+            PetName = "Splash",
+            ImageUrl = "https://placedog.net/300/200",
+            OwnerUsername = "AquariumKing",
+            Score = 60,
+            Personality = Personality.SERIOUS,
+            PetType = PetType.FISH,
+            Description = "A calm betta fish with bright blue scales.",
+            IsFavourited = false
+        }
+    };
+
+    public async Task HandleAddPet()
+    {
+        throw new NotImplementedException();
     }
+
 }

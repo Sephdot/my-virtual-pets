@@ -1,13 +1,22 @@
-@using my_virtual_pets_frontend.Components.Pages
-<div class="card w-25">
-    <img class="card-img-top" src="https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/testimage.png" alt="Pet card image top"/>
+@using my_virtual_pets_class_library.Enums;
+
+@using my_virtual_pets_class_library.DTO;
+<div class="card text-center mb-4 shadow-lg">
+    <div class="card-title text-center gap-3 m-3">
+        <h3 class="fw-bold">@PetCardData.PetName</h3>
+        <span class="badge bg-success">VP: @(PetCardData.Score)</span>
+    </div>
+    <img class="card-img w-75 mx-auto rounded-pill" src="@PetCardData.ImageUrl" alt="Pet card image top"/>
     <div class="card-body">
-        <h5 class="card-title">@DummyPet.Name</h5>
-        <h6 class="card-subtitle text-muted">@DummyPet.Personality @DummyPet.PetType</h6>
-        <p class="card-text">@DummyPet.Description</p>
+        @* If is not owned by the current user, display "Owned by {OwnerUsername}" *@
+        <p class="text-muted">@PetCardData.Personality @PetCardData.PetType</p>
+        <p class="card-text text-justify">@PetCardData.Description @PetCardData.Description @PetCardData.Description</p>
+    </div>
+    <div class="card-footer">
+        Owner: @PetCardData.OwnerUsername
     </div>
 </div>
 
 @code {
-    [Parameter] public required Collection.DummyPet DummyPet { get; set; }
+    [Parameter] public required PetCardDataDTO PetCardData { get; set; }
 }
