@@ -18,42 +18,42 @@ namespace my_virtual_pets_api.Controllers
         {
             _userService = userService;
         }
-        
-        
+
+
         [HttpPost("register")]
-        public IActionResult NewLocalUser(NewUserDTO newUserDto) 
+        public IActionResult NewLocalUser(NewUserDTO newUserDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             if (_userService.ExistsByEmail(newUserDto.Email)) return BadRequest("Email already registered");
-            if(_userService.ExistsByUsername(newUserDto.Username)) return BadRequest("Username already taken");
-            
+            if (_userService.ExistsByUsername(newUserDto.Username)) return BadRequest("Username already taken");
+
             _userService.CreateNewLocalUser(newUserDto);
-            
-            return Created("/register", "New local user created"); 
+
+            return Created("/register", "New local user created");
         }
 
         [HttpGet("login")]
         public IActionResult Forbidden()
         {
-            return Ok("You need to log in"); 
+            return Ok("You need to log in");
         }
-        
+
         [HttpPost("login")]
-        public async Task<IActionResult> LoginAsync(UserLoginDTO userLoginDto) 
+        public async Task<IActionResult> LoginAsync(UserLoginDTO userLoginDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             if (!_userService.ExistsByUsername(userLoginDto.Username)) return BadRequest("This username does not exist");
             if (!_userService.DoesPasswordMatch(userLoginDto)) return BadRequest("Password is incorrect");
-            
+
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, userLoginDto.Username),
                 new Claim(ClaimTypes.Role, "User"),
             };
-            
+
             var claimsIdentity = new ClaimsIdentity(
                 claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            
+
             var authProperties = new AuthenticationProperties
             {
                 AllowRefresh = true,
@@ -61,12 +61,12 @@ namespace my_virtual_pets_api.Controllers
                 IsPersistent = true,
                 IssuedUtc = DateTimeOffset.UtcNow,
             };
-            
+
             await HttpContext.SignInAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme, 
-                new ClaimsPrincipal(claimsIdentity), 
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity),
                 authProperties);
-            
+
             return Ok("You are logged in.");
         }
 
