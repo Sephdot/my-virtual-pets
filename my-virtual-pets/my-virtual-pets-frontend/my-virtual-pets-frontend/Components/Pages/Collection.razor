@@ -10,21 +10,10 @@
 }
 else
 {
-    foreach (var dummyPet in _dummyPets)
-    {
-        <PetCard DummyPet="@dummyPet"/>
-    }
+    // TODO: show collection of pets
 }
 
 @code {
     private bool _isLoggedIn = false; //TODO: add auth checking
-    private List<DummyPet> _dummyPets = new() { new(), new(), new(), new() };
-
-    public class DummyPet
-    {
-        public string Name = "afhouambf";
-        public PetType PetType = (PetType)new Random().Next(0, 6);
-        public Personality Personality = (Personality)new Random().Next(0, 11);
-        public string Description = "ariuvnehuigbmahwviucanr m cgrvugqnchoug asroughaerou ghaouh aoi haheoigaouRH !! OAUERH GOUT";
-    }
+    
 }
