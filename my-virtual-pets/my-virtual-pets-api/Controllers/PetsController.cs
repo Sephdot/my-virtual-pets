@@ -22,5 +22,22 @@ namespace my_virtual_pets_api.Controllers
             var pets = _context.Pets.Include(u => u.Image).ToList();
             return Ok(pets);
         }
+<<<<<<< Updated upstream
+=======
+
+        [HttpGet("user/{userId}")]
+        public IActionResult GetAllPetsByUserID(Guid userId)
+        {
+            var petCards = _petService.GetPetsByUser(userId);
+            return Ok(petCards);
+        }
+
+        [HttpGet("{petId}")]
+        public IActionResult GetPetById(Guid petId)
+        {
+                var pet = _petService.GetPetById(petId);
+                return Ok(pet);
+        }
+>>>>>>> Stashed changes
     }
 }
