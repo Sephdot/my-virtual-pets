@@ -1,15 +1,14 @@
 using ImageRecognition;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using my_virtual_pets_api.Cloud;
 using my_virtual_pets_api.Data;
-using my_virtual_pets_api.Services;
-using System.Text.Json.Serialization;
 using my_virtual_pets_api.Repositories;
 using my_virtual_pets_api.Repositories.Interfaces;
+using my_virtual_pets_api.Services;
 using my_virtual_pets_api.Services.Interfaces;
 using PixelationTest;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,6 +38,7 @@ builder.Services.AddScoped<IImagesService, ImagesService>();
 builder.Services.AddScoped<IStorageService, S3StorageService>();
 builder.Services.AddScoped<IRecognitionService, RecognitionService>();
 builder.Services.AddScoped<IPixelate, Pixelate>();
+builder.Services.AddScoped<IRemoveBackgroundService, RemoveBackgroundService>();
 
 
 var app = builder.Build();
