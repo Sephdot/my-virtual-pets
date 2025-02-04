@@ -1,214 +1,56 @@
-﻿using my_virtual_pets_api.Services.ApiResponses;
-using System.Diagnostics;
-using System.Net.Http.Headers;
-using System.Text.Json;
+﻿using ImageRecognition;
+using my_virtual_pets_api.Cloud;
+using my_virtual_pets_api.Services.Interfaces;
+using System.Drawing;
 
 namespace my_virtual_pets_api.Services;
 
 public class ImagesService : IImagesService
 {
-    private readonly string bgRemoverApiKey;
-    public ImagesService(IConfiguration configuration)
+    private IStorageService _storageService;
+    private IRecognitionService _recognitionService;
+    private IPixelate _pixelateService;
+    private IRemoveBackgroundService _removeBackgroundService;
+
+    public ImagesService(IStorageService storageService, IRecognitionService recognitionService, IPixelate pixelateService, IRemoveBackgroundService removeBackgroundService)
     {
-        bgRemoverApiKey = configuration["BgRemoverApiKey"] ?? throw new Exception("BgRemoverApiKey is missing!");
+        _storageService = storageService;
+        _recognitionService = recognitionService;
+        _pixelateService = pixelateService;
+        _removeBackgroundService = removeBackgroundService;
     }
 
-    public async Task<byte[]?> RemoveBackground(byte[] inputImage)
+    public async Task<byte[]?> ProcessImageAsync(byte[] inputImage)
     {
-        Stopwatch sw = Stopwatch.StartNew();
+        //Recognise image
+        //TO DO: Ask Callum about error handling in recognitionService
+        var recognitionResult = await _recognitionService.CheckImageInput(inputImage);
 
-        //Make image content
-        var imageContent = new ByteArrayContent(inputImage);
-        imageContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+        if (recognitionResult == null)
         {
-            Name = "image",
-            FileName = "image.jpg"
-        };
-        imageContent.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
-
-        //Add request content
-        var content = new MultipartFormDataContent();
-        content.Add(imageContent, "image");
-        content.Add(new StringContent("cutout"), "output_type");
-        content.Add(new StringContent("fit"), "scale");
-        content.Add(new StringContent("true"), "auto_center");
-        content.Add(new StringContent("10"), "stroke_size");
-        content.Add(new StringContent("000000"), "stroke_color");
-        content.Add(new StringContent("PNG"), "format");
-
-        //Make request
-
-        var client = new HttpClient();
-        var request = new HttpRequestMessage(HttpMethod.Post, new Uri("https://api.picsart.io/tools/1.0/removebg"))
-        {
-            Content = content
-        };
-        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-        request.Headers.Add("X-Picsart-API-Key", bgRemoverApiKey);
-
-        //Send request
-        try
-        {
-            var response = await client.SendAsync(request);
-
-            if (!response.IsSuccessStatusCode)
-            {
-                Console.WriteLine($"Request Failed! Status Code: {response.StatusCode}");
-
-                string errorResponse = await response.Content.ReadAsStringAsync();
-                Console.WriteLine("Response Content:");
-                Console.WriteLine(errorResponse);
-                return null;
-            }
-
-            var responseBody = await response.Content.ReadAsStringAsync();
-            var responseData = JsonSerializer.Deserialize<BgRemoverApiResponse>(responseBody);
-            if (responseData == null) throw new Exception("Could not deserialise BgRemover API response!");
-            string imageUrl = responseData.Data.Url;
-            var outputImage = await DownloadImageAsync(imageUrl);
-            sw.Stop();
-            Console.WriteLine($"Elapsed time: {sw.ElapsedMilliseconds} ms");
-            return outputImage;
+            return null;
         }
-        catch (Exception ex)
+
+        //Remove backround
+        var removeBgResult = await _removeBackgroundService.RemoveBackgroundAsync(inputImage);
+        Bitmap inputBitmap;
+
+        //Pixelate image
+        using (var ms = new MemoryStream(removeBgResult))
         {
-            Console.WriteLine("Unexpected error while contacting the server:");
-            Console.WriteLine(ex.Message);
+            inputBitmap = new Bitmap(ms);
         }
-        return null;
-    }
 
-    public async Task<string?> RemoveBackground(string inputImageUrl)
-    {
-        Stopwatch sw = Stopwatch.StartNew();
+        Bitmap pixelatedImage = _pixelateService.PixelateImage(inputBitmap, 6, true);
 
+        ImageConverter converter = new ImageConverter();
+        byte[] pixelResult = (byte[])converter.ConvertTo(pixelatedImage, typeof(byte[]));
 
 
-        //Add request content
-        var content = new MultipartFormDataContent();
-        content.Add(new StringContent(inputImageUrl), "image_url");
-        content.Add(new StringContent("cutout"), "output_type");
-        content.Add(new StringContent("fit"), "scale");
-        content.Add(new StringContent("true"), "auto_center");
-        content.Add(new StringContent("10"), "stroke_size");
-        content.Add(new StringContent("000000"), "stroke_color");
-        content.Add(new StringContent("PNG"), "format");
+        //TO DO: upload image to bucket
+        //TO DO: Save image to database
+        //return image id to Pets controller? Also needs IPredicted
 
-        //Make request
-
-        var client = new HttpClient();
-        var request = new HttpRequestMessage(HttpMethod.Post, new Uri("https://api.picsart.io/tools/1.0/removebg"))
-        {
-            Content = content
-        };
-        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-        request.Headers.Add("X-Picsart-API-Key", bgRemoverApiKey);
-
-        //Send request
-        try
-        {
-            var response = await client.SendAsync(request);
-
-            if (!response.IsSuccessStatusCode)
-            {
-                Console.WriteLine($"Request Failed! Status Code: {response.StatusCode}");
-
-                string errorResponse = await response.Content.ReadAsStringAsync();
-                Console.WriteLine("Response Content:");
-                Console.WriteLine(errorResponse);
-                return null;
-            }
-
-            var responseBody = await response.Content.ReadAsStringAsync();
-            var responseData = JsonSerializer.Deserialize<BgRemoverApiResponse>(responseBody);
-            if (responseData == null) throw new Exception("Could not deserialise BgRemover API response!");
-            sw.Stop();
-            Console.WriteLine($"Elapsed time: {sw.ElapsedMilliseconds} ms");
-            string imageUrl = responseData.Data.Url;
-            return imageUrl;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine("Unexpected error while contacting the server:");
-            Console.WriteLine(ex.Message);
-        }
-        return null;
-    }
-
-    public async Task<byte[]?> RemoveBackgroundAsync(string inputImageUrl)
-    {
-        Stopwatch sw = Stopwatch.StartNew();
-
-        //Add request content
-        var content = new MultipartFormDataContent();
-        content.Add(new StringContent(inputImageUrl), "image_url");
-        content.Add(new StringContent("cutout"), "output_type");
-        content.Add(new StringContent("fit"), "scale");
-        content.Add(new StringContent("true"), "auto_center");
-        content.Add(new StringContent("10"), "stroke_size");
-        content.Add(new StringContent("000000"), "stroke_color");
-        content.Add(new StringContent("PNG"), "format");
-
-        //Make request
-
-        var client = new HttpClient();
-        var request = new HttpRequestMessage(HttpMethod.Post, new Uri("https://api.picsart.io/tools/1.0/removebg"))
-        {
-            Content = content
-        };
-        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-        request.Headers.Add("X-Picsart-API-Key", bgRemoverApiKey);
-
-        //Send request
-        try
-        {
-            var response = await client.SendAsync(request);
-
-            if (!response.IsSuccessStatusCode)
-            {
-                Console.WriteLine($"Request Failed! Status Code: {response.StatusCode}");
-
-                string errorResponse = await response.Content.ReadAsStringAsync();
-                Console.WriteLine("Response Content:");
-                Console.WriteLine(errorResponse);
-                return null;
-            }
-
-            var responseBody = await response.Content.ReadAsStringAsync();
-            var responseData = JsonSerializer.Deserialize<BgRemoverApiResponse>(responseBody);
-            if (responseData == null) throw new Exception("Could not deserialise BgRemover API response!");
-            string imageUrl = responseData.Data.Url;
-            var outputImage = await DownloadImageAsync(imageUrl);
-            sw.Stop();
-            Console.WriteLine($"Elapsed time: {sw.ElapsedMilliseconds} ms");
-            return outputImage;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine("Unexpected error while contacting the server:");
-            Console.WriteLine(ex.Message);
-        }
-        return null;
-    }
-
-    public async Task<byte[]?> DownloadImageAsync(string url)
-    {
-        using (HttpClient client = new HttpClient())
-        {
-            Console.WriteLine($"Downloading image from {url}");
-            try
-            {
-                var imageBytes = await client.GetByteArrayAsync(url);
-                Console.WriteLine("Success!");
-                return imageBytes;
-
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Failed.");
-                Console.WriteLine(ex.Message);
-                return null;
-            }
-        }
+        return pixelResult;
     }
 }
