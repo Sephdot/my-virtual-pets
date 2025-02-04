@@ -1,12 +1,12 @@
-<div id="formcenter">
-    <a style="cursor: pointer" @onclick="ToggleForm">@(IsUser ?  SwitchText[0] : SwitchText[1])</a>
+<div id="formcenter" class="robottext" style="margin-left:auto;margin-right:auto;width:400px;height:100%;">
+<a style="cursor: pointer" @onclick="ToggleForm">@(IsUser ?  SwitchText[0] : SwitchText[1])</a>
     @if (IsUser)
     {
-        <LoginForm></LoginForm>
+          <LoginForm></LoginForm>
     }
     else
     {
-        <SignupForm></SignupForm>
+            <SignupForm></SignupForm>
     }
 </div>
 
