@@ -1,9 +1,10 @@
 @page "/leaderboard"
 @using my_virtual_pets_class_library.DTO
 @using my_virtual_pets_class_library.Enums
+@using my_virtual_pets_frontend.Components.Icons
+
 <PageTitle>Leaderboard | MyVirtualPets</PageTitle>
 
-<!----- Top Three things here ---->
 
 @if (pets == null || pets.Count == 0)
 {
@@ -12,9 +13,9 @@
 else
 {
     
+    <!----- Top Three things here ---->
 
-
-<div class="container">
+    <div class="container">
     <div class="row">
         <div class="col-sm-12 col-md-12 col-lg-12 col-xl-3">
         </div>
@@ -29,7 +30,6 @@ else
             <LeadershipCard petCard="pets[1]" index="2"></LeadershipCard>
         </div>
         <div class="leader col-sm-12 col-md-12 col-lg-12 col-xl-6">
-
             <LeadershipCard petCard="pets[3]" index="3"></LeadershipCard>
         </div>
     </div>
@@ -55,8 +55,6 @@ else
 
 @code {
     
-    // on page initialised we'll call the backend 
-
     public List<PetCardDataDTO> pets = new List<PetCardDataDTO>();
     
     public PetCardDataDTO testPet = new PetCardDataDTO()
@@ -72,6 +70,8 @@ else
         Personality = Personality.SERIOUS
     };
 
+    // on page initialised we'll call the backend instead: 
+    
     protected override void OnInitialized()
     {
         for (int i = 0; i < 10; i++)
