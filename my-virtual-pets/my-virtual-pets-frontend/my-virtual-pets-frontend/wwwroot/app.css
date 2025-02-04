@@ -57,23 +57,7 @@ h1:focus {
     color: #e50000;
 }
 
-#formcenter {
-    padding: 10px;
-    border: 1px double #ccc;
-    border-radius: 25px;
-}
 
-#formcenter:hover {
-    transform: scale(1.01);
-    box-shadow: 2px 2px 2px #c404c4;
-}
-
-#formcenter a {
-    font-style: italic;
-    font-size: 10px;
-    color: #c404c4;
-    text-decoration: underline;
-}
 
 .award {
     color: #141514;
@@ -134,10 +118,10 @@ h1:focus {
     padding: 10px;
 }
 
-/*.runner-up:hover {*/
-/*    transform: scale(1.01);*/
-/*    box-shadow: 2px 2px 2px #141514;*/
-/*}*/
+.runner-up:hover {
+    border: 5px solid #fefedf;
+    /*box-shadow: 2px 2px 2px #141514;*/
+}
 
 .navbar {
     position: sticky;
@@ -164,5 +148,31 @@ h1:focus {
 
 #popupimage {
     border: 1px dotted black;
+
+}
+
+#formcenter {
+    padding: 25px;
+    border: 10px dashed  #82578c;
+    background-color: #fefedf;
+    border-radius: 25px;
+}
+
+#formcenter:hover {
+    transform: scale(1.01);
+    border: 10px solid  #82578c;
+
+}
+
+#formcenter a {
+    font-style: italic;
+    font-size: 10px;
+    color: #c404c4;
+    text-decoration: underline;
+}
+
+.input {
+    margin-top: 20px;
+    margin-bottom: 20px;
 
 }
