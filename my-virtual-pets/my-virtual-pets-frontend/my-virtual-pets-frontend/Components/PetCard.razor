@@ -1,7 +1,7 @@
 @using my_virtual_pets_class_library.Enums;
 
 @using my_virtual_pets_class_library.DTO;
-<div class="card text-center">
+<div class="card text-center mb-4 shadow-lg">
     <div class="card-title text-center gap-3 m-3">
         <h3 class="fw-bold">@PetCardData.PetName</h3>
         <span class="badge bg-success">VP: @(PetCardData.Score)</span>
@@ -18,18 +18,5 @@
 </div>
 
 @code {
-    // [Parameter] public required PetCardDataDTO PetCardData { get; set; }
-    public required PetCardDataDTO PetCardData { get; set; } = new()
-    {
-        PetId = Guid.NewGuid(),
-        PetName = "Fluffy",
-        ImageUrl = "https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/testimage.png",
-        OwnerUsername = "petlover123",
-        Score = 85,
-        Personality = Personality.JOLLY,
-        PetType = PetType.CAT,
-        Description = "A friendly and energetic kitten who loves to play all day.",
-        IsFavourited = false
-    };
-
+    [Parameter] public required PetCardDataDTO PetCardData { get; set; }
 }
