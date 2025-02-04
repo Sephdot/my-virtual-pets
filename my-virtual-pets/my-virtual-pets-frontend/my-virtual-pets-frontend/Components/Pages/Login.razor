@@ -3,26 +3,5 @@
 @rendermode InteractiveServer
 
 <PageTitle>Login</PageTitle>
-<div id="formcenter">
-    @if (IsUser)
-    {
-        <LoginForm></LoginForm>
-    }
-    else
-    {
-        <SignupForm></SignupForm>
-    }
-    <a @onclick="ToggleForm">@(IsUser ?  SwitchText[0] : SwitchText[1])</a>
-</div>
 
-@code{
-    public static string[] SwitchText = ["New here? Register now!", "Been here before? Login!"];
-
-    public bool IsUser { get; set; } = true; 
-    
-    public void ToggleForm()
-    {
-        IsUser = !IsUser;
-    }
-    
-}
+<FormSwitcher></FormSwitcher>
