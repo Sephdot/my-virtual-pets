@@ -94,8 +94,8 @@ h1:focus {
 
 
 .leadercard:hover {
-    transform: scale(1.01);    
-    box-shadow: 2px 2px 2px #141514;
+    transform: scale(1.02);    
+    box-shadow: 4px 4px 4px #141514;
 }
 
 .leaderimage {
