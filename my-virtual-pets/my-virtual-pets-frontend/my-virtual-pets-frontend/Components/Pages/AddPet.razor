@@ -1,0 +1,40 @@
+@rendermode InteractiveServer
+
+@using my_virtual_pets_class_library.DTO
+@using my_virtual_pets_frontend.Components.AddPetComponents
+@using my_virtual_pets_class_library.Enums
+
+@page "/add-pet"
+<h3>AddPet</h3>
+@if (PetDetails == null)
+{
+    <Loader />
+}
+else
+{
+    <CascadingValue Value="PetDetails">
+        <AddPetFormSwitcher />
+    </CascadingValue>
+}
+
+@code {
+    AddPetDTO? PetDetails { get; set; }
+
+    protected override void OnInitialized()
+    {
+        ResetPetDetails();
+    }
+
+    private void ResetPetDetails()
+    {
+        PetDetails = new AddPetDTO()
+        {
+            PetName = "",
+            Description = "",
+            ImageUrl = "",
+            OwnerId = Guid.NewGuid(), // TODO: get correct guid
+            Personality = Enum.GetValues(typeof(Personality)).Cast<Personality>().ToList()[0],
+            PetType = PetType.OTHER
+        };
+    }
+}
