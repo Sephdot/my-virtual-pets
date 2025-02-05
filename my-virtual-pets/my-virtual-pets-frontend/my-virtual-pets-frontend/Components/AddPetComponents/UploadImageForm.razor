@@ -1,37 +1,54 @@
+@using System.ComponentModel.DataAnnotations
 @using my_virtual_pets_class_library.DTO
 
-<EditForm FormName="Login" Model="@loginDetails" OnInvalidSubmit="HandleInvalidSubmit" OnValidSubmit="HandleValidSubmit">
-    <h3>Login</h3>
+<EditForm FormName="UploadImageForm" Model="@_formModel" OnInvalidSubmit="HandleInvalidSubmit" OnValidSubmit="HandleValidSubmit">
+    <h3>Upload Image</h3>
     <h6>@Success</h6>
     <DataAnnotationsValidator/>
 
         <div class="form-group">
-            <label for="InputUsername">Username:</label>
-            <InputText id="InputUsername" class="form-control" @bind-Value="@loginDetails.Username"/>
-            <ValidationMessage For="@(() => loginDetails.Username)"/>
+            <label for="InputPetImage" class="form-label">Upload Image: <span class="text-danger">*</span></label>
+            <InputFile OnChange="OnInputFileChange" id="InputPetImage" class="form-control form-control-lg" @bind-Value="@_inputFile"/>
+            <ValidationMessage For="@(() => _inputFile)"/>
         </div>
     
-        <div class="form-group">
-            <label for="InputPassword">Password:</label>
-            <InputText id="InputPassword" class="form-control" @bind-Value="@loginDetails.Password"/>
-            <ValidationMessage For="@(() => loginDetails.Password)"/>
-        </div>
-    
-        <button id="loginbutton" class="btn btn-light" type="submit">Enter the doghouse</button>
+        <button id="uploadimagebutton" class="btn btn-light" type="submit">Upload Image</button>
 
 </EditForm>
 
 
 
 @code {
-
-    public UserLoginDTO loginDetails { get; set; } 
+    private InputFile? _inputFile;
+    
+    private class FormModel
+    {
+        [Required] private InputFile? _inputFile { get; set; }
+    }
+    private FormModel _formModel = new();
+    
     
     public string Success { get; set; }
     
+    private Stream? _stream;
+    private int _maxFileSize = 512000;
+    
+    public void OnInputFileChange(InputFileChangeEventArgs e) // do this when file is added to check if the user's file is too big
+    {
+        try
+        {
+            _stream = e.File.OpenReadStream(maxAllowedSize: _maxFileSize);
+        }
+        catch (Exception exception) // catch block: catches IOException: file too big
+        {
+            Console.WriteLine(exception.Message);
+            //TODO: add try again info to user
+        }
+    }
+    
     protected override void OnInitialized()
     {
-        loginDetails = new UserLoginDTO();
+        
     }
 
     public void HandleInvalidSubmit()
@@ -39,12 +56,31 @@
         Success = "Something has gone wrong"; 
     }
 
-    public void HandleValidSubmit()
+    public async Task HandleValidSubmit()
     {
-        Success = "Submitted!"; 
-        var webclient = new BackendClient<UserLoginDTO>("api/user/login");
-        webclient.PostRequest(loginDetails);
-        loginDetails = new UserLoginDTO();
+        byte[]? bytes = null;
+
+        try
+        {
+            using var ms = new MemoryStream();
+            byte[] buffer = new byte[_maxFileSize];
+            int bytesRead = 0;
+
+            while ((bytesRead = _stream.Read(buffer)) > 0)
+            {
+                ms.Write(buffer);
+            }
+            bytes = ms.ToArray();
+        }
+        catch (Exception exception)
+        {
+            Console.WriteLine(exception);
+            throw;
+        }
+        
+        Success = "Submitted!";
+        /*var webclient = new BackendClient<UserLoginDTO>("api/user/login");
+        webclient.PostRequest();*/
     }
     
 }
