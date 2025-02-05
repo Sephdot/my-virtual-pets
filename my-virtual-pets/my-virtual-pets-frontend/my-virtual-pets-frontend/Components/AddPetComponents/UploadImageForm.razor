@@ -1,15 +1,19 @@
 @using System.ComponentModel.DataAnnotations
 @using my_virtual_pets_class_library.DTO
+@rendermode InteractiveServer
 
 <EditForm FormName="UploadImageForm" Model="@_formModel" OnInvalidSubmit="HandleInvalidSubmit" OnValidSubmit="HandleValidSubmit">
     <h3>Upload Image</h3>
-    <h6>@Success</h6>
+    <h6>@_success</h6>
     <DataAnnotationsValidator/>
-
         <div class="form-group">
             <label for="InputPetImage" class="form-label">Upload Image: <span class="text-danger">*</span></label>
-            <InputFile OnChange="OnInputFileChange" id="InputPetImage" class="form-control form-control-lg" @bind-Value="@_inputFile"/>
-            <ValidationMessage For="@(() => _inputFile)"/>
+             <InputFile
+                OnChange="OnInputFileChange"
+                id="InputPetImage"
+                class="form-control form-control-lg" />           
+            <ValidationMessage For="@(() => _file)"/>
+            
         </div>
     
         <button id="uploadimagebutton" class="btn btn-light" type="submit">Upload Image</button>
@@ -19,31 +23,28 @@
 
 
 @code {
-    private InputFile? _inputFile;
+    private IBrowserFile? _file;
+    private string _success { get; set; }
+    private int _maxFileSize = 512000;
     
     private class FormModel
     {
-        [Required] private InputFile? _inputFile { get; set; }
+        [Required] private IBrowserFile _inputFile { get; set; }
     }
     private FormModel _formModel = new();
     
-    
-    public string Success { get; set; }
-    
-    private Stream? _stream;
-    private int _maxFileSize = 512000;
-    
-    public void OnInputFileChange(InputFileChangeEventArgs e) // do this when file is added to check if the user's file is too big
+    public void OnInputFileChange(InputFileChangeEventArgs args) // do this when file is added to check if the user's file is too big
     {
-        try
+        _file = args.File;
+        if (_file == null)
         {
-            _stream = e.File.OpenReadStream(maxAllowedSize: _maxFileSize);
+            Console.Error.WriteLine("File is null");
         }
-        catch (Exception exception) // catch block: catches IOException: file too big
+        else
         {
-            Console.WriteLine(exception.Message);
-            //TODO: add try again info to user
+            Console.Error.WriteLine(_file.Name);
         }
+        
     }
     
     protected override void OnInitialized()
@@ -53,24 +54,18 @@
 
     public void HandleInvalidSubmit()
     {
-        Success = "Something has gone wrong"; 
+        _success = "Something has gone wrong"; 
     }
 
     public async Task HandleValidSubmit()
     {
         byte[]? bytes = null;
-
         try
         {
-            using var ms = new MemoryStream();
-            byte[] buffer = new byte[_maxFileSize];
-            int bytesRead = 0;
-
-            while ((bytesRead = _stream.Read(buffer)) > 0)
-            {
-                ms.Write(buffer);
-            }
-            bytes = ms.ToArray();
+            using var reader = new StreamReader(_file.OpenReadStream(_maxFileSize));
+            using var memstream = new MemoryStream();
+            await reader.BaseStream.CopyToAsync(memstream);
+            bytes = memstream.ToArray();
         }
         catch (Exception exception)
         {
@@ -78,7 +73,7 @@
             throw;
         }
         
-        Success = "Submitted!";
+        _success = "Submitted!";
         /*var webclient = new BackendClient<UserLoginDTO>("api/user/login");
         webclient.PostRequest();*/
     }
