@@ -9,6 +9,7 @@
         public object score { get; set; }
         public double uncalibrated_score { get; set; }
         public List<Child> children { get; set; }
+        public int rarity { get; set; }
     }
 
 }

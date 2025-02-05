@@ -17,9 +17,9 @@ public class ImagesController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> TestPipeline()
+    public async Task<IActionResult> TestPipeline(byte[] inputImage)
     {
-        byte[] inputImage = System.IO.File.ReadAllBytes("Resources/Images/testimage.png");
+        //byte[] inputImage = System.IO.File.ReadAllBytes("Resources/Images/testimage.png");
 
         ImagesResponseDto? result = await _imagesService.ProcessImageAsync(inputImage);
         if (result == null) return BadRequest();
