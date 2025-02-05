@@ -8,6 +8,7 @@
         Task<string?> RemoveBackground(string inputImageUrl);
         Task<byte[]?> RemoveBackgroundAsync(string inputImageUrl);
 
+        //TestComment
         Guid AddImage(string imageUrl);
     }
 }

@@ -35,6 +35,7 @@ namespace my_virtual_pets_api.Entities
 
         public Image Image { get; set; }
 
+        //TestComment
         public static PetCardDataDTO CreatePetCardDto(Pet pet)
         {
             PetCardDataDTO petCardDto = new PetCardDataDTO

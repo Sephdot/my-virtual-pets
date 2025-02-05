@@ -216,6 +216,7 @@ public class ImagesService : IImagesService
         }
     }
 
+    //TestComment
     public Guid AddImage(string uimageUrl)
     {
         return _imageRepository.AddImage(uimageUrl);

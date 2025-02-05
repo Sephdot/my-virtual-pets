@@ -6,6 +6,7 @@ namespace my_virtual_pets_class_library.DTO;
 
 public class AddPetDTO
 {
+    //TestComment
     [JsonPropertyName("petname")]
     [Required]
     public required string PetName { get; set; }

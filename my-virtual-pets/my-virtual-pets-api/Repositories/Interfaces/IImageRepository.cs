@@ -2,6 +2,7 @@
 {
     public interface IImageRepository
     {
+        //TestComment
         Guid AddImage(string imageUrl);
     }
 }
