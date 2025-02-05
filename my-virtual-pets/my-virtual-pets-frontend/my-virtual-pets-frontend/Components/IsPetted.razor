@@ -1,0 +1,22 @@
+@using my_virtual_pets_frontend.Components.Icons
+
+<div @onclick="Pet">
+@if (IsPet)
+{
+    <Paw_svg></Paw_svg>
+}
+else
+{
+    <OutlinePaw_svg></OutlinePaw_svg>
+}
+</div>
+
+@code {
+
+    public bool IsPet { get; set; } = false;
+
+    public void Pet()
+    {
+        IsPet = !IsPet;
+    }
+}
