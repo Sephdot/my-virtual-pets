@@ -38,6 +38,7 @@ body {
     font-family: "Roboto_Mono", serif;
 }
 
+h1,
 h1:focus {
     outline: none;
     font-family: "Pixelify_Sans", serif;
@@ -77,7 +78,7 @@ h1:focus {
 
 
 .leadercard:hover {
-    transform: scale(1.02);    
+    transform: scale(1.02);
     box-shadow: 4px 4px 4px #141514;
 }
 
@@ -172,16 +173,20 @@ h1:focus {
 #formcenter {
     margin-bottom: 15px;
     padding: 25px;
-    border: 10px dashed  #82578c;
+    border: 10px dashed #82578c;
     border-radius: 25px;
     background-color: #fefedf;
+    transition: transform 0.2s ease-in-out;
 }
 
 #formcenter:hover {
     transform: scale(1.01);
-    border: 10px solid  #82578c;
+    border: 10px solid #82578c;
 }
 
+#formcenter:hover::after {
+    transition-duration: 0.2s;
+}
 
 
 #formcenter a {
