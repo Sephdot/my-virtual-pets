@@ -1,4 +1,5 @@
-﻿using my_virtual_pets_class_library.Enums;
+﻿using my_virtual_pets_class_library.DTO;
+using my_virtual_pets_class_library.Enums;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
@@ -25,7 +26,7 @@ namespace my_virtual_pets_api.Entities
         public string? Description { get; set; }
 
         [JsonPropertyName("type")]
-        [Column(TypeName ="int")]
+        [Column(TypeName = "int")]
         public PetType Type { get; set; }
 
 
@@ -34,5 +35,21 @@ namespace my_virtual_pets_api.Entities
 
         public Image Image { get; set; }
 
+        public static PetCardDataDTO CreatePetCardDto(Pet pet)
+        {
+            PetCardDataDTO petCardDto = new PetCardDataDTO
+            {
+                PetId = pet.Id,
+                PetName = pet.Name,
+                ImageUrl = pet.Image.ImageUrl,
+                OwnerUsername = pet.GlobalUser.Username,
+                Score = 0,
+                Personality = pet.Personality,
+                PetType = pet.Type,
+                Description = pet.Description,
+                IsFavourited = false
+            };
+            return petCardDto;
+        }
     }
 }
