@@ -21,10 +21,10 @@ namespace my_virtual_pets_api.Controllers
         }
 
 
-        [HttpGet("/pets")]
+        [HttpGet]
         public IActionResult GetPets()
         {
-            var pets = _context.Pets.Include(u => u.Image).ToList();
+            var pets = _petService.GetPets();
             return Ok(pets);
         }
 

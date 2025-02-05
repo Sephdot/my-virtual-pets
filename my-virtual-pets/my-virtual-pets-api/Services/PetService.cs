@@ -1,4 +1,5 @@
-﻿using my_virtual_pets_api.Repositories.Interfaces;
+﻿using my_virtual_pets_api.Entities;
+using my_virtual_pets_api.Repositories.Interfaces;
 using my_virtual_pets_api.Services.Interfaces;
 using my_virtual_pets_class_library.DTO;
 
@@ -15,7 +16,10 @@ namespace my_virtual_pets_api.Services
             _petRepository = petRepository;
             _imagesService = imagesService;
         }
-
+        public List<Pet> GetPets()
+        {
+            return _petRepository.GetPets();
+        }
         public List<PetCardDataDTO> GetPetsByUser(Guid userId)
         {
             return _petRepository.GetAllPetsByUserID(userId);

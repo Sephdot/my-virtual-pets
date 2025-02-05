@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using my_virtual_pets_api.Data;
 using my_virtual_pets_api.Entities;
 using my_virtual_pets_api.Repositories.Interfaces;
@@ -14,7 +15,10 @@ namespace my_virtual_pets_api.Repositories
         {
             _context = context;
         }
-
+        public List<Pet> GetPets()
+        {
+            return _context.Pets.Include(p => p.Image).ToList();
+        }
         public List<PetCardDataDTO> GetAllPetsByUserID(Guid userId)
         {
             return _context.Pets
