@@ -1,31 +1,17 @@
-﻿using my_virtual_pets_api.Repositories.Interfaces;
-using my_virtual_pets_api.Services.ApiResponses;
-using my_virtual_pets_api.Services.Interfaces;
-using System.Diagnostics;
-using System.Net.Http.Headers;
-using System.Text.Json;
 ﻿using ImageRecognition;
 using my_virtual_pets_api.Cloud;
 using my_virtual_pets_api.Services.Interfaces;
 using my_virtual_pets_class_library;
 using System.Drawing;
 
-
 namespace my_virtual_pets_api.Services;
 
 public class ImagesService : IImagesService
 {
-    private readonly string bgRemoverApiKey;
-    private IImageRepository _imageRepository;
     private IStorageService _storageService;
     private IRecognitionService _recognitionService;
     private IPixelate _pixelateService;
     private IRemoveBackgroundService _removeBackgroundService;
-    public ImagesService(IConfiguration configuration, IImageRepository imageRepository)
-    {
-        bgRemoverApiKey = configuration["BgRemoverApiKey"] ?? throw new Exception("BgRemoverApiKey is missing!");
-        _imageRepository = imageRepository;
-    }
 
     public ImagesService(IStorageService storageService, IRecognitionService recognitionService, IPixelate pixelateService, IRemoveBackgroundService removeBackgroundService)
     {
@@ -68,10 +54,5 @@ public class ImagesService : IImagesService
         //return string image url and string pet type
         if (!uploadResult.Item1) return null;
         return new ImagesResponseDto { imageUrl = uploadResult.imageUrl, animalType = recognitionResult.displayName };
-    }
-
-    public Guid AddImage(string uimageUrl)
-    {
-        return _imageRepository.AddImage(uimageUrl);
     }
 }
