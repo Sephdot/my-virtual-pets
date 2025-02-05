@@ -1,30 +1,35 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using my_virtual_pets_class_library.DTO.Validators;
 
 namespace my_virtual_pets_class_library.DTO;
 
 public class NewUserDTO
 {
+
     [JsonPropertyName("firstname")]
-    [Required]
+    [Required(ErrorMessage = "We need your first name!")]
     public string FirstName { get; set; }
 
     [JsonPropertyName("lastname")]
-    [Required]
+    [Required(ErrorMessage = "We need your last name!")]
     public string LastName { get; set; }
     
     [JsonPropertyName("email")]
-    [Required]
+    [Required(ErrorMessage = "We need your email!")]
     public string Email { get; set; }
 
     [JsonPropertyName("username")]
-    [Required]
+    [Required(ErrorMessage = "We need a username!")]
     public string Username { get; set; }
     
     [JsonPropertyName("password")]
-    [Required]
+    [Required(ErrorMessage = "We need a password!"), PasswordValidator]
     public string Password { get; set; }
-
+    
+    [JsonIgnore]
+    public string? FavAnimal { get; set; }
+    
     [JsonPropertyName("gdprpermissions")]
     [Required]
     public bool GDPRPermissions { get; set; }

@@ -94,7 +94,7 @@ h1:focus {
     box-shadow: 2px 2px 2px #141514;
     border-radius: 25px;
     margin: 10px; 
-    height: 175px;
+    height: 215px;
     flex-direction: column;
     padding: 10px;
 }
@@ -167,7 +167,7 @@ h1:focus {
 #formcenter a {
     font-style: italic;
     font-size: 10px;
-    color: #c404c4;
+    color: slategrey;
     text-decoration: underline;
 }
 
