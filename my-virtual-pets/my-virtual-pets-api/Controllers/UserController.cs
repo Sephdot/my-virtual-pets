@@ -1,3 +1,4 @@
+
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -10,7 +11,7 @@ namespace my_virtual_pets_api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class UserController : ControllerBase 
+    public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
 
