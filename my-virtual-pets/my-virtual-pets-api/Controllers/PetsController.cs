@@ -13,7 +13,6 @@ namespace my_virtual_pets_api.Controllers
         private readonly IPetService _petService;
 
 
-
         public PetsController(IDbContext context, IPetService petService)
         {
             _context = context;

@@ -1,0 +1,52 @@
+@inject IJSRuntime JS
+@using my_virtual_pets_class_library.DTO
+
+@{
+    var showClass = IsVisible ? "d-block" : "d-none";
+}
+
+<div id="popupcard" class="toast-container p-3 @showClass" data-bs-autohide="true" data-bs-delay="5000">
+    <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+        <div id="popupboard" class="toast-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-6">
+                        <button id="popupbutton" type="button" class="btn-close" aria-label="Close" @onclick="Close"></button>
+                            <img src="@petCard.ImageUrl" style="width:200px">
+                    </div>
+                    <div id="popuptext" class="col-6">
+                        <p>Name: @petCard.PetName</p>
+                        <p>Personality: @petCard.Personality</p>
+                        <p>Type: @petCard.PetType</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+    </div>            
+
+
+
+@code {
+    
+    [Parameter]
+    public PetCardDataDTO petCard { get; set; }
+    
+    [Parameter]
+    public bool IsVisible { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> IsVisibleChanged { get; set; }
+
+    public void Show()
+    {
+        IsVisible = true;
+        StateHasChanged();
+    }
+
+    private void Close()
+    {
+        IsVisible = false;
+        StateHasChanged();
+    }
+}
