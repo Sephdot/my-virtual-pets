@@ -103,8 +103,11 @@ namespace ImageRecognition
                 {
                     jsonData = jsonData.children[0];
                 }
+                Random random = new Random();
+                jsonData.rarity = random.Next(0, 100);
                 Console.WriteLine(jsonData.GetType());
                 Console.WriteLine(jsonData.name);
+                Console.WriteLine(jsonData.rarity);
                 return jsonData;
             }
             catch (Exception ex)
@@ -138,6 +141,9 @@ namespace ImageRecognition
         public object score { get; set; }
         public double uncalibrated_score { get; set; }
         public List<Child> children { get; set; }
+        public int rarity { get; set; }
+
+
     }
 
     public class Child : IPredicted
@@ -149,6 +155,7 @@ namespace ImageRecognition
         public object score { get; set; }
         public double uncalibrated_score { get; set; }
         public List<Child> children { get; set; }
+        public int rarity {  get; set; }
     }
 
     public class Prediction
