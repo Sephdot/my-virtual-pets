@@ -1,0 +1,37 @@
+@page "/test"
+@inject NavigationManager NavigationManager;
+@inject HttpClient Http
+@inject IJSRuntime JSRuntime
+@rendermode InteractiveWebAssembly
+
+<button @onclick="ClickMe" >This is a button</button>
+@* <AuthComponent @rendermode="InteractiveWebAssembly"></AuthComponent> *@
+
+
+@code {
+
+    public void ClickMe()
+    {
+        Console.WriteLine("I AM HERE"); 
+    }
+    
+    protected async Task TestFunction()
+    {
+        Console.WriteLine("I AM HERE");
+        string cookie = await JSRuntime.InvokeAsync<string>("getCookie");
+        if (!string.IsNullOrEmpty(cookie))
+            {
+                Console.WriteLine(cookie);
+                Http.DefaultRequestHeaders.Add("Cookie", $"my_virtual_pets_api={cookie}");
+            }
+    
+         var response = await Http.GetAsync("https://localhost:7091/api/user/auth");
+         Console.WriteLine(response);
+         if (!response.IsSuccessStatusCode)
+            {
+                NavigationManager.NavigateTo("/login");
+            }
+    
+    }
+
+}

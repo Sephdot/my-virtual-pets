@@ -1,0 +1,34 @@
+@inject NavigationManager NavigationManager;
+@inject HttpClient Http
+@inject IJSRuntime JSRuntime
+
+<h3>AuthComponent</h3>
+<p>Will this work?</p>
+
+
+@code {
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        Console.WriteLine("I AM HERE");
+        if (firstRender)
+        {
+            string cookie = await JSRuntime.InvokeAsync<string>("getCookie");
+            if (!string.IsNullOrEmpty(cookie))
+            {
+                Console.WriteLine(cookie);
+                Http.DefaultRequestHeaders.Add("Cookie", $"my_virtual_pets_api={cookie}");
+            }
+
+            var response = await Http.GetAsync("https://localhost:7091/api/user/auth");
+            Console.WriteLine(response);
+            if (!response.IsSuccessStatusCode)
+            {
+                NavigationManager.NavigateTo("/login");
+            }
+
+        }
+    }
+
+}
+
