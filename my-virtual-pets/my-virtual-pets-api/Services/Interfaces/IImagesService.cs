@@ -1,5 +1,4 @@
-﻿
-namespace my_virtual_pets_api.Services
+﻿namespace my_virtual_pets_api.Services.Interfaces
 {
     public interface IImagesService
     {
@@ -8,5 +7,7 @@ namespace my_virtual_pets_api.Services
 
         Task<string?> RemoveBackground(string inputImageUrl);
         Task<byte[]?> RemoveBackgroundAsync(string inputImageUrl);
+
+        Guid AddImage(string imageUrl);
     }
 }

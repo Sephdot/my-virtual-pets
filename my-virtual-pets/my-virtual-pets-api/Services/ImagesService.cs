@@ -1,4 +1,6 @@
-﻿using my_virtual_pets_api.Services.ApiResponses;
+﻿using my_virtual_pets_api.Repositories.Interfaces;
+using my_virtual_pets_api.Services.ApiResponses;
+using my_virtual_pets_api.Services.Interfaces;
 using System.Diagnostics;
 using System.Net.Http.Headers;
 using System.Text.Json;
@@ -8,9 +10,11 @@ namespace my_virtual_pets_api.Services;
 public class ImagesService : IImagesService
 {
     private readonly string bgRemoverApiKey;
-    public ImagesService(IConfiguration configuration)
+    private IImageRepository _imageRepository;
+    public ImagesService(IConfiguration configuration, IImageRepository imageRepository)
     {
         bgRemoverApiKey = configuration["BgRemoverApiKey"] ?? throw new Exception("BgRemoverApiKey is missing!");
+        _imageRepository = imageRepository;
     }
 
     public async Task<byte[]?> RemoveBackground(byte[] inputImage)
@@ -210,5 +214,10 @@ public class ImagesService : IImagesService
                 return null;
             }
         }
+    }
+
+    public Guid AddImage(string uimageUrl)
+    {
+        return _imageRepository.AddImage(uimageUrl);
     }
 }
