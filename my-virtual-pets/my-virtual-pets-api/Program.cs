@@ -1,17 +1,15 @@
 using ImageRecognition;
-using System.Text;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using my_virtual_pets_api.Cloud;
 using my_virtual_pets_api.Data;
-using my_virtual_pets_api.Services;
-using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using my_virtual_pets_api.Repositories;
 using my_virtual_pets_api.Repositories.Interfaces;
+using my_virtual_pets_api.Services;
 using my_virtual_pets_api.Services.Interfaces;
 using PixelationTest;
-using Microsoft.IdentityModel.Tokens; 
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,12 +43,15 @@ builder.Services.AddScoped<IRemoveBackgroundService, RemoveBackgroundService>();
 
 builder.Services.AddScoped<IPetRepository, PetRepository>();
 builder.Services.AddScoped<IPetService, PetService>();
+builder.Services.AddScoped<IImageRepository, ImageRepository>();
+
 
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
         options.Cookie.Name = "my_virtual_pets_api";
+        options.Cookie.HttpOnly = true;
         options.Cookie.SameSite = SameSiteMode.None;
         options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
         options.ExpireTimeSpan = TimeSpan.FromHours(2);
@@ -90,7 +91,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 
-// app.UseCors("Frontend");
 app.UseCors("AllowAll");
 
 app.UseAuthentication();

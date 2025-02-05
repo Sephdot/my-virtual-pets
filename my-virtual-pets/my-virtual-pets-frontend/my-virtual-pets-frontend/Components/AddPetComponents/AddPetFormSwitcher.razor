@@ -1,0 +1,32 @@
+@rendermode InteractiveServer
+
+@using my_virtual_pets_class_library.DTO
+<div id="formcenter">
+    @if (!IsSuccessfulUpload)
+    {
+        <UploadImageForm OnSuccessfulUpload=@SwitchToAddDetails></UploadImageForm>
+    }
+    else
+    {
+        <AddPetDetailsForm></AddPetDetailsForm>
+    }
+</div>
+
+@code{
+
+    public bool IsSuccessfulUpload { get; set; } = false; 
+    
+    [CascadingParameter]
+    public AddPetDTO? PetDetails { get; set; }
+
+    protected override void OnInitialized()
+    {
+        IsSuccessfulUpload = false;
+    }
+
+    public void SwitchToAddDetails()
+    {
+        IsSuccessfulUpload = true;
+    }
+    
+}

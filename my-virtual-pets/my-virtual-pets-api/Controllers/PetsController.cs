@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using my_virtual_pets_api.Data;
 using my_virtual_pets_api.Services.Interfaces;
+using my_virtual_pets_class_library.DTO;
 
 namespace my_virtual_pets_api.Controllers
 {
@@ -20,10 +21,10 @@ namespace my_virtual_pets_api.Controllers
         }
 
 
-        [HttpGet("/pets")]
+        [HttpGet]
         public IActionResult GetPets()
         {
-            var pets = _context.Pets.Include(u => u.Image).ToList();
+            var pets = _petService.GetPets();
             return Ok(pets);
         }
 
@@ -40,6 +41,13 @@ namespace my_virtual_pets_api.Controllers
             var pet = _petService.GetPetById(petId);
             return Ok(pet);
 
+        }
+
+        [HttpPost]
+        public IActionResult AddPet(AddPetDTO addPetDTO)
+        {
+            PetCardDataDTO addedPet = _petService.AddPet(addPetDTO);
+            return Ok(addedPet);
         }
     }
 }

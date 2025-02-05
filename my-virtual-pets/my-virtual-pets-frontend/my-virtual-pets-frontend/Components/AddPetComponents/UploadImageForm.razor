@@ -1,0 +1,89 @@
+@using System.ComponentModel.DataAnnotations
+@using my_virtual_pets_class_library.DTO
+@rendermode InteractiveServer
+
+<EditForm FormName="UploadImageForm" Model="@_formModel" OnInvalidSubmit="HandleInvalidSubmit" OnValidSubmit="HandleValidSubmit">
+    <h3>Upload Image</h3>
+    <h6>@_successMessage</h6>
+    <DataAnnotationsValidator/>
+        <div class="form-group">
+            <label for="InputPetImage" class="form-label">Upload Image: <span class="text-danger">*</span></label>
+             <InputFile
+                OnChange="OnInputFileChange"
+                id="InputPetImage"
+                class="form-control form-control-lg" />           
+            <ValidationMessage For="@(() => _file)"/>
+            
+        </div>
+    
+        <button id="uploadimagebutton" class="btn btn-light" type="submit">Upload Image</button>
+
+</EditForm>
+
+
+
+@code {
+    [CascadingParameter]
+    AddPetDTO PetDetails { get; set; }
+    
+    private IBrowserFile? _file;
+    private string _successMessage { get; set; }
+    
+    [Parameter] 
+    public EventCallback<bool> OnSuccessfulUpload { get; set; }
+    
+    private int _maxFileSize = 512000;
+    
+    private class FormModel
+    {
+        [Required] private IBrowserFile _inputFile { get; set; }
+    }
+    private FormModel _formModel = new();
+    
+    public void OnInputFileChange(InputFileChangeEventArgs args) // do this when file is added to check if the user's file is too big
+    {
+        _file = args.File;
+        if (_file == null)
+        {
+            Console.Error.WriteLine("File is null");
+        }
+        else
+        {
+            Console.Error.WriteLine(_file.Name);
+        }
+        
+    }
+    
+    protected override void OnInitialized()
+    {
+        
+    }
+
+    public void HandleInvalidSubmit()
+    {
+        _successMessage = "Something has gone wrong"; 
+    }
+
+    public async Task HandleValidSubmit()
+    {
+        byte[]? bytes = null;
+        try
+        {
+            using var reader = new StreamReader(_file.OpenReadStream(_maxFileSize));
+            using var memstream = new MemoryStream();
+            await reader.BaseStream.CopyToAsync(memstream);
+            bytes = memstream.ToArray();
+        }
+        catch (Exception exception)
+        {
+            Console.WriteLine(exception);
+            throw;
+        }
+        
+        _successMessage = "Submitted!";
+        await OnSuccessfulUpload.InvokeAsync(true); // do this if api returns successful 
+        /*var webclient = new BackendClient<UserLoginDTO>("api/user/login");
+        webclient.PostRequest();*/
+    }
+    
+}
