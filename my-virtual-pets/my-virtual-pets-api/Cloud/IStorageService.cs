@@ -2,5 +2,5 @@
 public interface IStorageService
 {
     Task<(bool, string)> UploadFileAsync(string keyName);
-    Task UploadObject(byte[] imgToUpload, string key);
+    Task<(bool isSuccess, string imageUrl)> UploadObjectAsync(byte[] imgToUpload, string key);
 }

@@ -1,4 +1,4 @@
-# /ᐠ - ˕ -マ  my-virtual-pets  ૮･ﻌ･ა
+# my-virtual-pets  ૮･ﻌ･ა
 
 ## 📋 Database set-up: 
 

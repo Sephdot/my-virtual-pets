@@ -44,7 +44,7 @@ namespace my_virtual_pets_api.Cloud
             }
         }
 
-        public async Task UploadObject(byte[] imgToUpload, string key)
+        public async Task<(bool isSuccess, string imageUrl)> UploadObjectAsync(byte[] imgToUpload, string key)
         {
             var request = new Amazon.S3.Model.PutObjectRequest
             {
@@ -52,11 +52,26 @@ namespace my_virtual_pets_api.Cloud
                 Key = $"{key}.png",
                 ContentType = "image/png"
             };
-            using (var ms = new MemoryStream(imgToUpload))
+            try
             {
-                request.InputStream = ms;
-                await _s3Client.PutObjectAsync(request);
+                using (var ms = new MemoryStream(imgToUpload))
+                {
+                    request.InputStream = ms;
+                    await _s3Client.PutObjectAsync(request);
+                }
+                return (true, URI_BEGINNING + key + ".png");
             }
+            catch (AmazonS3Exception e)
+            {
+                Console.WriteLine($"AWS error:\n{e.Message}");
+                return (false, "");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return (false, "");
+            }
+
         }
     }
 }

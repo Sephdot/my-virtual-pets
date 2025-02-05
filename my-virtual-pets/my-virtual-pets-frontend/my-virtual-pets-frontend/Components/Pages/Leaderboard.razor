@@ -1,56 +1,86 @@
 @page "/leaderboard"
+@using my_virtual_pets_class_library.DTO
+@using my_virtual_pets_class_library.Enums
+@using my_virtual_pets_frontend.Components.Icons
+@using my_virtual_pets_frontend.Components.DisplayCards
+
 <PageTitle>Leaderboard | MyVirtualPets</PageTitle>
-<div class="container">
+
+
+@if (pets == null || pets.Count == 0)
+{
+    <Cat_Loader></Cat_Loader>
+}
+else
+{
+    
+    <!----- Top Three things here ---->
+
+    <div class="container">
     <div class="row">
-        <div class="col">
-            Ranking
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-3">
         </div>
-        <div class="col">
-            Username
+        <div class="leader col-sm-12 col-md-12 col-lg-12 col-xl-6">
+            <LeadershipCard petCard="pets[0]" index="1"></LeadershipCard>
         </div>
-        <div class="col">
-            Total Score
-        </div>
-        <div class="col">
-            Top Pet
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-3">
         </div>
     </div>
-    @foreach (var x in DummyUsers.OrderByDescending(x => x.TotalScore).ToList())
-    {
     <div class="row">
-        <div class="col">
-            @(_rankingCounter++)
+        <div class="leader col-sm-12 col-md-12 col-lg-12 col-xl-6">
+            <LeadershipCard petCard="pets[1]" index="2"></LeadershipCard>
         </div>
-        <div class="col">
-            @x.Username
-        </div>
-        <div class="col">
-            @x.TotalScore
-        </div>
-        <div class="col">
-            @x.TopPet <button @onclick="() => HandleViewPet(x.TopPet)">View</button>
+        <div class="leader col-sm-12 col-md-12 col-lg-12 col-xl-6">
+            <LeadershipCard petCard="pets[3]" index="3"></LeadershipCard>
         </div>
     </div>
-    }
     
 </div>
-@code {
-    private int _rankingCounter = 1;
-        public List<DummyUser> DummyUsers { get; set; } = new()
-    {
-        new(), new(), new(), new(), new()
-    };
+
     
-    public class DummyUser
+    
+<!----- Change to virtualise? ---->
+
+
+<div class="container">
+        @foreach (var pet in pets.Skip(3))
+        {
+            <div class="row">
+                <div class="runner-up col pixeltext">
+                    <RunnersUpCard petdisplay="pet"></RunnersUpCard>
+                </div>
+            </div> 
+        }
+</div>
+
+}
+
+
+@code {
+    
+    public List<PetCardDataDTO> pets = new List<PetCardDataDTO>();
+    
+    public PetCardDataDTO testPet = new PetCardDataDTO()
     {
-        public string Username = $"superuser{new Random().Next(1, 10000)}";
-        public int TotalScore = new Random().Next(1, 10000);
-        public string TopPet = $"excellentpet{new Random().Next(1, 10000)}";
+        PetId = new Guid(),
+        PetName = "jok",
+        Description = "",
+        IsFavourited = true,
+        PetType = PetType.CAT,
+        ImageUrl = "https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/5e0fe0be-ca81-4b76-b4bf-349a1bf215c8.png",
+        Score = 100,
+        OwnerUsername = "Jonny",
+        Personality = Personality.SERIOUS
+    };
+
+    // on page initialised we'll call the backend instead: 
+    
+    protected override void OnInitialized()
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            pets.Add(testPet);
+        }
     }
 
-    public void HandleViewPet(string petName)
-    {
-        throw new NotImplementedException(); 
-        // TODO: open a card of some kind to check out the pet? maybe a window to the pet's enclosure to be able to pet it?
-    }
 }

@@ -1,0 +1,39 @@
+@using my_virtual_pets_class_library.DTO
+@rendermode InteractiveServer
+
+
+<div class="container">
+        <div class="row">
+            <div class="col-sm-6 col-md-6 col-lg-3 col-xl-3">
+                Name: @petdisplay.PetName
+            </div>
+            <div class="col-sm-6 col-md-6 col-lg-3 col-xl-3">
+                Personality: @petdisplay.Personality
+            </div>
+            <div class="col-sm-6 col-md-6 col-lg-3 col-xl-3">
+                <IsPetted></IsPetted>
+            </div>
+            <div class="col-sm-6 col-md-6 col-lg-3 col-xl-3">
+                <div id="popupmain">
+                    <PopupCard @ref="popupRef" petCard="petdisplay"/>
+                </div>
+                <button @onclick="PopupCall" style="margin-left:auto;margin-right:auto;">View</button>
+            </div>
+        </div>
+</div>
+
+
+@code {
+    
+    [Parameter]
+    public PetCardDataDTO petdisplay { get; set; }
+    
+    public PopupCard popupRef { get; set; }
+
+    private void PopupCall()
+    {
+        popupRef.Show();
+    }
+
+    
+}

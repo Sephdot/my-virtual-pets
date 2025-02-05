@@ -1,8 +1,8 @@
 @rendermode InteractiveAuto
 
-<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">🐕 MyVirtualPets</a>
+<nav class="navbar navbar-expand-md purple mb-4">
+    <div class="pixeltext container-fluid">
+        <a class="navbar-brand" href="">my-virtual-pets</a>
         <button class="navbar-toggler @NavButtonCssClass" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
                 aria-controls="navbarCollapse" aria-label="Toggle navigation" @onclick="ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
@@ -27,6 +27,11 @@
                 <li class="nav-item">
                     <NavLink class="nav-link" href="/my-account">
                         <span class="oi oi-plus" aria-hidden="true"></span> My Account
+                    </NavLink>
+                </li>
+                <li class="nav-item">
+                    <NavLink class="nav-link" href="/login">
+                        <span class="oi oi-plus" aria-hidden="true"></span> Log in
                     </NavLink>
                 </li>
             </ul>
