@@ -1,5 +1,6 @@
 @using my_virtual_pets_class_library.DTO
 @using my_virtual_pets_frontend.Components.Icons;
+@rendermode InteractiveAuto
 
 <div class="leadercard">
     <div class="container">
@@ -29,6 +30,7 @@
                     <p>Score: @petCard.Score</p>
                     <p>Owner: @petCard.OwnerUsername</p>
                     <p>Personality: @petCard.Personality</p>
+                    <IsPetted></IsPetted>
                 </div>
             </div>
         </div>

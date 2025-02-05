@@ -94,14 +94,14 @@ h1:focus {
     box-shadow: 2px 2px 2px #141514;
     border-radius: 25px;
     margin: 10px; 
-    height: 175px;
+    height: 230px;
     flex-direction: column;
-    padding: 10px;
+    padding-top: 10px; 
+    padding-left: 32px;
 }
 
 .leaderstats p {
     text-wrap: wrap;
-    margin-left: 22px;
 }
 
 
@@ -167,7 +167,7 @@ h1:focus {
 #formcenter a {
     font-style: italic;
     font-size: 10px;
-    color: #c404c4;
+    color: slategrey;
     text-decoration: underline;
 }
 
