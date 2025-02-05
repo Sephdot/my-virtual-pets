@@ -1,4 +1,9 @@
+@using System.Net
+@using Microsoft.AspNetCore.Components.WebAssembly.Http
 @using my_virtual_pets_class_library.DTO
+@rendermode InteractiveServer
+@inject HttpClient Http
+
 
 <EditForm FormName="Login" Model="@loginDetails" OnInvalidSubmit="HandleInvalidSubmit" OnValidSubmit="HandleValidSubmit">
     <h3 class="pixeltext">Login</h3>
@@ -39,12 +44,16 @@
         Success = "Something has gone wrong"; 
     }
 
-    public void HandleValidSubmit()
+    public async Task HandleValidSubmit()
     {
+        var response = await Http.PostAsJsonAsync<UserLoginDTO>("http://localhost:5138/api/user/login", loginDetails);
+        Console.WriteLine(response.StatusCode);
+        Console.WriteLine(response);
+        //var webclient = new BackendClient<UserLoginDTO>("api/user/login");
+        //await webclient.PostRequest(loginDetails);
         Success = "Submitted!"; 
-        var webclient = new BackendClient<UserLoginDTO>("api/user/login");
-        webclient.PostRequest(loginDetails);
         loginDetails = new UserLoginDTO();
     }
-    
+
 }
+    

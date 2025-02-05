@@ -10,6 +10,20 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddBlazorBootstrap();
 
+builder.Services.AddScoped<HttpClient>();
+
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "Frontend",
+        policy  =>
+            policy.WithOrigins("http://localhost:5138/")
+                .AllowCredentials()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
+});
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -23,6 +37,9 @@ else
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+app.UseCors("Frontend");
+ 
 
 app.UseHttpsRedirection();
 

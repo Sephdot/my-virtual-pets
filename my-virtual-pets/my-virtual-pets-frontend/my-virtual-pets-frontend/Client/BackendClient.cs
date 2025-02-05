@@ -1,4 +1,5 @@
 using System.Net;
+using Microsoft.AspNetCore.Components.WebAssembly.Http;
 
 namespace my_virtual_pets_frontend.Client;
 
@@ -54,7 +55,17 @@ public class BackendClient<T>
         {
             try
             {
-                var response = await client.PostAsJsonAsync<T>(Url, postValue);
+                
+                HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, Url);
+                requestMessage.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+                requestMessage.Content = JsonContent.Create(postValue);
+                var response = await client.SendAsync(requestMessage);
+                Console.WriteLine(response.StatusCode);
+                var cookies = cookieContainer.GetCookies(new Uri(Url)); 
+                foreach (Cookie cookie in cookies)
+                {
+                    Console.WriteLine($"Cookie Name: {cookie.Name}, Value: {cookie.Value}"); 
+                } 
                 return response.StatusCode;
             }
             catch

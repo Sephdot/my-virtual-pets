@@ -50,8 +50,9 @@ builder.Services.AddScoped<IPetService, PetService>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.Cookie.HttpOnly = true;
+        options.Cookie.Name = "my_virtual_pets_api";
         options.Cookie.SameSite = SameSiteMode.None;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
         options.ExpireTimeSpan = TimeSpan.FromHours(2);
         options.LoginPath = "/api/user/login"; // This path will need to serve a login web page
         options.LogoutPath = "/api/user/logout"; // This path will need to serve a logout web page
