@@ -8,5 +8,5 @@ public interface IUserService
     public void CreateNewLocalUser(NewUserDTO newUserDto);
     public bool DoesPasswordMatch(UserLoginDTO userLoginDto);
     public bool ExistsByEmail(string email);
-
+    public Guid GetUserIdByUsername(string username);
 }
