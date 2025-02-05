@@ -10,5 +10,6 @@ public interface IUserRepository
     public string GetPassword(string username);
     public Guid CreateNewGlobalUser(NewUserDTO newUserDto);
     public bool ExistsByEmail(string email);
+    public Guid GetUserIdByUsername(string username);
 
 }

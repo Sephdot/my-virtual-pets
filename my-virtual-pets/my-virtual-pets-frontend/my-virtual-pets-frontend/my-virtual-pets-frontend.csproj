@@ -19,4 +19,8 @@
     <Folder Include="wwwroot\fonts\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\js\CookieSetter.js" />
+  </ItemGroup>
+
 </Project>
