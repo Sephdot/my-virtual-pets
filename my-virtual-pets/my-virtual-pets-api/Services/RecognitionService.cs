@@ -13,8 +13,13 @@ namespace ImageRecognition
         {
             Model = "animals";
             ApiKey = configuration["dragoneyeApiKey"] ?? throw new Exception("DragonEye API Key could not be found.");
-
         }
+        public RecognitionService()
+        {
+            Model = "animals";
+            ApiKey = null;
+        }
+
         public async Task<IPredicted?> CheckImageInput(string imageLocation)
         {
             var result = await CheckImage(imageLocation, null);
@@ -73,7 +78,7 @@ namespace ImageRecognition
             }
         }
 
-        private static  bool CheckIfUrl(string imageLocation)
+        public bool CheckIfUrl(string imageLocation)
         {
             var urlRegex = new Regex(
                             @"^(https?|ftps?):\/\/(?:[a-zA-Z0-9]" +
@@ -121,10 +126,10 @@ namespace ImageRecognition
             List<string> validAnimals = new List<string>{  "cat", "dog" };
             try
             {
-            var result = validAnimals.Contains(animal.name);
-            return result;
+                var result = validAnimals.Contains(animal.name);
+                return result;
             }
-            catch (System.NullReferenceException ex)
+            catch (NullReferenceException ex)
             {
                 return false;
             }
