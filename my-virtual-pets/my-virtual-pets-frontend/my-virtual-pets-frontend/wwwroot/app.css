@@ -176,3 +176,7 @@ h1:focus {
     margin-bottom: 20px;
 
 }
+
+.delete {
+    cursor: pointer;
+}
