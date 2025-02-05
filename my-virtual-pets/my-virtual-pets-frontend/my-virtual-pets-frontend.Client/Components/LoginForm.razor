@@ -1,8 +1,8 @@
 @using System.Net
 @using Microsoft.AspNetCore.Components.WebAssembly.Http
 @using my_virtual_pets_class_library.DTO
-@rendermode InteractiveServer
 @inject HttpClient Http
+@inject IJSRuntime JSRuntime
 
 
 <EditForm FormName="Login" Model="@loginDetails" OnInvalidSubmit="HandleInvalidSubmit" OnValidSubmit="HandleValidSubmit">
@@ -46,13 +46,25 @@
 
     public async Task HandleValidSubmit()
     {
-        var response = await Http.PostAsJsonAsync<UserLoginDTO>("http://localhost:5138/api/user/login", loginDetails);
-        Console.WriteLine(response.StatusCode);
-        Console.WriteLine(response);
-        //var webclient = new BackendClient<UserLoginDTO>("api/user/login");
-        //await webclient.PostRequest(loginDetails);
-        Success = "Submitted!"; 
-        loginDetails = new UserLoginDTO();
+        HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, "https://localhost:7091/api/user/login");
+        requestMessage.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+        requestMessage.Content = JsonContent.Create(loginDetails);
+        var client = new HttpClient();
+        var response = await client.SendAsync(requestMessage);    
+        if (response.StatusCode == HttpStatusCode.OK)
+        {
+            {
+                var setCookieHeader = response.Headers.FirstOrDefault(h => h.Key.Equals("Set-Cookie")).Value.FirstOrDefault();
+                if (setCookieHeader != null)
+                {
+                    string[] splitcookie = setCookieHeader.Split(";");
+                    await JSRuntime.InvokeVoidAsync("setCookie", splitcookie[0]);
+                }
+            }
+            Success = "Submitted!"; 
+            loginDetails = new UserLoginDTO(); 
+        }
+
     }
 
 }

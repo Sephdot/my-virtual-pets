@@ -13,16 +13,6 @@ builder.Services.AddBlazorBootstrap();
 builder.Services.AddScoped<HttpClient>();
 
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy(name: "Frontend",
-        policy  =>
-            policy.WithOrigins("http://localhost:5138/")
-                .AllowCredentials()
-                .AllowAnyMethod()
-                .AllowAnyHeader());
-});
-
 
 var app = builder.Build();
 
@@ -38,13 +28,12 @@ else
     app.UseHsts();
 }
 
-app.UseCors("Frontend");
- 
-
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 app.UseAntiforgery();
+
+app.UseBlazorFrameworkFiles();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()

@@ -61,7 +61,7 @@ namespace my_virtual_pets_api.Controllers
                 new ClaimsPrincipal(claimsIdentity),
                 authProperties);
 
-            return Ok("You are logged in.");
+            return Ok(new { response = "You are logged in."});
         }
 
         [HttpGet("logout")]
