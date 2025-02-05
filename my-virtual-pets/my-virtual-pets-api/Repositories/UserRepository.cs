@@ -14,6 +14,11 @@ namespace my_virtual_pets_api.Repositories
             _context = context;
         }
 
+        public Guid GetUserIdByUsername(string username)
+        {
+            return _context.GlobalUsers.FirstOrDefault(u => u.Username == username).Id;
+        }
+
         public bool ExistsByUsername(string username)
         {
             return _context.GlobalUsers.Any(u => u.Username == username);    

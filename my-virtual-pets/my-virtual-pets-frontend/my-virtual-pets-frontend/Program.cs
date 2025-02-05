@@ -10,6 +10,10 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddBlazorBootstrap();
 
+builder.Services.AddScoped<HttpClient>();
+
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -28,6 +32,8 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 app.UseAntiforgery();
+
+app.UseBlazorFrameworkFiles();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
