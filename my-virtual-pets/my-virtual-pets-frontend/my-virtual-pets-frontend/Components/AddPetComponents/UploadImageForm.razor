@@ -4,7 +4,7 @@
 
 <EditForm FormName="UploadImageForm" Model="@_formModel" OnInvalidSubmit="HandleInvalidSubmit" OnValidSubmit="HandleValidSubmit">
     <h3>Upload Image</h3>
-    <h6>@_success</h6>
+    <h6>@_successMessage</h6>
     <DataAnnotationsValidator/>
         <div class="form-group">
             <label for="InputPetImage" class="form-label">Upload Image: <span class="text-danger">*</span></label>
@@ -23,8 +23,15 @@
 
 
 @code {
+    [CascadingParameter]
+    AddPetDTO PetDetails { get; set; }
+    
     private IBrowserFile? _file;
-    private string _success { get; set; }
+    private string _successMessage { get; set; }
+    
+    [Parameter] 
+    public EventCallback<bool> OnSuccessfulUpload { get; set; }
+    
     private int _maxFileSize = 512000;
     
     private class FormModel
@@ -54,7 +61,7 @@
 
     public void HandleInvalidSubmit()
     {
-        _success = "Something has gone wrong"; 
+        _successMessage = "Something has gone wrong"; 
     }
 
     public async Task HandleValidSubmit()
@@ -73,7 +80,8 @@
             throw;
         }
         
-        _success = "Submitted!";
+        _successMessage = "Submitted!";
+        await OnSuccessfulUpload.InvokeAsync(true); // do this if api returns successful 
         /*var webclient = new BackendClient<UserLoginDTO>("api/user/login");
         webclient.PostRequest();*/
     }
