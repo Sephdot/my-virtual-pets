@@ -152,16 +152,20 @@ h1:focus {
 }
 
 #formcenter {
+    margin-bottom: 15px;
     padding: 25px;
     border: 10px dashed  #82578c;
-    background-color: #fefedf;
     border-radius: 25px;
+    background-color: #fefedf;
 }
 
 #formcenter:hover {
     transform: scale(1.01);
     border: 10px solid  #82578c;
+}
 
+.btn, .btn:hover {
+    border: dashed  #82578c;
 }
 
 #formcenter a {
