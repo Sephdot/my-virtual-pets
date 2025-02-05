@@ -7,5 +7,7 @@ namespace my_virtual_pets_api.Services.Interfaces
         List<PetCardDataDTO> GetPetsByUser(Guid userId);
         public PetCardDataDTO GetPetById(Guid petId);
         public PetCardDataDTO AddPet(AddPetDTO addPetDTO);
+
+        public bool DeletePet(Guid petId);
     }
 }

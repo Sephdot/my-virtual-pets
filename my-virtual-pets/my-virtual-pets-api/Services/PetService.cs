@@ -31,5 +31,11 @@ namespace my_virtual_pets_api.Services
             Guid imageId = _imagesService.AddImage(petData.ImageUrl);
             return _petRepository.AddPet(petData, imageId);
         }
+
+        public bool DeletePet(Guid petId)
+        {
+            ima
+            return _petRepository.DeletePet(petId);
+        }
     }
 }

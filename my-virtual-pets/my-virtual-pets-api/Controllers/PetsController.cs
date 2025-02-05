@@ -49,5 +49,13 @@ namespace my_virtual_pets_api.Controllers
             PetCardDataDTO addedPet = _petService.AddPet(addPetDTO);
             return Ok(addedPet);
         }
+
+        [HttpDelete]
+        public IActionResult DeletePet(Guid petId)
+        {
+            bool isDeleted = _petService.DeletePet(petId);
+            if (isDeleted) return NoContent();
+            return NotFound();
+        }
     }
 }
