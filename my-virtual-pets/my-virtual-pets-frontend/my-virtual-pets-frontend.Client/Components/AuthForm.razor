@@ -1,10 +1,6 @@
-@using System.Net
-@using Microsoft.AspNetCore.Components.WebAssembly.Http
-@using my_virtual_pets_class_library.DTO
 @inject HttpClient Http
 @inject IJSRuntime JSRuntime
 @inject NavigationManager NavigationManager;
-
 
 <button @onclick="TestFunction">This is a button</button>
 
@@ -23,12 +19,13 @@
         {
             Console.WriteLine("COOKIE IS NULL");
         }
+        
         var response = await Http.GetAsync("https://localhost:7091/api/user/auth"); 
         Console.WriteLine(response);
         if (!response.IsSuccessStatusCode)
-         {
-                NavigationManager.NavigateTo("/login"); 
-         }
+        {
+             NavigationManager.NavigateTo("/login"); 
+        }
     }
         
   
