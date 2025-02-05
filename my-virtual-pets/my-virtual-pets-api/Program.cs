@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using my_virtual_pets_api.Repositories;
 using my_virtual_pets_api.Repositories.Interfaces;
 using my_virtual_pets_api.Services.Interfaces;
-using Microsoft.IdentityModel.Tokens; 
 
 var builder = WebApplication.CreateBuilder(args);
 
