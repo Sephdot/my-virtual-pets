@@ -12,8 +12,6 @@
     font-style: normal;
 }
 
-
-
 *,
 *:before,
 *:after {
@@ -40,17 +38,18 @@ body {
     font-family: "Roboto_Mono", serif;
 }
 
+h1,
 h1:focus {
     outline: none;
     font-family: "Pixelify_Sans", serif;
 }
 
 .valid.modified:not([type=checkbox]) {
-    outline: 1px solid #26b050;
+    border-color: #26b050;
 }
 
 .invalid {
-    outline: 1px solid #e50000;
+    border-color: #e50000 !important;
 }
 
 .validation-message {
@@ -79,7 +78,7 @@ h1:focus {
 
 
 .leadercard:hover {
-    transform: scale(1.02);    
+    transform: scale(1.02);
     box-shadow: 4px 4px 4px #141514;
 }
 
@@ -129,6 +128,26 @@ h1:focus {
     z-index: 1000;
 }
 
+.form-control,
+.form-select {
+    border: 0.15rem dashed black;
+}
+
+.form-control:focus,
+.form-control:focus {
+    box-shadow: none;
+}
+
+.btn {
+    border: 0.15rem dashed #82578c;
+}
+
+.btn:hover {
+    border-color: #D18BE0;
+    border-style: dashed;
+    background-color: white;
+}
+
 
 #popupcard {
     position: absolute;
@@ -152,17 +171,23 @@ h1:focus {
 }
 
 #formcenter {
+    margin-bottom: 15px;
     padding: 25px;
-    border: 10px dashed  #82578c;
-    background-color: #fefedf;
+    border: 10px dashed #82578c;
     border-radius: 25px;
+    background-color: #fefedf;
+    transition: transform 0.2s ease-in-out;
 }
 
 #formcenter:hover {
     transform: scale(1.01);
-    border: 10px solid  #82578c;
-
+    border: 10px solid #82578c;
 }
+
+#formcenter:hover::after {
+    transition-duration: 0.2s;
+}
+
 
 #formcenter a {
     font-style: italic;
