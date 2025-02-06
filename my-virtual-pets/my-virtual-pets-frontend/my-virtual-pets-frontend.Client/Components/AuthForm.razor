@@ -15,17 +15,19 @@
         {
             Console.WriteLine(cookie);
             Http.DefaultRequestHeaders.Add("Cookie", $"my_virtual_pets_api={cookie}");
+            var response = await Http.GetAsync("https://localhost:7091/api/user/auth"); 
+            Console.WriteLine(response);
+            if (!response.IsSuccessStatusCode)
+            {
+                NavigationManager.NavigateTo("/login"); 
+            }
         } else
         {
             Console.WriteLine("COOKIE IS NULL");
+            NavigationManager.NavigateTo("/login"); 
         }
         
-        var response = await Http.GetAsync("https://localhost:7091/api/user/auth"); 
-        Console.WriteLine(response);
-        if (!response.IsSuccessStatusCode)
-        {
-             NavigationManager.NavigateTo("/login"); 
-        }
+      
     }
         
   
