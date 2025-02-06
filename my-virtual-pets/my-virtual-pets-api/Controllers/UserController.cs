@@ -1,8 +1,9 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using my_virtual_pets_api.Services.Interfaces;
 using my_virtual_pets_class_library.DTO;
 
@@ -14,8 +15,11 @@ namespace my_virtual_pets_api.Controllers
     {
         private readonly IUserService _userService;
 
-        public UserController(IUserService userService)
+        private readonly IConfiguration _configuration;
+        
+        public UserController(IUserService userService, IConfiguration configuration)
         {
+            _configuration = configuration;
             _userService = userService;
         }
 
@@ -39,44 +43,47 @@ namespace my_virtual_pets_api.Controllers
             if (!_userService.ExistsByUsername(userLoginDto.Username)) return BadRequest("This username does not exist");
             if (!_userService.DoesPasswordMatch(userLoginDto)) return BadRequest("Password is incorrect");
             
-            var claims = new List<Claim>
+            Guid userId = _userService.GetUserIdByUsername(userLoginDto.Username);
+
+            var claims = new[]
             {
+                new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
                 new Claim(ClaimTypes.Name, userLoginDto.Username),
                 new Claim(ClaimTypes.Role, "User"),
             };
+            
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Secret"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var claimsIdentity = new ClaimsIdentity(
-                claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var token = new JwtSecurityToken(
+                issuer: _configuration["Jwt:Issuer"],
+                audience: _configuration["Jwt:Audience"],
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(30), 
+                signingCredentials: creds
+            );
 
-            var authProperties = new AuthenticationProperties
+            return Ok(new
             {
-                AllowRefresh = true,
-                ExpiresUtc = DateTimeOffset.UtcNow.AddHours(2),
-                IsPersistent = true,
-                IssuedUtc = DateTimeOffset.UtcNow,
-            };
-
-            await HttpContext.SignInAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                new ClaimsPrincipal(claimsIdentity),
-                authProperties);
-
-            return Ok(new { response = "You are logged in."});
+                token = new JwtSecurityTokenHandler().WriteToken(token)
+            });
         }
-
+        
+        
+        
         [HttpGet("logout")]
         public async Task LogoutAsync()
         {
-            await HttpContext.SignOutAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme);
+            // await HttpContext.SignOutAsync(
+            //     CookieAuthenticationDefaults.AuthenticationScheme);
         }
         
-        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
+        [Authorize]
         [HttpGet("auth")]
         public IActionResult AuthCheck()
         {
-            Guid userId = _userService.GetUserIdByUsername(User.Identity.Name);
-            return Ok(new CurrentUserDTO() { Id =  userId, Username = User.Identity.Name  } );
+            var firstClaim = User.Claims.ElementAtOrDefault(0)?.Value;
+            return Ok(new CurrentUserDTO() { Id = firstClaim,  Username = User.Identity.Name } );
         }
 
         [HttpGet("forbidden")]
@@ -84,6 +91,7 @@ namespace my_virtual_pets_api.Controllers
         {
             return Forbidden();
         }
+        
         
 
         [HttpPut("/s3")]

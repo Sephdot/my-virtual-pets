@@ -1,29 +1,31 @@
 @page "/collection"
+@using Microsoft.AspNetCore.Components.Authorization
 @using my_virtual_pets_class_library.DTO
 @using my_virtual_pets_frontend.Components.Icons
 @using my_virtual_pets_frontend.Components.DisplayCards
-@inject NavigationManager NavMan
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@inject NavigationManager Navigation
 @rendermode InteractiveAuto
+
 
 <PageTitle>Collection | MyVirtualPets</PageTitle>
 
 @if (UserId == null)
 {
-    NavMan.NavigateTo("/login"); 
+    Navigation.NavigateTo("/login"); 
 } else if (_petCardDataDTOs is null) 
 {
     <Cat_Loader></Cat_Loader>
-}
-
-<section class="container text-center">
-    <div class="container">
-        <h1 class="fw-bold py-6">My Collection</h1>
-        <button onclick="() => HandleAddPet" class="btn btn-primary my-2">Add Pet</button>
-        <hr class="my-4"/>
-    </div>
-</section>
-
-@if (_petCardDataDTOs.Count() > 0)
+} else if (_petCardDataDTOs.Count() == 0)
+{
+    <section class="container text-center">
+        <div class="container">
+            <h1 class="fw-bold py-6">My Collection</h1>
+            <button onclick="() => HandleAddPet" class="btn btn-primary my-2">Add Pet</button>
+            <hr class="my-4"/>
+        </div>
+    </section>
+} else if (_petCardDataDTOs.Count() > 0)
 {
             <div class="container">
                 <div class="row">
@@ -37,25 +39,30 @@
 
 @code {
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        var token = await sessionStorage.GetItemAsync<string>("jwtToken");
+        if (string.IsNullOrEmpty(token))
+        {
+            Navigation.NavigateTo("/login");
+        }
+    }
+    
     private string UserId = "f3922887-7fc2-447b-a08f-4fbbc663ba81";
 
     private List<PetCardDataDTO> _petCardDataDTOs = new List<PetCardDataDTO>();
-    
+
     protected override async Task OnInitializedAsync()
-    {   
+    {
         var getclient = new BackendClient<List<PetCardDataDTO>>($"api/pets/user/{UserId}");
         _petCardDataDTOs = await getclient.GetRequest(); 
     }
     
     public async Task DeleteFromCollection(Guid petId) {
-        Console.WriteLine("CASCADED");
-        Console.WriteLine(petId);
         var client = new BackendClient<int>($"api/pets/{petId}");
         await client.DeleteRequest();
-        
         var getclient = new BackendClient<List<PetCardDataDTO>>($"api/pets/user/{UserId}");
         _petCardDataDTOs = await getclient.GetRequest(); 
-        // _petCardDataDTOs = _petCardDataDTOs.Where(p => p.PetId != petId).ToList(); 
     }
     
     public async Task HandleAddPet()

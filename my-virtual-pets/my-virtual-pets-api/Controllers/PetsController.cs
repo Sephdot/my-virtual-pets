@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using my_virtual_pets_api.Data;
 using my_virtual_pets_api.Services.Interfaces;
 using my_virtual_pets_class_library.DTO;
+using my_virtual_pets_class_library.Enums;
 
 namespace my_virtual_pets_api.Controllers
 {
@@ -48,6 +49,15 @@ namespace my_virtual_pets_api.Controllers
             return Ok(addedPet);
         }
 
+        
+        // [HttpGet("top10")]
+        // public ActionResult<List<PetCardDataDTO>> GetTop10Pets()
+        // {
+        //     var pets = _petService.GetTop10Pets();
+        //     return Ok(pets);
+        // }
+        //
+        
         [HttpDelete("{petId}")]
         public IActionResult DeletePet(Guid petId)
         {

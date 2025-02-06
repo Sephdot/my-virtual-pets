@@ -16,7 +16,12 @@ namespace my_virtual_pets_api.Repositories
 
         public Guid GetUserIdByUsername(string username)
         {
-            return _context.GlobalUsers.FirstOrDefault(u => u.Username == username).Id;
+            Guid userId = _context.GlobalUsers.FirstOrDefault(u => u.Username == username).Id;
+            if (userId == Guid.Empty)
+            {
+                return Guid.Empty; 
+            }
+            return userId;
         }
 
         public bool ExistsByUsername(string username)
