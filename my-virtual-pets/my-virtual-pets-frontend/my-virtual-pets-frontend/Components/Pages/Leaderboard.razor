@@ -3,6 +3,8 @@
 @using my_virtual_pets_class_library.Enums
 @using my_virtual_pets_frontend.Components.Icons
 @using my_virtual_pets_frontend.Components.DisplayCards
+@rendermode InteractiveServer
+
 
 <PageTitle>Leaderboard | MyVirtualPets</PageTitle>
 
@@ -38,9 +40,6 @@ else
 </div>
 
     
-    
-<!----- Change to virtualise? ---->
-
 
 <div class="container">
         @foreach (var pet in pets.Skip(3))

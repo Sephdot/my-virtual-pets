@@ -57,7 +57,6 @@ h1:focus {
 }
 
 
-
 .award {
     color: #141514;
     position: absolute;
@@ -204,4 +203,24 @@ h1:focus {
 
 .delete {
     cursor: pointer;
+    position: absolute; 
+    right: 10px; 
+    top: 0px;
+}
+
+#trash:hover {
+    color: #82578c;
+}
+
+.collectioncard {
+    border-radius: 25px;
+    margin: 40px;
+    border: 5px dashed #D18BE0;
+    background-color: #fefedf;
+    position: relative;
+    padding: 10px;
+}
+
+.collectioncard:hover {
+    border: 5px solid #D18BE0;
 }
