@@ -18,11 +18,10 @@
     }
     else
     {
-        <div>
-            <img src="@PetDetails.ImageUrl" alt="" width="300" height="auto"/>
-            @PetDetails.PetType.ToString()
-        </div>
         <div id="formcenter">
+            <div class="d-flex justify-content-center">
+                <img src="@PetDetails.ImageUrl" alt="" width="300" height="auto"/>
+            </div>
             <CascadingValue Value="PetDetails">
                 @if (!IsSuccessfulUpload)
                 {
