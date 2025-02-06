@@ -39,7 +39,15 @@ namespace my_virtual_pets_api.Services
             string hashedPassword = _userRepository.GetPassword(userLoginDto.Username);
             return BCrypt.Net.BCrypt.EnhancedVerify(userLoginDto.Password, hashedPassword);
         }
-        
-        
+
+        public Guid GetUserIdByUsername(string username)
+        {
+            return _userRepository.GetUserIdByUsername(username);
+        }
+
+        public UserDisplayDTO GetUserDetailsByUserId(Guid userId)
+        {
+            return _userRepository.GetUserDetailsByUserId(userId);
+        }
     }
 }

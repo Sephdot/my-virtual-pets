@@ -10,5 +10,9 @@ namespace my_virtual_pets_api.Services.Interfaces
         public PetCardDataDTO AddPet(AddPetDTO addPetDTO);
 
         public List<Pet> GetPets();
+
+        public List<PetCardDataDTO> GetTop10Pets();
+
+
     }
 }

@@ -1,5 +1,4 @@
-
-﻿using System.Security.Claims;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -33,19 +32,13 @@ namespace my_virtual_pets_api.Controllers
             return Created("/register", "New local user created");
         }
 
-        [HttpGet("login")]
-        public IActionResult Forbidden()
-        {
-            return Ok("You need to log in");
-        }
-
         [HttpPost("login")]
         public async Task<IActionResult> LoginAsync(UserLoginDTO userLoginDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             if (!_userService.ExistsByUsername(userLoginDto.Username)) return BadRequest("This username does not exist");
             if (!_userService.DoesPasswordMatch(userLoginDto)) return BadRequest("Password is incorrect");
-
+            
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, userLoginDto.Username),
@@ -68,7 +61,7 @@ namespace my_virtual_pets_api.Controllers
                 new ClaimsPrincipal(claimsIdentity),
                 authProperties);
 
-            return Ok("You are logged in.");
+            return Ok(new { response = "You are logged in."});
         }
 
         [HttpGet("logout")]
@@ -77,8 +70,22 @@ namespace my_virtual_pets_api.Controllers
             await HttpContext.SignOutAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme);
         }
+        
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
+        [HttpGet("auth")]
+        public IActionResult AuthCheck()
+        {
+            Guid userId = _userService.GetUserIdByUsername(User.Identity.Name);
+            return Ok(new CurrentUserDTO() { Id =  userId, Username = User.Identity.Name  } );
+        }
 
-        // [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
+        [HttpGet("forbidden")]
+        public IActionResult Forbidden()
+        {
+            return Forbidden();
+        }
+        
+
         [HttpPut("/s3")]
         public async Task<IActionResult> UploadImageTest([FromBody] string keyName)
         {
@@ -96,6 +103,17 @@ namespace my_virtual_pets_api.Controllers
         }
 
 
+        [HttpGet("{userId}")]
+        public IActionResult GetUserDetailsByUserId(Guid userId)
+        {
+            var userDisplayDTO =  _userService.GetUserDetailsByUserId(userId);
 
+            if (userDisplayDTO == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            return Ok(userDisplayDTO);
+        }
     }
 }

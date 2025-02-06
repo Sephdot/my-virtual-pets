@@ -35,5 +35,10 @@ namespace my_virtual_pets_api.Services
             Guid imageId = _imagesService.AddImage(petData.ImageUrl);
             return _petRepository.AddPet(petData, imageId);
         }
+
+        public List<PetCardDataDTO> GetTop10Pets()
+        {
+            return _petRepository.GetTop10Pets();
+        }
     }
 }

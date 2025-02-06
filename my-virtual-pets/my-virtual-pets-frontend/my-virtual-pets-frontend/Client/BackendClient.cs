@@ -1,4 +1,5 @@
 using System.Net;
+using Microsoft.AspNetCore.Components.WebAssembly.Http;
 
 namespace my_virtual_pets_frontend.Client;
 
@@ -17,9 +18,8 @@ public class BackendClient<T>
             {
                 CookieContainer = cookieContainer,
                 UseCookies = true,  
-                AllowAutoRedirect = true  
+                // AllowAutoRedirect = true  
             };
-            
             Url = "http://localhost:5138/" + endpoint;
             client = new HttpClient(handler); 
         }
@@ -54,7 +54,20 @@ public class BackendClient<T>
         {
             try
             {
-                var response = await client.PostAsJsonAsync<T>(Url, postValue);
+                
+                HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, Url);
+                requestMessage.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+                requestMessage.Content = JsonContent.Create(postValue);
+                var response = await client.SendAsync(requestMessage);
+                
+                // var response = await client.PostAsJsonAsync<T>(Url, postValue);
+                Console.WriteLine(response.StatusCode);
+                Console.WriteLine(response);
+                var cookies = cookieContainer.GetAllCookies(); 
+                foreach (Cookie cookie in cookies)
+                {
+                    Console.WriteLine($"Cookie Name: {cookie.Name}, Value: {cookie.Value}, Path: {cookie.Path}"); 
+                } 
                 return response.StatusCode;
             }
             catch
