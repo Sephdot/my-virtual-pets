@@ -6,7 +6,7 @@ namespace my_virtual_pets_class_library.DTO;
 public class CurrentUserDTO
 {
     [JsonPropertyName("id")]
-    public Guid Id { get; set; }
+    public string Id { get; set; }
     
     [JsonPropertyName("username")]
     [Required]

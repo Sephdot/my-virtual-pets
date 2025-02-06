@@ -2,8 +2,8 @@
 @using Microsoft.AspNetCore.Components.WebAssembly.Http
 @using my_virtual_pets_class_library.DTO
 @inject HttpClient Http
-@inject IJSRuntime JSRuntime
-
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@rendermode InteractiveAuto 
 
 <EditForm FormName="Login" Model="@loginDetails" OnInvalidSubmit="HandleInvalidSubmit" OnValidSubmit="HandleValidSubmit">
     <h3 class="pixeltext">Login</h3>
@@ -24,7 +24,6 @@
 
         <button id="loginbutton" class="btn btn-light d-block mx-auto mt-4" type="submit">Enter the doghouse</button>
     
-
 </EditForm>
 
 
@@ -52,22 +51,27 @@
         requestMessage.Content = JsonContent.Create(loginDetails);
         var client = new HttpClient();
         var response = await client.SendAsync(requestMessage);    
+        Console.WriteLine(response);
+        
         if (response.StatusCode == HttpStatusCode.OK)
         {
+            var tokenResponse = await response.Content.ReadFromJsonAsync<TokenResponse>();
+            if (tokenResponse != null)
             {
-                var setCookieHeader = response.Headers.FirstOrDefault(h => h.Key.Equals("Set-Cookie")).Value.FirstOrDefault();
-                if (setCookieHeader != null)
-                {
-                    string[] splitcookie = setCookieHeader.Split(";");
-                    await JSRuntime.InvokeVoidAsync("setCookie", splitcookie[0]);
-                }
+                var token = tokenResponse.Token;
+                await sessionStorage.SetItemAsync("jwtToken", token);
+                await sessionStorage.SetItemAsync("currentUser", loginDetails.Username);
+                Success = token;
             }
-            Success = "Submitted!"; 
-            loginDetails = new UserLoginDTO(); 
+           loginDetails = new UserLoginDTO(); 
         }
 
     }
     
+    public class TokenResponse
+    {
+        public string Token { get; set; }
+    }
 
 }
     

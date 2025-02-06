@@ -49,7 +49,6 @@ namespace my_virtual_pets_api.Controllers
             return Ok(addedPet);
         }
 
-
         [HttpGet("top10")]
         public ActionResult<List<PetCardDataDTO>> GetTop10Pets()
         {
@@ -63,8 +62,8 @@ namespace my_virtual_pets_api.Controllers
             var pets = _petService.GetRecentPets();
             return Ok(pets);
         }
-        [HttpDelete("{petId}")]
 
+        [HttpDelete("{petId}")]
         public IActionResult DeletePet(Guid petId)
         {
             bool isDeleted = _petService.DeletePet(petId);
