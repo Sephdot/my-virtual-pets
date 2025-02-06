@@ -1,5 +1,7 @@
 using my_virtual_pets_frontend.Components;
 using BlazorBootstrap;
+using Blazored.SessionStorage;
+using Microsoft.AspNetCore.Components.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,8 +12,11 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddBlazorBootstrap();
 
+builder.Services.AddBlazoredSessionStorage();
+
 builder.Services.AddScoped<HttpClient>();
 
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationState>();
 
 
 var app = builder.Build();

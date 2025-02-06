@@ -1,3 +1,4 @@
+using System.Text;
 using ImageRecognition;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Data.Sqlite;
@@ -10,6 +11,8 @@ using my_virtual_pets_api.Services;
 using my_virtual_pets_api.Services.Interfaces;
 using PixelationTest;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,20 +48,19 @@ builder.Services.AddScoped<IPetRepository, PetRepository>();
 builder.Services.AddScoped<IPetService, PetService>();
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
 
-
-
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(options =>
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
     {
-        options.Cookie.Name = "my_virtual_pets_api";
-        options.Cookie.HttpOnly = true;
-        options.Cookie.SameSite = SameSiteMode.None;
-        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-        options.ExpireTimeSpan = TimeSpan.FromHours(2);
-        options.LoginPath = "/api/user/login"; // This path will need to serve a login web page - front end routes? 
-        options.LogoutPath = "/api/user/logout"; // This path will need to serve a logout web page - 
-        options.SlidingExpiration = true;
-        options.AccessDeniedPath = "/api/user/forbidden";
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = "my-virtual-pets.com",
+            ValidAudience = "my-virtual-pets.com",
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("b3f7e9d8f6a4b9c2d1a6c8e0e0f9b1a3")) // test token remove later
+        };
     });
 // need to configure Google OAuth here 
 
