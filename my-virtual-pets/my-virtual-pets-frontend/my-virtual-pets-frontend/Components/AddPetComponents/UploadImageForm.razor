@@ -88,9 +88,10 @@
         }
         
         _successMessage = "Submitted!";
-        await OnSuccessfulUpload.InvokeAsync(true); // do this if api returns successful 
-        /*var webclient = new BackendClient<UserLoginDTO>("api/user/login");
-        webclient.PostRequest();*/
+        await OnSuccessfulUpload.InvokeAsync(true); // do this if api returns successful
+        var webclient = new AddPetBackendClient<byte[]>("api/images");
+        var x = await webclient.ImageUploadPostRequest(bytes);
+        Console.WriteLine($"Response body: {await x.Content.ReadAsStringAsync()}; Status code: {x.StatusCode}");
     }
     
 }
