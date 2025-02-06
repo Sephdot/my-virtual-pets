@@ -57,7 +57,7 @@ public class ImagesService : IImagesService
         //return string image url and string pet type
         if (!uploadResult.Item1) return null;
 
-        if (Enum.TryParse(recognitionResult.displayName, out PetType petType))
+        if (Enum.TryParse(recognitionResult.displayName, true, out PetType petType))
         {
             return new ImagesResponseDto { ImageUrl = uploadResult.imageUrl, PetType = petType };
         }
