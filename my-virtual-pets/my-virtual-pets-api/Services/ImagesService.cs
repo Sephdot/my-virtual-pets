@@ -24,7 +24,7 @@ public class ImagesService : IImagesService
         _imageRepository = imageRepository;
     }
 
-    public async Task<ImagesResponseDto?> ProcessImageAsync(byte[] inputImage)
+    public async Task<ImagesResponseDTO?> ProcessImageAsync(byte[] inputImage)
     {
         //Recognise image
         //TO DO: Ask Callum about error handling in recognitionService
@@ -59,7 +59,7 @@ public class ImagesService : IImagesService
 
         if (Enum.TryParse(recognitionResult.displayName, true, out PetType petType))
         {
-            return new ImagesResponseDto { ImageUrl = uploadResult.imageUrl, PetType = petType };
+            return new ImagesResponseDTO { ImageUrl = uploadResult.imageUrl, PetType = petType };
         }
         else return null;
     }

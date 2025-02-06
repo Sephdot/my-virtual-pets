@@ -4,7 +4,7 @@ namespace my_virtual_pets_api.Services.Interfaces
 {
     public interface IImagesService
     {
-        Task<ImagesResponseDto?> ProcessImageAsync(byte[] inputImage);
+        Task<ImagesResponseDTO?> ProcessImageAsync(byte[] inputImage);
         Guid AddImage(string imageUrl);
     }
 }
