@@ -45,7 +45,7 @@ public class ImagesService : IImagesService
             inputBitmap = new Bitmap(ms);
         }
 
-        Bitmap pixelatedImage = _pixelateService.PixelateImage(inputBitmap, 6, true);
+        Bitmap pixelatedImage = _pixelateService.PixelateImage(inputBitmap, 100, true);
 
         ImageConverter converter = new ImageConverter();
         byte[] pixelResult = (byte[])converter.ConvertTo(pixelatedImage, typeof(byte[]));
@@ -53,9 +53,14 @@ public class ImagesService : IImagesService
 
         //TO DO: upload image to bucket
         string imageUrlPrefix = Guid.NewGuid().ToString();
+
+        //Saves files 
+        File.WriteAllBytes($"Resources/Images/Results/{imageUrlPrefix}.png", pixelResult);
+
         var uploadResult = await _storageService.UploadObjectAsync(pixelResult, imageUrlPrefix);
         //return string image url and string pet type
         if (!uploadResult.Item1) return null;
+
 
         if (Enum.TryParse(recognitionResult.displayName, true, out PetType petType))
         {
