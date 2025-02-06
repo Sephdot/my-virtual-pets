@@ -48,7 +48,7 @@ namespace my_virtual_pets_api.Controllers
             return Ok(addedPet);
         }
 
-        [HttpDelete]
+        [HttpDelete("{petId}")]
         public IActionResult DeletePet(Guid petId)
         {
             bool isDeleted = _petService.DeletePet(petId);
