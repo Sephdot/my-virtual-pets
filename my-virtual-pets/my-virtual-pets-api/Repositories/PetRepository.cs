@@ -126,6 +126,38 @@ namespace my_virtual_pets_api.Repositories
             return pets;
         }
 
+        public List<PetCardDataDTO> GetRecentPets()
+        {
+            //TO DO: OrderByDescending creation date
+            var pets = _context.Pets
+                .Include(p => p.GlobalUser)
+                .Include(p => p.Image)
+                .AsEnumerable()
+                .OrderByDescending(p => p.Id)
+                .Take(10)
+                .Select(p => new PetCardDataDTO
+                {
+                    PetId = p.Id,
+                    PetName = p.Name,
+                    ImageUrl = p.Image.ImageUrl,
+                    OwnerUsername = p.GlobalUser.Username,
+                    Score = CalculateScore(p),
+                    Personality = p.Personality,
+                    PetType = p.Type,
+                    Description = p.Description,
+                    IsFavourited = false
+                })
+                .ToList();
+
+
+            if (pets == null)
+            {
+                return null;
+            }
+
+            return pets;
+        }
+
 
         private int CalculateScore(Pet pet)
         {

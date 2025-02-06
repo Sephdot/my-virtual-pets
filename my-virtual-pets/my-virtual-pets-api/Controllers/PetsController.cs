@@ -57,6 +57,12 @@ namespace my_virtual_pets_api.Controllers
             return Ok(pets);
         }
 
+        [HttpGet("recent")]
+        public ActionResult<List<PetCardDataDTO>> GetRecentPets()
+        {
+            var pets = _petService.GetRecentPets();
+            return Ok(pets);
+        }
         [HttpDelete("{petId}")]
 
         public IActionResult DeletePet(Guid petId)

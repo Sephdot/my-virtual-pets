@@ -41,6 +41,11 @@ namespace my_virtual_pets_api.Services
             return _petRepository.GetTop10Pets();
         }
 
+        public List<PetCardDataDTO> GetRecentPets()
+        {
+            return _petRepository.GetRecentPets();
+        }
+
         public bool DeletePet(Guid petId)
         {
             return _petRepository.DeletePet(petId);
