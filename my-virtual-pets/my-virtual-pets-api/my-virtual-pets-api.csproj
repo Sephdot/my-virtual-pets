@@ -47,4 +47,8 @@
     <ProjectReference Include="..\my-virtual-pets-class-library\my-virtual-pets-class-library.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="HealthChecks\" />
+  </ItemGroup>
+
 </Project>
