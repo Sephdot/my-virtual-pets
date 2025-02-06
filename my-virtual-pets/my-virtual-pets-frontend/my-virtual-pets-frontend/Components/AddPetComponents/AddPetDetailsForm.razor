@@ -10,7 +10,7 @@ else
 {
     <EditForm Model="@PetDetails" OnInvalidSubmit="HandleInvalidSubmit" OnValidSubmit="HandleValidSubmit">
         <h3>Add Pet Details</h3>
-        <h6 class="badge bg-danger">@_success</h6>
+        <h6 class="@(_success == "Submitted!" ? "text-success" : "text-info")">@_success</h6>
         <DataAnnotationsValidator/>
 
         <div class="form-group">
