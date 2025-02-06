@@ -68,15 +68,7 @@ namespace my_virtual_pets_api.Controllers
                 token = new JwtSecurityTokenHandler().WriteToken(token)
             });
         }
-        
-        
-        
-        [HttpGet("logout")]
-        public async Task LogoutAsync()
-        {
-            // await HttpContext.SignOutAsync(
-            //     CookieAuthenticationDefaults.AuthenticationScheme);
-        }
+
         
         [Authorize]
         [HttpGet("auth")]
@@ -86,31 +78,7 @@ namespace my_virtual_pets_api.Controllers
             return Ok(new CurrentUserDTO() { Id = firstClaim,  Username = User.Identity.Name } );
         }
 
-        [HttpGet("forbidden")]
-        public IActionResult Forbidden()
-        {
-            return Forbidden();
-        }
         
-        
-
-        [HttpPut("/s3")]
-        public async Task<IActionResult> UploadImageTest([FromBody] string keyName)
-        {
-            Cloud.S3StorageService s3 = new();
-            var result = await s3.UploadFileAsync(keyName);
-            if (result.Item1)
-            {
-                // if operation was successful
-                return Ok(result.Item2);
-            }
-            else
-            {
-                return StatusCode(500, result.Item2);
-            }
-        }
-
-
         [HttpGet("{userId}")]
         public IActionResult GetUserDetailsByUserId(Guid userId)
         {
