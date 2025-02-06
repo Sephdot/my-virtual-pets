@@ -114,14 +114,20 @@ namespace my_virtual_pets_api.Controllers
         [HttpGet("{userId}")]
         public IActionResult GetUserDetailsByUserId(Guid userId)
         {
-            var userDisplayDTO =  _userService.GetUserDetailsByUserId(userId);
-
-            if (userDisplayDTO == null)
+            var userDisplayDTO = _userService.GetUserDetailsByUserId(userId);
+            try
             {
-                return NotFound();
-            }
+                if (userDisplayDTO == null)
+                {
+                    return NotFound($"User with ID {userId} not found.");
+                }
 
-            return Ok(userDisplayDTO);
+                return Ok(userDisplayDTO);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred while fetching top pets: {ex.Message}");
+            }
         }
     }
 }

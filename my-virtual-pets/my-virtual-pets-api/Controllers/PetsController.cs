@@ -23,37 +23,72 @@ namespace my_virtual_pets_api.Controllers
         [HttpGet]
         public IActionResult GetPets()
         {
-            var pets = _petService.GetPets();
-            return Ok(pets);
+            try
+            {
+                var pets = _petService.GetPets();
+                return Ok(pets);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred while fetching top pets: {ex.Message}");
+            }
         }
 
         [HttpGet("user/{userId}")]
         public IActionResult GetAllPetsByUserID(Guid userId)
         {
-            var petCards = _petService.GetPetsByUser(userId);
-            return Ok(petCards);
+            try
+            {
+                var petCards = _petService.GetPetsByUser(userId);
+                return Ok(petCards);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred while fetching top pets: {ex.Message}");
+            }
         }
 
         [HttpGet("{petId}")]
         public IActionResult GetPetById(Guid petId)
         {
-            var pet = _petService.GetPetById(petId);
-            return Ok(pet);
+            try
+            {
+                var pet = _petService.GetPetById(petId);
+                return Ok(pet);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred while fetching top pets: {ex.Message}");
+            }
 
         }
 
         [HttpPost]
         public IActionResult AddPet(AddPetDTO addPetDTO)
         {
-            PetCardDataDTO addedPet = _petService.AddPet(addPetDTO);
-            return Ok(addedPet);
+            try
+            {
+                PetCardDataDTO addedPet = _petService.AddPet(addPetDTO);
+                return Ok(addedPet);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred while fetching top pets: {ex.Message}");
+            }
         }
 
         [HttpGet("top10")]
         public ActionResult<List<PetCardDataDTO>> GetTop10Pets()
         {
-            var pets = _petService.GetTop10Pets();
-            return Ok(pets);
+            try
+            {
+                var pets = _petService.GetTop10Pets();
+                return Ok(pets);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred while fetching top pets: {ex.Message}");
+            }
         }
 
         [HttpGet("recent")]

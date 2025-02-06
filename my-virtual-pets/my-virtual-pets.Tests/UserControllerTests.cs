@@ -61,7 +61,7 @@ namespace my_virtual_pets.Tests
             var result = _controller.GetUserDetailsByUserId(userId);
 
             // Assert
-            result.Should().BeOfType<NotFoundResult>();
+            result.Should().BeOfType<NotFoundObjectResult>();
         }
     }
 }

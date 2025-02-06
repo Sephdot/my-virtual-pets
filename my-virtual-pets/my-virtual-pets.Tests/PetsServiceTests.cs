@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using Moq;
 using my_virtual_pets_api.Repositories.Interfaces;
+using my_virtual_pets_api.Services;
 using my_virtual_pets_api.Services.Interfaces;
 using my_virtual_pets_class_library.DTO;
 using my_virtual_pets_class_library.Enums;
