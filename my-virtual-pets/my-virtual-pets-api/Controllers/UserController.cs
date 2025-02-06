@@ -1,10 +1,10 @@
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using my_virtual_pets_api.Services.Interfaces;
 using my_virtual_pets_class_library.DTO;
+using System.Security.Claims;
 
 namespace my_virtual_pets_api.Controllers
 {
@@ -38,7 +38,7 @@ namespace my_virtual_pets_api.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
             if (!_userService.ExistsByUsername(userLoginDto.Username)) return BadRequest("This username does not exist");
             if (!_userService.DoesPasswordMatch(userLoginDto)) return BadRequest("Password is incorrect");
-            
+
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, userLoginDto.Username),
@@ -61,7 +61,7 @@ namespace my_virtual_pets_api.Controllers
                 new ClaimsPrincipal(claimsIdentity),
                 authProperties);
 
-            return Ok(new { response = "You are logged in."});
+            return Ok(new { response = "You are logged in." });
         }
 
         [HttpGet("logout")]
@@ -70,13 +70,13 @@ namespace my_virtual_pets_api.Controllers
             await HttpContext.SignOutAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme);
         }
-        
+
         [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
         [HttpGet("auth")]
         public IActionResult AuthCheck()
         {
             Guid userId = _userService.GetUserIdByUsername(User.Identity.Name);
-            return Ok(new CurrentUserDTO() { Id =  userId, Username = User.Identity.Name  } );
+            return Ok(new CurrentUserDTO() { Id = userId, Username = User.Identity.Name });
         }
 
         [HttpGet("forbidden")]
@@ -84,7 +84,7 @@ namespace my_virtual_pets_api.Controllers
         {
             return Forbidden();
         }
-        
+
 
         [HttpPut("/s3")]
         public async Task<IActionResult> UploadImageTest([FromBody] string keyName)
@@ -106,7 +106,7 @@ namespace my_virtual_pets_api.Controllers
         [HttpGet("{userId}")]
         public IActionResult GetUserDetailsByUserId(Guid userId)
         {
-            var userDisplayDTO =  _userService.GetUserDetailsByUserId(userId);
+            var userDisplayDTO = _userService.GetUserDetailsByUserId(userId);
 
             if (userDisplayDTO == null)
             {
@@ -114,6 +114,86 @@ namespace my_virtual_pets_api.Controllers
             }
 
             return Ok(userDisplayDTO);
+        }
+
+        [HttpPost]
+        [Route("{GlobalUserId}/AddToFavourites{PetId}")]
+
+        public IActionResult AddPetToFavourites(Guid GlobalUserId, Guid PetId)
+        {
+            try
+            {
+                bool isSuccess = _userService.AddToFavourites(GlobalUserId, PetId);
+                if (isSuccess) return NoContent();
+                else return Conflict("Pet is already favourited");
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpGet]
+        [Route("{GlobalUserId}/FavouritePetIds")]
+        public IActionResult GetFavouritePetIds(Guid GlobalUserId)
+        {
+            try
+            {
+                var favouritePetIds = _userService.GetFavouritePetId(GlobalUserId);
+                return Ok(favouritePetIds);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound("User not found");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("{GlobalUserId}/FavouritePets")]
+        public IActionResult GetFavouritePets(Guid GlobalUserId)
+        {
+            try
+            {
+                var favouritePets = _userService.GetFavouritePets(GlobalUserId);
+                return Ok(favouritePets);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound("User not found");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete]
+        [Route("{GlobalUserId}/RemoveFromFavourites{PetId}")]
+        public IActionResult RemoveFromFavourite(Guid GlobalUserId, Guid PetId)
+        {
+            try
+            {
+                bool isSuccess = _userService.RemoveFromFavourites(GlobalUserId, PetId);
+                if (isSuccess) return NoContent();
+                else return Conflict("Pet is already unfavourited");
+
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
