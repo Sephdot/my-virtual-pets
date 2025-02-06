@@ -399,4 +399,3 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 .idea
-/my-virtual-pets/my-virtual-pets-class-library/DTO/UserDisplayDTO.cs

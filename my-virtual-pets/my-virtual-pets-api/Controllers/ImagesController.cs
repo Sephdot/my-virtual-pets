@@ -21,7 +21,7 @@ public class ImagesController : ControllerBase
     {
         //byte[] inputImage = System.IO.File.ReadAllBytes("Resources/Images/testimage.png");
 
-        ImagesResponseDto? result = await _imagesService.ProcessImageAsync(inputImage);
+        ImagesResponseDTO? result = await _imagesService.ProcessImageAsync(inputImage);
         if (result == null) return BadRequest();
         return Ok(result);
     }

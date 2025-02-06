@@ -9,4 +9,6 @@ public interface IUserService
     public bool DoesPasswordMatch(UserLoginDTO userLoginDto);
     public bool ExistsByEmail(string email);
     public Guid GetUserIdByUsername(string username);
+
+    public UserDisplayDTO GetUserDetailsByUserId(Guid userId);
 }

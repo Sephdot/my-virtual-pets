@@ -11,5 +11,10 @@ namespace my_virtual_pets_api.Services.Interfaces
 
         public bool DeletePet(Guid petId);
         public List<Pet> GetPets();
+
+        public List<PetCardDataDTO> GetTop10Pets();
+        public List<PetCardDataDTO> GetRecentPets();
+
+
     }
 }

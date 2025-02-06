@@ -45,6 +45,9 @@ namespace my_virtual_pets_api.Services
             return _userRepository.GetUserIdByUsername(username);
         }
 
-        
+        public UserDisplayDTO GetUserDetailsByUserId(Guid userId)
+        {
+            return _userRepository.GetUserDetailsByUserId(userId);
+        }
     }
 }

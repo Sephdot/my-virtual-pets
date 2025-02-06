@@ -14,7 +14,7 @@ namespace my_virtual_pets_api.Controllers
         private readonly IPetService _petService;
 
 
-        public PetsController( IPetService petService)
+        public PetsController(IPetService petService)
         {
             _petService = petService;
         }
@@ -49,15 +49,20 @@ namespace my_virtual_pets_api.Controllers
             return Ok(addedPet);
         }
 
-        
-        // [HttpGet("top10")]
-        // public ActionResult<List<PetCardDataDTO>> GetTop10Pets()
-        // {
-        //     var pets = _petService.GetTop10Pets();
-        //     return Ok(pets);
-        // }
-        //
-        
+        [HttpGet("top10")]
+        public ActionResult<List<PetCardDataDTO>> GetTop10Pets()
+        {
+            var pets = _petService.GetTop10Pets();
+            return Ok(pets);
+        }
+
+        [HttpGet("recent")]
+        public ActionResult<List<PetCardDataDTO>> GetRecentPets()
+        {
+            var pets = _petService.GetRecentPets();
+            return Ok(pets);
+        }
+
         [HttpDelete("{petId}")]
         public IActionResult DeletePet(Guid petId)
         {
@@ -66,4 +71,7 @@ namespace my_virtual_pets_api.Controllers
             return NotFound();
         }
     }
+
+
+      
 }

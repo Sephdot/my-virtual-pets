@@ -62,6 +62,37 @@ namespace my_virtual_pets_api.Repositories
             return userPassword;
         }
 
-            
+        public UserDisplayDTO GetUserDetailsByUserId(Guid userId)
+        {
+            var user = _context.GlobalUsers
+                .Where(u => u.Id == userId)
+                .FirstOrDefault();
+
+            var localUser = _context.LocalUsers
+                .Where(lu => lu.GlobalUserId == userId)
+                .FirstOrDefault();
+
+            if (user == null || localUser == null)
+            {
+                return null;
+            }
+
+            var petCount = _context.Pets
+                .Where(p => p.GlobalUserId == userId)
+                .Count();
+
+            var userDisplayDTO = new UserDisplayDTO
+            {
+                Username = user.Username,
+                FirstName = localUser.FirstName, 
+                LastName = localUser.LastName,    
+                Email = user.Email,
+                PetCount = petCount
+            };
+
+            return userDisplayDTO;
+        }
+
+
     }
 }
