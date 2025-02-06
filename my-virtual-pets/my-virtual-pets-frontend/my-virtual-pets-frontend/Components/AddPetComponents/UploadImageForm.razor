@@ -8,16 +8,17 @@
 
 
 <EditForm Model="@_formModel" OnInvalidSubmit="HandleInvalidSubmit" OnValidSubmit="HandleValidSubmit">
-    <h3>@(_isFileBeingProcessed ? "Uploading Image..." : "Upload Image!")</h3>
-    <h6>@(_isFileBeingProcessed ? "" : _successMessage)</h6>
     @if (_isFileBeingProcessed)
     {
+        <h3 class="text-center mb-4">Uploading Image...</h3>
         <div class="d-block mx-auto my-6">
             <Cat_Loader></Cat_Loader>
         </div>
     }
     else
     {
+        <h3 class="text-center mb-4">Upload Image!</h3>
+        <h6>@_successMessage</h6>
         <DataAnnotationsValidator/>
         <div class="form-group">
             <div>
