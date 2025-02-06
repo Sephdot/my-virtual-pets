@@ -9,7 +9,7 @@
 
 <EditForm Model="@_formModel" OnInvalidSubmit="HandleInvalidSubmit" OnValidSubmit="HandleValidSubmit">
     <h3>@(_isFileBeingProcessed ? "Uploading Image..." : "Upload Image!")</h3>
-    <h6>@_successMessage</h6>
+    <h6>@(_isFileBeingProcessed ? "" : _successMessage)</h6>
     @if (_isFileBeingProcessed)
     {
         <div class="d-block mx-auto my-6">
