@@ -1,0 +1,72 @@
+@using System.Net
+@using Microsoft.AspNetCore.Components.WebAssembly.Http
+@using my_virtual_pets_class_library.DTO
+@inject HttpClient Http
+@inject IJSRuntime JSRuntime
+
+
+<EditForm FormName="Login" Model="@loginDetails" OnInvalidSubmit="HandleInvalidSubmit" OnValidSubmit="HandleValidSubmit">
+    <h3 class="pixeltext">Login</h3>
+    <h6>@Success</h6>
+    <DataAnnotationsValidator/>
+
+        <div class="input form-group">
+            <label for="InputUsername">Username:</label>
+            <InputText id="InputUsername" class="form-control" @bind-Value="@loginDetails.Username"/>
+            <ValidationMessage For="@(() => loginDetails.Username)"/>
+        </div>
+    
+        <div class="input form-group">
+            <label for="InputPassword">Password:</label>
+            <InputText id="InputPassword" class="form-control" @bind-Value="@loginDetails.Password"/>
+            <ValidationMessage For="@(() => loginDetails.Password)"/>
+        </div>
+
+        <button id="loginbutton" class="btn btn-light d-block mx-auto mt-4" type="submit">Enter the doghouse</button>
+
+
+    </EditForm>
+
+
+
+@code {
+
+    public UserLoginDTO loginDetails { get; set; } 
+    
+    public string Success { get; set; }
+    
+    protected override void OnInitialized()
+    {
+        loginDetails = new UserLoginDTO();
+    }
+
+    public void HandleInvalidSubmit()
+    {
+        Success = "Something has gone wrong"; 
+    }
+
+    public async Task HandleValidSubmit()
+    {
+        HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, "https://localhost:7091/api/user/login");
+        requestMessage.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+        requestMessage.Content = JsonContent.Create(loginDetails);
+        var client = new HttpClient();
+        var response = await client.SendAsync(requestMessage);    
+        if (response.StatusCode == HttpStatusCode.OK)
+        {
+            {
+                var setCookieHeader = response.Headers.FirstOrDefault(h => h.Key.Equals("Set-Cookie")).Value.FirstOrDefault();
+                if (setCookieHeader != null)
+                {
+                    string[] splitcookie = setCookieHeader.Split(";");
+                    await JSRuntime.InvokeVoidAsync("setCookie", splitcookie[0]);
+                }
+            }
+            Success = "Submitted!"; 
+            loginDetails = new UserLoginDTO(); 
+        }
+
+    }
+
+}
+    

@@ -2,21 +2,28 @@
 @using my_virtual_pets_class_library.DTO
 @rendermode InteractiveServer
 
-<EditForm FormName="UploadImageForm" Model="@_formModel" OnInvalidSubmit="HandleInvalidSubmit" OnValidSubmit="HandleValidSubmit">
+<EditForm Model="@_formModel" OnInvalidSubmit="HandleInvalidSubmit" OnValidSubmit="HandleValidSubmit">
     <h3>Upload Image</h3>
     <h6>@_successMessage</h6>
     <DataAnnotationsValidator/>
         <div class="form-group">
-            <label for="InputPetImage" class="form-label">Upload Image: <span class="text-danger">*</span></label>
+            <div>
+                Top Tips For Best Results:
+                <ul>
+                    <li>One pet per picture</li>
+                    <li>Plain background, coloured differently to your pet</li>
+                    <li>Upload a square image</li>
+                </ul>
+            </div>
              <InputFile
                 OnChange="OnInputFileChange"
                 id="InputPetImage"
-                class="form-control form-control-lg" />           
+                class="form-control form-control-lg" />
             <ValidationMessage For="@(() => _file)"/>
             
         </div>
     
-        <button id="uploadimagebutton" class="btn btn-light" type="submit">Upload Image</button>
+        <button id="uploadimagebutton" class="btn btn-light d-block mx-auto mt-4" type="submit">Upload Image</button>
 
 </EditForm>
 
