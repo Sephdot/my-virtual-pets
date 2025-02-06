@@ -52,8 +52,8 @@ public class ImagesService : IImagesService
 
 
         //TO DO: upload image to bucket
-        string imageId = Guid.NewGuid().ToString();
-        var uploadResult = await _storageService.UploadObjectAsync(pixelResult, imageId);
+        string imageUrlPrefix = Guid.NewGuid().ToString();
+        var uploadResult = await _storageService.UploadObjectAsync(pixelResult, imageUrlPrefix);
         //return string image url and string pet type
         if (!uploadResult.Item1) return null;
 
