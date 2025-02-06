@@ -3,6 +3,7 @@
 @using System.Text.Json
 @using my_virtual_pets_class_library.DTO
 @using my_virtual_pets_class_library.Enums
+@using my_virtual_pets_class_library
 @using my_virtual_pets_frontend.Components.Icons
 @rendermode InteractiveServer
 
@@ -18,7 +19,7 @@
     else
     {
         <h3 class="text-center mb-4">Upload Image!</h3>
-        <h6>@_successMessage</h6>
+        <h6>@_feedback</h6>
         <DataAnnotationsValidator/>
         <div class="form-group">
             <div>
@@ -43,46 +44,34 @@
 
 
 @code {
-    [CascadingParameter]
-    AddPetDTO PetDetails { get; set; }
+    public class FormModel
+    {
+        public IBrowserFile? InputFile { get; set; }
+    }
+    private FormModel _formModel = new();
     
-    private IBrowserFile? _file;
-    private string _successMessage { get; set; }
-
-    private bool _isFileBeingProcessed = false;
+    [CascadingParameter]
+    public required AddPetDTO PetDetails { get; set; }
     
     [Parameter] 
     public EventCallback<bool> OnSuccessfulUpload { get; set; }
     
-    private int _maxFileSize = 512000;
-    
-    private class FormModel
-    {
-        [Required] private IBrowserFile _inputFile { get; set; }
-    }
-    private FormModel _formModel = new();
+    private IBrowserFile? _file;
+    private string? _feedback;
+
+    private bool _isFileBeingProcessed = false;
     
     public void OnInputFileChange(InputFileChangeEventArgs args) // do this when file is added to check if the user's file is too big
     {
         _file = args.File;
-        if (_file == null)
-        {
-            Console.Error.WriteLine("File is null");
-        }
-        else
-        {
-            Console.Error.WriteLine(_file.Name);
-        }
-    }
-    
-    protected override void OnInitialized()
-    {
-        
+        _feedback = _file.Size > Utility.MaxUploadFileSize - 56 // 56 bytes are reserved for the C# array part of byte arrays
+            ? "That picture is too big for the server hamsters to carry... try uploading a smaller picture."
+            : "Image size is ok!";
     }
 
     public void HandleInvalidSubmit()
     {
-        _successMessage = "Something has gone wrong"; 
+        _feedback = "Something has gone wrong"; 
     }
 
     public async Task HandleValidSubmit()
@@ -91,7 +80,7 @@
         byte[]? bytes = null;
         try
         {
-            using var reader = new StreamReader(_file.OpenReadStream(_maxFileSize));
+            using var reader = new StreamReader(_file.OpenReadStream(Utility.MaxUploadFileSize));
             using var memstream = new MemoryStream();
             await reader.BaseStream.CopyToAsync(memstream);
             bytes = memstream.ToArray();
@@ -99,10 +88,12 @@
         catch (Exception exception)
         {
             Console.WriteLine(exception);
+            _feedback = "Oi! We warned you... Too big!";
+            _isFileBeingProcessed = false;
             throw;
         }
         
-        _successMessage = "Submitted!";
+        _feedback = "Submitted!";
         
         var webclient = new AddPetBackendClient<byte[]>("api/images");
         var postResponse = await webclient.ImageUploadPostRequest(bytes);
@@ -122,7 +113,7 @@
         else
         {
             Console.WriteLine($"Response wasn't OK: {postResponse.StatusCode}");
-            _successMessage = "Try again, that image wasn't accepted.";
+            _feedback = "Try again, that image wasn't accepted.";
         }
         Console.WriteLine($"Response body: {await postResponse.Content.ReadAsStringAsync()}; Status code: {postResponse.StatusCode}");
 
