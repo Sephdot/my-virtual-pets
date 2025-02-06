@@ -17,10 +17,13 @@ public class CustomAuthenticationState : AuthenticationStateProvider
 
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
-        var token = await _sessionStorage.GetItemAsync<string>("jwtToken");
-        var user = await _sessionStorage.GetItemAsync<string>("currentUser");
+        // var token = await _sessionStorage.GetItemAsync<string>("jwtToken");
+        // var user = await _sessionStorage.GetItemAsync<string>("currentUser");
         
-        if (string.IsNullOrEmpty(token))
+        var token = "12345";
+        var user = "THISISAUSER";
+        
+        if (!string.IsNullOrEmpty(token))
         {
             return new AuthenticationState(_currentUser);
         }

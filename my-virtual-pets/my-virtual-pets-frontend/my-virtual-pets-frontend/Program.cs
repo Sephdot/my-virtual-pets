@@ -14,9 +14,15 @@ builder.Services.AddBlazorBootstrap();
 
 builder.Services.AddBlazoredSessionStorage();
 
+// this 
+builder.Services.AddServerSideBlazor();
+
 builder.Services.AddScoped<HttpClient>();
 
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationState>();
+
+// this 
+builder.Services.AddCascadingAuthenticationState();
 
 
 var app = builder.Build();
