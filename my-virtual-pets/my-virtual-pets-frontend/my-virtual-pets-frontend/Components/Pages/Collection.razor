@@ -1,26 +1,30 @@
 @page "/collection"
 @using my_virtual_pets_class_library.DTO
-@using my_virtual_pets_class_library.Enums
+@using my_virtual_pets_frontend.Components.Icons
 @using my_virtual_pets_frontend.Components.DisplayCards
 @inject NavigationManager NavMan
-@rendermode InteractiveServer
+@rendermode InteractiveAuto
 
 <PageTitle>Collection | MyVirtualPets</PageTitle>
 
 @if (UserId == null)
 {
     NavMan.NavigateTo("/login"); 
-}
-else
+} else if (_petCardDataDTOs is null) 
 {
-    <section class="container text-center">
+    <Cat_Loader></Cat_Loader>
+}
+
+<section class="container text-center">
     <div class="container">
         <h1 class="fw-bold py-6">My Collection</h1>
         <button onclick="() => HandleAddPet" class="btn btn-primary my-2">Add Pet</button>
         <hr class="my-4"/>
     </div>
-    </section>
+</section>
 
+@if (_petCardDataDTOs.Count() > 0)
+{
             <div class="container">
                 <div class="row">
                     <Virtualize Items="_petCardDataDTOs" Context="petCardDataDTO">
@@ -30,6 +34,7 @@ else
             </div>
 }
 
+
 @code {
 
     private string UserId = "f3922887-7fc2-447b-a08f-4fbbc663ba81";
@@ -38,16 +43,19 @@ else
     
     protected override async Task OnInitializedAsync()
     {   
-        var client = new BackendClient<List<PetCardDataDTO>>($"api/pets/user/{UserId}");
-        _petCardDataDTOs = await client.GetRequest(); 
+        var getclient = new BackendClient<List<PetCardDataDTO>>($"api/pets/user/{UserId}");
+        _petCardDataDTOs = await getclient.GetRequest(); 
     }
     
-    public async Task DeleteFromCollection(Guid petId)
-    {
+    public async Task DeleteFromCollection(Guid petId) {
+        Console.WriteLine("CASCADED");
+        Console.WriteLine(petId);
+        var client = new BackendClient<int>($"api/pets/{petId}");
+        await client.DeleteRequest();
         
-        // call delete request 
-        // reload data? 
-        throw new NotImplementedException(); 
+        var getclient = new BackendClient<List<PetCardDataDTO>>($"api/pets/user/{UserId}");
+        _petCardDataDTOs = await getclient.GetRequest(); 
+        // _petCardDataDTOs = _petCardDataDTOs.Where(p => p.PetId != petId).ToList(); 
     }
     
     public async Task HandleAddPet()

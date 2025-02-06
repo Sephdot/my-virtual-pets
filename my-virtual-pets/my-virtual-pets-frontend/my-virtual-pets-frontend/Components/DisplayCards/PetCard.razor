@@ -5,8 +5,11 @@
 
 <div class="col-md-4">
 <div class="collectioncard pixeltext">
-    <div class="delete" @onclick="DeleteFromCollection">
+    <div class="delete" @onclick="PopupCall">
         <Trash></Trash>
+    </div>
+    <div id="popupmain">
+        <DeletePopUp @ref="popupRef" Confirm="DeleteFromCollection" />
     </div>
     <div class="card-title text-center gap-3 m-3">
         <h3 class="fw-bold">@PetCardData.PetName</h3>
@@ -23,6 +26,9 @@
 </div>
 
 @code {
+    
+    public DeletePopUp popupRef { get; set; }
+    
     [Parameter] 
     public required PetCardDataDTO PetCardData { get; set; }
 
@@ -31,6 +37,14 @@
     
     public async Task DeleteFromCollection()
     {
+        Console.WriteLine("CLICKED");
         await DeleteMethod.InvokeAsync(PetCardData.PetId); 
     }
+    
+    private void PopupCall()
+    {
+        popupRef.Show("This cannot be undone.", "Are you sure?");
+    }
+
+    
 }

@@ -49,13 +49,16 @@ namespace my_virtual_pets_api.Controllers
             return Ok(addedPet);
         }
 
+
         [HttpGet("top10")]
         public ActionResult<List<PetCardDataDTO>> GetTop10Pets()
         {
             var pets = _petService.GetTop10Pets();
             return Ok(pets);
         }
-        [HttpDelete]
+
+        [HttpDelete("{petId}")]
+
         public IActionResult DeletePet(Guid petId)
         {
             bool isDeleted = _petService.DeletePet(petId);
