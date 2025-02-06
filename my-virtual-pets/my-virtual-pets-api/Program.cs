@@ -12,7 +12,9 @@ using my_virtual_pets_api.Services.Interfaces;
 using PixelationTest;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.IdentityModel.Tokens;
+using my_virtual_pets_api.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,13 +25,16 @@ if (builder.Environment.IsDevelopment())
     var sqlConnection = new SqliteConnection(memoryDbConnectionString);
     sqlConnection.Open();
     builder.Services.AddDbContext<IDbContext, VPSqliteContext>(options => options.UseSqlite(sqlConnection));
+    builder.Services.AddHealthChecks().AddCheck("Db-check", new SqlConnectionHealthCheck(memoryDbConnectionString), HealthStatus.Unhealthy, new string[] { "orderingdb" });
     builder.Services.AddSwaggerGen();
     builder.Services.AddEndpointsApiExplorer();
+    
 }
 else if (builder.Environment.IsProduction())
 {
     var connectionString = Environment.GetEnvironmentVariable("ConnectionString__my_virtual_pets");
     Console.WriteLine(connectionString);
+    builder.Services.AddHealthChecks().AddCheck("Db-check", new SqlServerHealthCheck(connectionString),HealthStatus.Unhealthy,new string[] { "orderingdb" });
     builder.Services.AddDbContext<IDbContext, VPSqlServerContext>(options => options.UseSqlServer(connectionString));
 }
 
@@ -97,6 +102,8 @@ app.UseCors("AllowAll");
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseHealthChecks("/health");
 
 
 app.MapControllers();
