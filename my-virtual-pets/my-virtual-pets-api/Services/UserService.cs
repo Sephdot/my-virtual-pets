@@ -1,24 +1,23 @@
 ﻿using my_virtual_pets_api.Repositories.Interfaces;
 using my_virtual_pets_api.Services.Interfaces;
 using my_virtual_pets_class_library.DTO;
-using BCrypt.Net;
 
 namespace my_virtual_pets_api.Services
 {
     public class UserService : IUserService
     {
-        
+
         private readonly IUserRepository _userRepository;
 
         public UserService(IUserRepository userRepository)
         {
             _userRepository = userRepository;
         }
-        
-        
+
+
         public bool ExistsByUsername(string username)
         {
-            return _userRepository.ExistsByUsername(username); 
+            return _userRepository.ExistsByUsername(username);
         }
 
         public bool ExistsByEmail(string email)
@@ -26,10 +25,10 @@ namespace my_virtual_pets_api.Services
             return _userRepository.ExistsByEmail(email);
         }
 
-        
+
         public void CreateNewLocalUser(NewUserDTO newUserDto)
         {
-            newUserDto.Password = BCrypt.Net.BCrypt.EnhancedHashPassword(newUserDto.Password); 
+            newUserDto.Password = BCrypt.Net.BCrypt.EnhancedHashPassword(newUserDto.Password);
             Guid globalUserId = _userRepository.CreateNewGlobalUser(newUserDto);
             _userRepository.CreateNewLocalUser(newUserDto, globalUserId);
         }
@@ -49,5 +48,26 @@ namespace my_virtual_pets_api.Services
         {
             return _userRepository.GetUserDetailsByUserId(userId);
         }
+
+        public bool AddToFavourites(Guid GlobalUserId, Guid PetId)
+        {
+            return _userRepository.AddToFavourites(GlobalUserId, PetId);
+        }
+
+        public List<Guid> GetFavouritePetId(Guid GlobalUserId)
+        {
+            return _userRepository.GetFavoritePetIds(GlobalUserId);
+        }
+
+        public List<PetCardDataDTO> GetFavouritePets(Guid GlobalUserId)
+        {
+            return _userRepository.GetFavoritePetCards(GlobalUserId);
+        }
+
+        public bool RemoveFromFavourites(Guid GlobalUserId, Guid PetId)
+        {
+            return _userRepository.RemoveFromFavourites(GlobalUserId, PetId);
+        }
+
     }
 }

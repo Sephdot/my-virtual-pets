@@ -14,4 +14,11 @@ public interface IUserRepository
 
     public UserDisplayDTO GetUserDetailsByUserId(Guid userId);
 
+    public bool AddToFavourites(Guid GlobalUserId, Guid PetId);
+
+    public List<Guid> GetFavoritePetIds(Guid GlobalUserId);
+    public List<PetCardDataDTO> GetFavoritePetCards(Guid GlobalUserId);
+
+    public bool RemoveFromFavourites(Guid GlobalUserId, Guid PetId);
+
 }

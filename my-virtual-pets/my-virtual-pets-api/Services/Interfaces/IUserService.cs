@@ -11,4 +11,11 @@ public interface IUserService
     public Guid GetUserIdByUsername(string username);
 
     public UserDisplayDTO GetUserDetailsByUserId(Guid userId);
+
+    public bool AddToFavourites(Guid GlobalUserId, Guid PetId);
+
+    public List<Guid> GetFavouritePetId(Guid GlobalUserId);
+    public List<PetCardDataDTO> GetFavouritePets(Guid GlobalUserId);
+    public bool RemoveFromFavourites(Guid GlobalUserId, Guid PetId);
+
 }
