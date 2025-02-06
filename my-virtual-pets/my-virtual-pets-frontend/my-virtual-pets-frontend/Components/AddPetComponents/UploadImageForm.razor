@@ -8,9 +8,9 @@
 
 
 <EditForm Model="@_formModel" OnInvalidSubmit="HandleInvalidSubmit" OnValidSubmit="HandleValidSubmit">
-    <h3>@(_isFileBeingProcessed ? "Upload Image!" : "Uploading Image...")</h3>
+    <h3>@(_isFileBeingProcessed ? "Uploading Image..." : "Upload Image!")</h3>
     <h6>@_successMessage</h6>
-    @if (!_isFileBeingProcessed)
+    @if (_isFileBeingProcessed)
     {
         <div class="d-block mx-auto my-6">
             <Cat_Loader></Cat_Loader>
@@ -108,13 +108,15 @@
 
         if (postResponse.StatusCode == HttpStatusCode.OK)
         {
-            await OnSuccessfulUpload.InvokeAsync(true);
+            
             Stream responseStream = await postResponse.Content.ReadAsStreamAsync();
             ImagesResponseDTO imagesResponseDto = await JsonSerializer.DeserializeAsync<ImagesResponseDTO>(responseStream) 
                                                   ?? throw new Exception("Something went wrong!");
             
             PetDetails.PetType = imagesResponseDto.PetType;
             PetDetails.ImageUrl = imagesResponseDto.ImageUrl;
+            
+            await OnSuccessfulUpload.InvokeAsync(true);
         }
         else
         {
