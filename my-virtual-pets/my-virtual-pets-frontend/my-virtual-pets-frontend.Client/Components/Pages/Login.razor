@@ -1,10 +1,7 @@
 @page "/login"
 @using my_virtual_pets_frontend.Client.Components
-@rendermode InteractiveWebAssembly
+@rendermode InteractiveAuto
 
 <PageTitle>Login</PageTitle>
 
-<div class="container">
-    <LoginForm @rendermode="InteractiveWebAssembly"></LoginForm>
-    <AuthForm @rendermode="InteractiveWebAssembly"></AuthForm>
-</div>
+<LoginForm></LoginForm>

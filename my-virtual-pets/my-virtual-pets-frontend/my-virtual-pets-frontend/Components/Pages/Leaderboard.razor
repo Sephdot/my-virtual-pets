@@ -3,20 +3,20 @@
 @using my_virtual_pets_class_library.Enums
 @using my_virtual_pets_frontend.Components.Icons
 @using my_virtual_pets_frontend.Components.DisplayCards
-@rendermode InteractiveServer
+@rendermode InteractiveAuto
 
 
 <PageTitle>Leaderboard | MyVirtualPets</PageTitle>
 
 
-@if (pets == null || pets.Count == 0)
+@if (pets == null || pets.Count < 4)
 {
     <Cat_Loader></Cat_Loader>
 }
 else
 {
     
-    <!----- Top Three things here ---->
+    <!----- Top Three  ---->
 
     <div class="container">
     <div class="row">
@@ -39,7 +39,7 @@ else
     
 </div>
 
-    
+    <!----- Runners Up -----> 
 
 <div class="container">
         @foreach (var pet in pets.Skip(3))
@@ -59,27 +59,10 @@ else
     
     public List<PetCardDataDTO> pets = new List<PetCardDataDTO>();
     
-    public PetCardDataDTO testPet = new PetCardDataDTO()
+    protected override async Task OnInitializedAsync()
     {
-        PetId = new Guid(),
-        PetName = "jok",
-        Description = "",
-        IsFavourited = true,
-        PetType = PetType.CAT,
-        ImageUrl = "https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/5e0fe0be-ca81-4b76-b4bf-349a1bf215c8.png",
-        Score = 100,
-        OwnerUsername = "Jonny",
-        Personality = Personality.SERIOUS
-    };
-
-    // on page initialised we'll call the backend instead: 
-    
-    protected override void OnInitialized()
-    {
-        for (int i = 0; i < 10; i++)
-        {
-            pets.Add(testPet);
-        }
+        var getclient = new BackendClient<List<PetCardDataDTO>>("api/pets/top10");
+        pets = await getclient.GetRequest(); 
     }
 
 }

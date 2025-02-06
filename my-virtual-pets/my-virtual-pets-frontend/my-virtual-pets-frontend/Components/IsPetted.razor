@@ -13,10 +13,35 @@ else
 
 @code {
 
+    [Parameter]
+    public Guid PetId { get; set; }
+    
     public bool IsPet { get; set; } = false;
-
+    
     public void Pet()
     {
         IsPet = !IsPet;
+        if (IsPet)
+        {
+            DoPet(); 
+        }
+        else
+        {
+            UnPet(); 
+        }
     }
+
+    public async Task DoPet()
+    {
+        var client = new BackendClient<int>("api/user");
+        throw new NotImplementedException();
+        
+    }
+
+    public async Task UnPet()
+    {
+        throw new NotImplementedException();
+    }
+    
+    
 }
