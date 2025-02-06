@@ -15,5 +15,9 @@ namespace my_virtual_pets_api.Repositories.Interfaces
       
         public List<Pet> GetPets();
 
+        public List<PetCardDataDTO> GetTop10Pets();
+
+        
+
     }
 }
