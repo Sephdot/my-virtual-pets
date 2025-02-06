@@ -9,13 +9,23 @@ namespace PixelationTest
     {
         private List<Color> palette = [];
 
-        public Bitmap PixelateImage(Bitmap image, int blockSize, bool usePalette)
+        public Bitmap PixelateImage(Bitmap image, int blockCount, bool usePalette)
         {
-            palette.Add(Color.FromArgb(241, 228, 232));
-            palette.Add(Color.FromArgb(226, 220, 222));
-            palette.Add(Color.FromArgb(206, 177, 190));
-            palette.Add(Color.FromArgb(185, 115, 117));
-            palette.Add(Color.FromArgb(45, 45, 52));
+            int blockSize = Math.Min(image.Width, image.Height) / blockCount;
+
+            //palette.Add(Color.FromArgb(241, 228, 232));
+            //palette.Add(Color.FromArgb(226, 220, 222));
+            //palette.Add(Color.FromArgb(206, 177, 190));
+            //palette.Add(Color.FromArgb(185, 115, 117));
+            //palette.Add(Color.FromArgb(45, 45, 52));
+
+            palette.Add(Color.FromArgb(221, 213, 208));
+            palette.Add(Color.FromArgb(207, 192, 189));
+            palette.Add(Color.FromArgb(184, 184, 170));
+            palette.Add(Color.FromArgb(127, 145, 131));
+            palette.Add(Color.FromArgb(88, 111, 107));
+            palette.Add(Color.FromArgb(40, 51, 49));
+
 
             Bitmap result = new Bitmap(image.Width, image.Height);
 
