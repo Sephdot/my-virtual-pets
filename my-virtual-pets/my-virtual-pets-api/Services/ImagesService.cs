@@ -24,7 +24,7 @@ public class ImagesService : IImagesService
         _imageRepository = imageRepository;
     }
 
-    public async Task<ImagesResponseDto?> ProcessImageAsync(byte[] inputImage)
+    public async Task<ImagesResponseDTO?> ProcessImageAsync(byte[] inputImage)
     {
         //Recognise image
         //TO DO: Ask Callum about error handling in recognitionService
@@ -52,14 +52,14 @@ public class ImagesService : IImagesService
 
 
         //TO DO: upload image to bucket
-        string imageId = Guid.NewGuid().ToString();
-        var uploadResult = await _storageService.UploadObjectAsync(pixelResult, imageId);
+        string imageUrlPrefix = Guid.NewGuid().ToString();
+        var uploadResult = await _storageService.UploadObjectAsync(pixelResult, imageUrlPrefix);
         //return string image url and string pet type
         if (!uploadResult.Item1) return null;
 
-        if (Enum.TryParse(recognitionResult.displayName, out PetType petType))
+        if (Enum.TryParse(recognitionResult.displayName, true, out PetType petType))
         {
-            return new ImagesResponseDto { ImageUrl = uploadResult.imageUrl, PetType = petType };
+            return new ImagesResponseDTO { ImageUrl = uploadResult.imageUrl, PetType = petType };
         }
         else return null;
     }

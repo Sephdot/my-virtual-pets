@@ -103,6 +103,17 @@ namespace my_virtual_pets_api.Controllers
         }
 
 
+        [HttpGet("{userId}")]
+        public IActionResult GetUserDetailsByUserId(Guid userId)
+        {
+            var userDisplayDTO =  _userService.GetUserDetailsByUserId(userId);
 
+            if (userDisplayDTO == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            return Ok(userDisplayDTO);
+        }
     }
 }

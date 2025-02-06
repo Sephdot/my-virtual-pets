@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace my_virtual_pets_class_library.Enums;
 
-public class ImagesResponseDto
+public class ImagesResponseDTO
 {
     [Required]
     [JsonPropertyName("ImageUrl")]
