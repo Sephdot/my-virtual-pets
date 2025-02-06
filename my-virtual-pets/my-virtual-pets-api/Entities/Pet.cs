@@ -37,6 +37,9 @@ namespace my_virtual_pets_api.Entities
 
         public List<Favourite> Favourites { get; set; } = [];
 
+        [JsonPropertyName("dateCreated")]
+        public DateTime? DateCreated { get; set; }
+
         public static PetCardDataDTO CreatePetCardDto(Pet pet)
         {
             PetCardDataDTO petCardDto = new PetCardDataDTO

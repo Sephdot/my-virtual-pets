@@ -77,7 +77,8 @@ namespace my_virtual_pets_api.Repositories
                 Name = petData.PetName,
                 Personality = petData.Personality,
                 Type = petData.PetType,
-                Description = petData.Description
+                Description = petData.Description,
+                DateCreated = DateTime.UtcNow
             };
             _context.Pets.Add(newPet);
             _context.SaveChanges();
@@ -175,7 +176,7 @@ namespace my_virtual_pets_api.Repositories
                     score += 50; 
                     break;
                 case PetType.CAT:
-                    score += 40; 
+                    score += 60; 
                     break;
                 case PetType.RABBIT:
                     score += 20;  
