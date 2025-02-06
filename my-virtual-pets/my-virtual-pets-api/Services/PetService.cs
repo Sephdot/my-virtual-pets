@@ -34,7 +34,6 @@ namespace my_virtual_pets_api.Services
 
         public bool DeletePet(Guid petId)
         {
-            ima
             return _petRepository.DeletePet(petId);
         }
     }

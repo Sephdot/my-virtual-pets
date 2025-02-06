@@ -5,6 +5,5 @@
         //TestComment
         Guid AddImage(string imageUrl);
 
-        void DeleteImage(Guid imageId);
     }
 }
