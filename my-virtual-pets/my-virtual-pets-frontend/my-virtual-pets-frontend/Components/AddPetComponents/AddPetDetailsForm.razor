@@ -52,11 +52,6 @@ else
         .Cast<Personality>()
         .ToList();
 
-    protected override void OnParametersSet()
-    {
-        Console.WriteLine($"PetDetails updated t/f: {PetDetails != null}");
-    }
-
     protected override void OnInitialized()
     {
         

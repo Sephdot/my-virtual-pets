@@ -1,9 +1,9 @@
-@rendermode InteractiveServer
-
 @using my_virtual_pets_class_library.DTO
 @using my_virtual_pets_frontend.Components.AddPetComponents
 @using my_virtual_pets_class_library.Enums
 @using my_virtual_pets_frontend.Components.Icons
+
+@rendermode InteractiveServer
 
 @page "/add-pet"
 
@@ -11,28 +11,35 @@
 
 <div class="container">
     <h1 class="text-center mb-5">Add a Pet!</h1>
-    <div class="">
-        
-    </div>
     @if (PetDetails == null)
     {
         <Loader />
     }
     else
     {
-        <CascadingValue Value="PetDetails">
-            <AddPetFormSwitcher />
-        </CascadingValue>
+        <div id="formcenter">
+            <CascadingValue Value="PetDetails">
+                @if (!IsSuccessfulUpload)
+                {
+                    <UploadImageForm OnSuccessfulUpload=@SwitchToAddDetails></UploadImageForm>
+                }
+                else
+                {
+                    <AddPetDetailsForm></AddPetDetailsForm>
+                }
+            </CascadingValue>
+        </div>
     }
 </div>
 
 
 @code {
-    AddPetDTO? PetDetails { get; set; }
+    [CascadingParameter] AddPetDTO? PetDetails { get; set; }
 
     protected override void OnInitialized()
     {
         ResetPetDetails();
+        IsSuccessfulUpload = false;
     }
 
     private void ResetPetDetails()
@@ -46,5 +53,12 @@
             Personality = Enum.GetValues(typeof(Personality)).Cast<Personality>().ToList()[0],
             PetType = PetType.OTHER
         };
+    }
+    
+    public bool IsSuccessfulUpload { get; set; } = false; 
+
+    public void SwitchToAddDetails()
+    {
+        IsSuccessfulUpload = true;
     }
 }
