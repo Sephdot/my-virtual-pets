@@ -152,7 +152,6 @@ h1:focus {
     position: absolute;
     z-index: 3000;
     width: 400px;
-    
 }
 
 #popupboard {
@@ -223,4 +222,9 @@ h1:focus {
 
 .collectioncard:hover {
     border: 5px solid #D18BE0;
+}
+
+#popupdelete {
+    position: absolute;
+    z-index: 3000;
 }
