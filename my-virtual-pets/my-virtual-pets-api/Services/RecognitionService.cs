@@ -123,7 +123,7 @@ namespace ImageRecognition
 
         public bool CheckIfAnimal(IPredicted animal)
         {
-            List<string> validAnimals = new List<string>{  "cat", "dog" };
+            List<string> validAnimals = new List<string>{  "cat", "dog", "fish", "rabbit", "horse" };
             try
             {
                 var result = validAnimals.Contains(animal.name);
