@@ -6,7 +6,8 @@
     "personality": 2,
     "description": "A playful and curious tabby cat.",
     "type": 0,
-    "imageid": "550e8400-e29b-41d4-a716-446655440000" },
+    "imageid": "550e8400-e29b-41d4-a716-446655440000"
+  },
   {
     "id": "e2f3a4b5-6789-0123-4567-890123456789",
     "userid": "f3922887-7fc2-447b-a08f-4fbbc663ba81",
@@ -23,6 +24,78 @@
     "personality": 1,
     "description": "A shy but affectionate rabbit.",
     "type": 2,
+    "imageid": "550e8400-e29b-41d4-a716-446655440000"
+  },
+  {
+    "id": "a5b6c7d8-9012-3456-7890-123456789012",
+    "userid": "cb7153f7-3101-444b-a91d-8c45280672d6",
+    "name": "Mittens",
+    "personality": 3,
+    "description": "A cuddly cat who loves sleeping in the sun.",
+    "type": 0,
+    "imageid": "550e8400-e29b-41d4-a716-446655440000"
+  },
+  {
+    "id": "b6c7d8e9-0123-4567-8901-234567890123",
+    "userid": "f3922887-7fc2-447b-a08f-4fbbc663ba81",
+    "name": "Rocky",
+    "personality": 2,
+    "description": "A small but brave terrier mix.",
+    "type": 1,
+    "imageid": "550e8400-e29b-41d4-a716-446655440000"
+  },
+  {
+    "id": "c7d8e9f0-1234-5678-9012-345678901234",
+    "userid": "3e2db5ff-0ac8-48b9-b341-e14371c42e7a",
+    "name": "Hopper",
+    "personality": 1,
+    "description": "An energetic rabbit that loves to explore.",
+    "type": 2,
+    "imageid": "550e8400-e29b-41d4-a716-446655440000"
+  },
+  {
+    "id": "d8e9f0a1-2345-6789-0123-456789012345",
+    "userid": "cb7153f7-3101-444b-a91d-8c45280672d6",
+    "name": "Shadow",
+    "personality": 2,
+    "description": "A sleek black cat with a mysterious aura.",
+    "type": 0,
+    "imageid": "550e8400-e29b-41d4-a716-446655440000"
+  },
+  {
+    "id": "e9f0a1b2-3456-7890-1234-567890123456",
+    "userid": "f3922887-7fc2-447b-a08f-4fbbc663ba81",
+    "name": "Luna",
+    "personality": 3,
+    "description": "A gentle husky with a love for the snow.",
+    "type": 1,
+    "imageid": "550e8400-e29b-41d4-a716-446655440000"
+  },
+  {
+    "id": "f0a1b2c3-4567-8901-2345-678901234567",
+    "userid": "3e2db5ff-0ac8-48b9-b341-e14371c42e7a",
+    "name": "Cocoa",
+    "personality": 1,
+    "description": "A tiny brown rabbit who loves carrots.",
+    "type": 2,
+    "imageid": "550e8400-e29b-41d4-a716-446655440000"
+  },
+  {
+    "id": "a1b2c3d4-5678-9012-3456-789012345678",
+    "userid": "cb7153f7-3101-444b-a91d-8c45280672d6",
+    "name": "Tiger",
+    "personality": 3,
+    "description": "An adventurous cat who loves climbing trees.",
+    "type": 0,
+    "imageid": "550e8400-e29b-41d4-a716-446655440000"
+  },
+  {
+    "id": "b2c3d4e5-6789-0123-4567-890123456789",
+    "userid": "f3922887-7fc2-447b-a08f-4fbbc663ba81",
+    "name": "Baxter",
+    "personality": 2,
+    "description": "A cheerful beagle who loves sniffing out treats.",
+    "type": 1,
     "imageid": "550e8400-e29b-41d4-a716-446655440000"
   }
 ]
