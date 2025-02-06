@@ -110,7 +110,7 @@ namespace my_virtual_pets_api.Controllers
 
             if (userDisplayDTO == null)
             {
-                return NotFound("User not found.");
+                return NotFound();
             }
 
             return Ok(userDisplayDTO);
