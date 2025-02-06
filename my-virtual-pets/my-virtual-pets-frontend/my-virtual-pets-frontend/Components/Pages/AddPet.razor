@@ -3,19 +3,29 @@
 @using my_virtual_pets_class_library.DTO
 @using my_virtual_pets_frontend.Components.AddPetComponents
 @using my_virtual_pets_class_library.Enums
+@using my_virtual_pets_frontend.Components.Icons
 
 @page "/add-pet"
-<h3>AddPet</h3>
-@if (PetDetails == null)
-{
-    <Loader />
-}
-else
-{
-    <CascadingValue Value="PetDetails">
-        <AddPetFormSwitcher />
-    </CascadingValue>
-}
+
+<PageTitle>Add a Pet | MyVirtualPets</PageTitle>
+
+<div class="container">
+    <h1 class="text-center mb-5">Add a Pet!</h1>
+    <div class="">
+        
+    </div>
+    @if (PetDetails == null)
+    {
+        <Loader />
+    }
+    else
+    {
+        <CascadingValue Value="PetDetails">
+            <AddPetFormSwitcher />
+        </CascadingValue>
+    }
+</div>
+
 
 @code {
     AddPetDTO? PetDetails { get; set; }

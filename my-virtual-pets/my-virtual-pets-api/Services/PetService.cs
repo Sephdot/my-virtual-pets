@@ -40,5 +40,10 @@ namespace my_virtual_pets_api.Services
         {
             return _petRepository.GetTop10Pets();
         }
+
+        public bool DeletePet(Guid petId)
+        {
+            return _petRepository.DeletePet(petId);
+        }
     }
 }

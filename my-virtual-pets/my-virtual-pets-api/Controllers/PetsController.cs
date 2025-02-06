@@ -103,3 +103,13 @@ namespace my_virtual_pets_api.Controllers
 
 //    return Ok(user);
 //}
+
+        [HttpDelete]
+        public IActionResult DeletePet(Guid petId)
+        {
+            bool isDeleted = _petService.DeletePet(petId);
+            if (isDeleted) return NoContent();
+            return NotFound();
+        }
+    }
+}
