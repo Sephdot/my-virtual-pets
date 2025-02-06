@@ -1,11 +1,24 @@
 @using System.ComponentModel.DataAnnotations
+@using System.Net
+@using System.Text.Json
 @using my_virtual_pets_class_library.DTO
+@using my_virtual_pets_class_library.Enums
+@using my_virtual_pets_frontend.Components.Icons
 @rendermode InteractiveServer
 
+
 <EditForm Model="@_formModel" OnInvalidSubmit="HandleInvalidSubmit" OnValidSubmit="HandleValidSubmit">
-    <h3>Upload Image</h3>
+    <h3>@(_isFileBeingProcessed ? "Upload Image!" : "Uploading Image...")</h3>
     <h6>@_successMessage</h6>
-    <DataAnnotationsValidator/>
+    @if (!_isFileBeingProcessed)
+    {
+        <div class="d-block mx-auto my-6">
+            <Cat_Loader></Cat_Loader>
+        </div>
+    }
+    else
+    {
+        <DataAnnotationsValidator/>
         <div class="form-group">
             <div>
                 Top Tips For Best Results:
@@ -13,18 +26,17 @@
                     <li>One pet per picture</li>
                     <li>Plain background, coloured differently to your pet</li>
                     <li>Upload a square image</li>
+                    <li>Make sure your pet is either a cat, dog, rabbit, bird or fish</li>
                 </ul>
             </div>
-             <InputFile
+            <InputFile
                 OnChange="OnInputFileChange"
                 id="InputPetImage"
                 class="form-control form-control-lg" />
             <ValidationMessage For="@(() => _file)"/>
-            
         </div>
-    
         <button id="uploadimagebutton" class="btn btn-light d-block mx-auto mt-4" type="submit">Upload Image</button>
-
+    }
 </EditForm>
 
 
@@ -35,6 +47,8 @@
     
     private IBrowserFile? _file;
     private string _successMessage { get; set; }
+
+    private bool _isFileBeingProcessed = false;
     
     [Parameter] 
     public EventCallback<bool> OnSuccessfulUpload { get; set; }
@@ -58,7 +72,6 @@
         {
             Console.Error.WriteLine(_file.Name);
         }
-        
     }
     
     protected override void OnInitialized()
@@ -73,6 +86,7 @@
 
     public async Task HandleValidSubmit()
     {
+        _isFileBeingProcessed = true;
         byte[]? bytes = null;
         try
         {
@@ -88,9 +102,28 @@
         }
         
         _successMessage = "Submitted!";
-        await OnSuccessfulUpload.InvokeAsync(true); // do this if api returns successful 
-        /*var webclient = new BackendClient<UserLoginDTO>("api/user/login");
-        webclient.PostRequest();*/
+        
+        var webclient = new AddPetBackendClient<byte[]>("api/images");
+        var postResponse = await webclient.ImageUploadPostRequest(bytes);
+
+        if (postResponse.StatusCode == HttpStatusCode.OK)
+        {
+            await OnSuccessfulUpload.InvokeAsync(true);
+            Stream responseStream = await postResponse.Content.ReadAsStreamAsync();
+            ImagesResponseDTO imagesResponseDto = await JsonSerializer.DeserializeAsync<ImagesResponseDTO>(responseStream) 
+                                                  ?? throw new Exception("Something went wrong!");
+            
+            PetDetails.PetType = imagesResponseDto.PetType;
+            PetDetails.ImageUrl = imagesResponseDto.ImageUrl;
+        }
+        else
+        {
+            Console.WriteLine($"Response wasn't OK: {postResponse.StatusCode}");
+            _successMessage = "Try again, that image wasn't accepted.";
+        }
+        Console.WriteLine($"Response body: {await postResponse.Content.ReadAsStringAsync()}; Status code: {postResponse.StatusCode}");
+
+        _isFileBeingProcessed = false;
     }
     
 }
