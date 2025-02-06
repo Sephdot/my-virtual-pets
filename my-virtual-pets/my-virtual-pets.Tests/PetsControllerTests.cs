@@ -27,7 +27,7 @@ namespace my_virtual_pets.Tests
             _contextMock = new Mock<IDbContext>(); 
             _petServiceMock = new Mock<IPetService>();
 
-            _controller = new PetsController(_contextMock.Object, _petServiceMock.Object);
+            _controller = new PetsController(_petServiceMock.Object);
         }
 
 
@@ -96,6 +96,49 @@ namespace my_virtual_pets.Tests
             result.Should().BeOfType<OkObjectResult>()
                   .Which.Value.Should().BeEquivalentTo(petDto);
         }
+        [Test]
+        public void GetTop10Pets_ReturnsOkResult_WithListOfPets()
+        {
+            // Arrange
+            var top10Pets = new List<PetCardDataDTO>
+            {
+                new PetCardDataDTO
+                {
+                    PetId = Guid.NewGuid(),
+                    PetName = "TopPet1",
+                    ImageUrl = "Test/image1.png",
+                    OwnerUsername = "User1",
+                    Score = 50,
+                    Personality = Personality.BRAVE,
+                    PetType = PetType.DOG,
+                    Description = "Description1",
+                    IsFavourited = false
+                },
+                new PetCardDataDTO
+                {
+                    PetId = Guid.NewGuid(),
+                    PetName = "TopPet2",
+                    ImageUrl = "Test/image2.png",
+                    OwnerUsername = "User2",
+                    Score = 40,
+                    Personality = Personality.CALM,
+                    PetType = PetType.CAT,
+                    Description = "Description2",
+                    IsFavourited = false
+                }
+            };
 
+            _petServiceMock.Setup(s => s.GetTop10Pets()).Returns(top10Pets);
+
+            // Act
+            var result = _controller.GetTop10Pets();
+            var okResult = result.Result as OkObjectResult;
+            
+            //Assert
+            okResult.Should().NotBeNull();
+            okResult.StatusCode.Should().Be(200);
+            okResult.Value.Should().BeEquivalentTo(top10Pets);
+        }
     }
+
 }
