@@ -108,13 +108,15 @@
 
         if (postResponse.StatusCode == HttpStatusCode.OK)
         {
-            await OnSuccessfulUpload.InvokeAsync(true);
+            
             Stream responseStream = await postResponse.Content.ReadAsStreamAsync();
             ImagesResponseDTO imagesResponseDto = await JsonSerializer.DeserializeAsync<ImagesResponseDTO>(responseStream) 
                                                   ?? throw new Exception("Something went wrong!");
             
             PetDetails.PetType = imagesResponseDto.PetType;
             PetDetails.ImageUrl = imagesResponseDto.ImageUrl;
+            
+            await OnSuccessfulUpload.InvokeAsync(true);
         }
         else
         {
