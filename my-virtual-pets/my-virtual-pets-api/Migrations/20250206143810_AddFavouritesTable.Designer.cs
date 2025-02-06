@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using my_virtual_pets_api.Data;
 
@@ -11,9 +12,11 @@ using my_virtual_pets_api.Data;
 namespace my_virtual_pets_api.Migrations
 {
     [DbContext(typeof(VPSqlServerContext))]
-    partial class VPSqlServerContextModelSnapshot : ModelSnapshot
+    [Migration("20250206143810_AddFavouritesTable")]
+    partial class AddFavouritesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -1,7 +1,7 @@
-﻿using System.Text.Json.Serialization;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using my_virtual_pets_class_library.DTO;
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace my_virtual_pets_api.Entities
 {
@@ -29,6 +29,8 @@ namespace my_virtual_pets_api.Entities
         public DateTime DateJoined { get; set; }
 
         public List<Pet> Pets { get; set; }
+
+        public List<Favourite> Favourites { get; set; } = [];
 
         public GlobalUser()
         {
