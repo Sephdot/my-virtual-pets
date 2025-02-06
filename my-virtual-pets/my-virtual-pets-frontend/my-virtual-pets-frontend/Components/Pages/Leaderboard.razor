@@ -59,10 +59,10 @@ else
     
     public List<PetCardDataDTO> pets = new List<PetCardDataDTO>();
     
-    // protected override async Task OnInitializedAsync()
-    // {
-    //     var getclient = new BackendClient<List<PetCardDataDTO>>($"api/pets/top10");
-    //     pets = await getclient.GetRequest(); 
-    // }
+    protected override async Task OnInitializedAsync()
+    {
+        var getclient = new BackendClient<List<PetCardDataDTO>>("api/pets/top10");
+        pets = await getclient.GetRequest(); 
+    }
 
 }

@@ -51,7 +51,6 @@
         requestMessage.Content = JsonContent.Create(loginDetails);
         var client = new HttpClient();
         var response = await client.SendAsync(requestMessage);    
-        Console.WriteLine(response);
         
         if (response.StatusCode == HttpStatusCode.OK)
         {
