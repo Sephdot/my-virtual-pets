@@ -15,7 +15,9 @@ namespace my_virtual_pets_api.Data
 
         public DbSet<Image> Images { get; set; }
 
-        int SaveChanges(); 
+        public DbSet<Favourite> Favorites { get; set; }
+
+        int SaveChanges();
 
     }
 }

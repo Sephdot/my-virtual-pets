@@ -16,17 +16,35 @@ namespace my_virtual_pets_api.Data
 
         public DbSet<Image> Images { get; set; }
 
+        public DbSet<Favourite> Favorites { get; set; }
+
+
         public VPSqlServerContext(DbContextOptions<VPSqlServerContext> options) : base(options)
         {
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseValidationCheckConstraints(); 
+            optionsBuilder.UseValidationCheckConstraints();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Favourite>()
+                        .HasKey(f => new { f.GlobalUserId, f.PetId });
+
+            modelBuilder.Entity<Favourite>()
+                .HasOne(f => f.GlobalUser)
+                .WithMany(g => g.Favourites)
+                .HasForeignKey(f => f.GlobalUserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Favourite>()
+                .HasOne(f => f.Pet)
+                .WithMany(p => p.Favourites)
+                .HasForeignKey(f => f.PetId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             modelBuilder.Entity<GlobalUser>().HasData(JsonSerializer.Deserialize<List<GlobalUser>>(File.ReadAllText("Resources/DummyData/GlobalUsers.json")));
             modelBuilder.Entity<LocalUser>().HasData(JsonSerializer.Deserialize<List<LocalUser>>(File.ReadAllText("Resources/DummyData/LocalUsers.json")));
             modelBuilder.Entity<Image>().HasData(JsonSerializer.Deserialize<List<Image>>(File.ReadAllText("Resources/DummyData/Images.json")));

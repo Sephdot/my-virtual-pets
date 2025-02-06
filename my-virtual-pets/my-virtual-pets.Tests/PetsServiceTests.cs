@@ -1,13 +1,9 @@
-﻿using Moq;
-using NUnit.Framework;
-using my_virtual_pets_api.Services;
+﻿using FluentAssertions;
+using Moq;
+using my_virtual_pets_api.Repositories.Interfaces;
 using my_virtual_pets_api.Services.Interfaces;
 using my_virtual_pets_class_library.DTO;
 using my_virtual_pets_class_library.Enums;
-using System;
-using System.Collections.Generic;
-using my_virtual_pets_api.Repositories.Interfaces;
-using FluentAssertions; 
 
 namespace my_virtual_pets.Tests
 {
@@ -23,6 +19,7 @@ namespace my_virtual_pets.Tests
       
             _petRepositoryMock = new Mock<IPetRepository>();
             _imagesServiceMock = new Mock<IImagesService>(); 
+
 
 
             _petService = new PetService(_petRepositoryMock.Object, _imagesServiceMock.Object);
@@ -56,7 +53,7 @@ namespace my_virtual_pets.Tests
             var result = _petService.GetPetsByUser(userId);
 
             // Assert 
-            result.Should().BeEquivalentTo(petDtos); 
+            result.Should().BeEquivalentTo(petDtos);
         }
 
         [Test]
@@ -85,7 +82,7 @@ namespace my_virtual_pets.Tests
             var result = _petService.GetPetById(petId);
 
             // Assert 
-            result.Should().BeEquivalentTo(petDto); 
+            result.Should().BeEquivalentTo(petDto);
         }
 
         [Test]
