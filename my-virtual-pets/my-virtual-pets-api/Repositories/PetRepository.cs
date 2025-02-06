@@ -80,5 +80,15 @@ namespace my_virtual_pets_api.Repositories
             PetCardDataDTO petCardDataDTO = Pet.CreatePetCardDto(addedPet);
             return petCardDataDTO;
         }
+
+        public bool DeletePet(Guid id)
+        {
+            var petToRemove = _context.Pets.Include(p => p.Image).SingleOrDefault(p => p.Id == id);
+            if (petToRemove == null) return false;
+            _context.Images.Remove(petToRemove.Image);
+            _context.Pets.Remove(petToRemove);
+            _context.SaveChanges();
+            return true;
+        }
     }
 }
