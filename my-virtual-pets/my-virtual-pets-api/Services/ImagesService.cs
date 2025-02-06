@@ -2,7 +2,7 @@
 using my_virtual_pets_api.Cloud;
 using my_virtual_pets_api.Repositories.Interfaces;
 using my_virtual_pets_api.Services.Interfaces;
-using my_virtual_pets_class_library;
+using my_virtual_pets_class_library.Enums;
 using System.Drawing;
 
 namespace my_virtual_pets_api.Services;
@@ -24,7 +24,7 @@ public class ImagesService : IImagesService
         _imageRepository = imageRepository;
     }
 
-    public async Task<ImagesResponseDto?> ProcessImageAsync(byte[] inputImage)
+    public async Task<ImagesResponseDTO?> ProcessImageAsync(byte[] inputImage)
     {
         //Recognise image
         //TO DO: Ask Callum about error handling in recognitionService
@@ -56,7 +56,12 @@ public class ImagesService : IImagesService
         var uploadResult = await _storageService.UploadObjectAsync(pixelResult, imageId);
         //return string image url and string pet type
         if (!uploadResult.Item1) return null;
-        return new ImagesResponseDto { imageUrl = uploadResult.imageUrl, animalType = recognitionResult.displayName };
+
+        if (Enum.TryParse(recognitionResult.displayName, true, out PetType petType))
+        {
+            return new ImagesResponseDTO { ImageUrl = uploadResult.imageUrl, PetType = petType };
+        }
+        else return null;
     }
 
     public Guid AddImage(string uimageUrl)
