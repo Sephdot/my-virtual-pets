@@ -1,3 +1,4 @@
+@using System.Net
 @using my_virtual_pets_class_library.DTO
 @using my_virtual_pets_class_library.Enums
 @rendermode InteractiveServer
@@ -45,6 +46,9 @@ else
     [CascadingParameter] 
     public AddPetDTO? PetDetails { get; set; }
     
+    [Parameter]
+    public EventCallback<bool> OnSuccessfulPetPost { get; set; }
+    
     private string? _success { get; set; }
     
     private List<Personality> _personalities = Enum
@@ -68,6 +72,16 @@ else
         _success = "Submitted!";
         Console.WriteLine($"valid: {PetDetails.PetName} {PetDetails.Personality} {PetDetails.Description}");
         var webclient = new BackendClient<AddPetDTO>("api/pets");
-        var response = await webclient.PostRequest(PetDetails);
+        var response = await webclient.PostRequest(PetDetails); // just gets status code no body
+        
+        if (response == HttpStatusCode.OK)
+        {
+            await OnSuccessfulPetPost.InvokeAsync();
+        }
+        else
+        {
+            _success = "Uh oh, the server hamsters didn't like that! Try again.";
+        }
+        // no need to get the data back from request since it's bound to variables in the form
     }
 }
