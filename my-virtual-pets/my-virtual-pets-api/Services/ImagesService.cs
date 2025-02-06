@@ -2,7 +2,7 @@
 using my_virtual_pets_api.Cloud;
 using my_virtual_pets_api.Repositories.Interfaces;
 using my_virtual_pets_api.Services.Interfaces;
-using my_virtual_pets_class_library;
+using my_virtual_pets_class_library.Enums;
 using System.Drawing;
 
 namespace my_virtual_pets_api.Services;
@@ -56,7 +56,12 @@ public class ImagesService : IImagesService
         var uploadResult = await _storageService.UploadObjectAsync(pixelResult, imageId);
         //return string image url and string pet type
         if (!uploadResult.Item1) return null;
-        return new ImagesResponseDto { imageUrl = uploadResult.imageUrl, animalType = recognitionResult.displayName };
+
+        if (Enum.TryParse(recognitionResult.displayName, out PetType petType))
+        {
+            return new ImagesResponseDto { ImageUrl = uploadResult.imageUrl, PetType = petType };
+        }
+        else return null;
     }
 
     public Guid AddImage(string uimageUrl)

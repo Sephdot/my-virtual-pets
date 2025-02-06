@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using my_virtual_pets_api.Services.Interfaces;
-using my_virtual_pets_class_library;
+using my_virtual_pets_class_library.Enums;
 
 namespace my_virtual_pets_api.Controllers;
 

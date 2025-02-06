@@ -1,14 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace my_virtual_pets_class_library;
+namespace my_virtual_pets_class_library.Enums;
 
 public class ImagesResponseDto
 {
     [Required]
     [JsonPropertyName("ImageUrl")]
-    public required string imageUrl { get; set; }
+    public required string ImageUrl { get; set; }
     [Required]
-    [JsonPropertyName("AnimalType")]
-    public required string animalType { get; set; }
+    [JsonPropertyName("PetType")]
+    public required PetType PetType { get; set; }
 }
