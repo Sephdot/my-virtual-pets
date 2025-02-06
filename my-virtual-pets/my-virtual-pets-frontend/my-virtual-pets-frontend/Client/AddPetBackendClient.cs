@@ -8,13 +8,6 @@ public class AddPetBackendClient<T> : BackendClient<T>
         public AddPetBackendClient(string endpoint) 
         : base(endpoint)
         {
-            cookieContainer = new CookieContainer();
-            var handler = new HttpClientHandler
-            {
-                CookieContainer = cookieContainer,
-                UseCookies = true,  
-                // AllowAutoRedirect = true  
-            };
         }
 
         public async Task<HttpResponseMessage> ImageUploadPostRequest(T postValue)
@@ -29,15 +22,11 @@ public class AddPetBackendClient<T> : BackendClient<T>
                 // var response = await client.PostAsJsonAsync<T>(Url, postValue);
                 Console.WriteLine(response.StatusCode);
                 Console.WriteLine(response);
-                var cookies = cookieContainer.GetAllCookies(); 
-                foreach (Cookie cookie in cookies)
-                {
-                    Console.WriteLine($"Cookie Name: {cookie.Name}, Value: {cookie.Value}, Path: {cookie.Path}"); 
-                } 
                 return response;
             }
             catch
             {
+                Console.WriteLine("Catch block triggered");
                 return new HttpResponseMessage(HttpStatusCode.ServiceUnavailable);
             }
         }
