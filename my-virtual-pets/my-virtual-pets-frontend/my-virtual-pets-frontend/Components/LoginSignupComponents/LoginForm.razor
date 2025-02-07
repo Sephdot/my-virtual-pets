@@ -50,7 +50,7 @@
     public async Task HandleValidSubmit()
     {
         HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, "https://localhost:7091/api/user/login");
-        requestMessage.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
+        // requestMessage.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
         requestMessage.Content = JsonContent.Create(loginDetails);
         var client = new HttpClient();
         var response = await client.SendAsync(requestMessage);    

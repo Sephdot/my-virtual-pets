@@ -54,12 +54,18 @@
 
     private List<PetCardDataDTO> _petCardDataDTOs = new List<PetCardDataDTO>();
 
+    public string token { get; set; }
+    
     protected override async Task OnInitializedAsync()
     {
         var user = (await AuthStateProvider.GetAuthenticationStateAsync()).User;
         UserId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        var getclient = new BackendClient<List<PetCardDataDTO>>($"api/pets/user/{UserId}");
-        _petCardDataDTOs = await getclient.GetRequest(); 
+        if (UserId != null)
+        {
+            var getclient = new BackendClient<List<PetCardDataDTO>>($"api/pets/user/{UserId}");
+            _petCardDataDTOs = await getclient.GetRequest();    
+        }
+
     }
     
     public async Task DeleteFromCollection(Guid petId) {
@@ -69,7 +75,7 @@
         _petCardDataDTOs = await getclient.GetRequest(); 
     }
     
-    public async Task HandleAddPet()
+    public void HandleAddPet()
     {
         Navigation.NavigateTo("/add-pet");
     }
