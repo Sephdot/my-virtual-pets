@@ -50,5 +50,6 @@ namespace my_virtual_pets_api.Services
         {
             return _petRepository.DeletePet(petId);
         }
+        
     }
 }

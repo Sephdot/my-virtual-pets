@@ -125,6 +125,29 @@ namespace my_virtual_pets_api.Controllers
         }
 
         [HttpGet]
+        [Route("{GlobalUserId}/IsFavourited/{PetId}")]
+        public IActionResult IsFavourited(Guid GlobalUserId, Guid PetId)
+        {
+            Console.WriteLine($"CONTROLLER CALLED: IsFavourited {GlobalUserId}/{PetId}");
+            try
+            {
+                bool isFavourited = _userService.IsFavourited(GlobalUserId, PetId);
+                return Ok( new IsFavourited(){ IsFavourite = isFavourited });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound("User not found");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        
+        
+        
+        [HttpGet]
         [Route("{GlobalUserId}/FavouritePetIds")]
         public IActionResult GetFavouritePetIds(Guid GlobalUserId)
         {

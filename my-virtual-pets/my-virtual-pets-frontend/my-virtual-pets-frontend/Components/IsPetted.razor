@@ -29,9 +29,16 @@ else
     {
         var user = (await AuthStateProvider.GetAuthenticationStateAsync()).User;
         UserId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (UserId != null)
+        {
+            var client = new BackendClient<IsFavourited>($"api/User/{UserId}/IsFavourited/{PetId}");
+            var IsFavourite = await client.GetRequest();
+            if (IsFavourite != null)
+            {
+                IsPet = IsFavourite.IsFavourite; 
+            }
+        }
     }
-
-    // then check if this is a favourited pet by id by that user? 
     
     public void Pet()
     {
