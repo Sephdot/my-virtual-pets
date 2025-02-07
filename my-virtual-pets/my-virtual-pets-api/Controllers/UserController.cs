@@ -104,13 +104,13 @@ namespace my_virtual_pets_api.Controllers
         }
 
         [HttpPost]
-        [Route("{GlobalUserId}/AddToFavourites{PetId}")]
-
-        public IActionResult AddPetToFavourites(Guid GlobalUserId, Guid PetId)
+        [Route("AddToFavourites")]
+        public IActionResult AddPetToFavourites(Favourites favourites)
         {
+            Console.WriteLine($"AddPetToFavourites {favourites.GlobalUserId}/{favourites.PetId}");
             try
             {
-                bool isSuccess = _userService.AddToFavourites(GlobalUserId, PetId);
+                bool isSuccess = _userService.AddToFavourites(favourites.GlobalUserId, favourites.PetId);
                 if (isSuccess) return NoContent();
                 else return Conflict("Pet is already favourited");
             }
@@ -163,7 +163,7 @@ namespace my_virtual_pets_api.Controllers
         }
 
         [HttpDelete]
-        [Route("{GlobalUserId}/RemoveFromFavourites{PetId}")]
+        [Route("{GlobalUserId}/RemoveFromFavourites/{PetId}")]
         public IActionResult RemoveFromFavourite(Guid GlobalUserId, Guid PetId)
         {
             try

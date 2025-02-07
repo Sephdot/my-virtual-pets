@@ -4,7 +4,6 @@
 @using my_virtual_pets_class_library.DTO
 @using my_virtual_pets_frontend.Components.Icons
 @using my_virtual_pets_frontend.Components.DisplayCards
-@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 @inject AuthenticationStateProvider AuthStateProvider
 @inject NavigationManager Navigation
 @rendermode InteractiveAuto
@@ -14,7 +13,6 @@
 <AuthorizeView>
     <Authorized>
         <p>Hello, @context.User.Identity?.Name!</p>
-        <p>@context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value</p>
     </Authorized>
     <NotAuthorized>
         @{
