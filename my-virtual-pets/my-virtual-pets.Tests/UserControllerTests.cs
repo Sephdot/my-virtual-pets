@@ -66,5 +66,37 @@ namespace my_virtual_pets.Tests
             // Assert
             result.Should().BeOfType<NotFoundObjectResult>();
         }
+
+        [Test]
+        public void UpdateUser_ShouldReturnOk_WhenValidData()
+        {
+            // Arrange
+            var updatedUser = new UpdateUserDTO { UserId = Guid.NewGuid(), NewUsername = "newUsername", NewPassword = "newPassword" };
+
+
+            _userServiceMock.Setup(s => s.UpdateUser(updatedUser)).Returns(true);
+
+            // Act
+            var result = _controller.UpdateUser(updatedUser);
+
+            // Assert
+            result.Should().BeOfType<OkObjectResult>().Which.Value.Should().Be("User updated successfully.");
+        }
+
+        [Test]
+        public void UpdateUser_ShouldReturnBadRequest_WhenUsernameConflict()
+        {
+            // Arrange
+            var updatedUser = new UpdateUserDTO { UserId = Guid.NewGuid(), NewUsername = "newUsername", NewPassword = "newPassword" };
+
+
+            _userServiceMock.Setup(s => s.UpdateUser(updatedUser)).Throws(new InvalidOperationException("Username is already in use."));
+
+            // Act
+            var result = _controller.UpdateUser(updatedUser);
+
+            // Assert
+            result.Should().BeOfType<BadRequestObjectResult>() .Which.Value.Should().Be("Username is already in use."); 
+        }
     }
 }
