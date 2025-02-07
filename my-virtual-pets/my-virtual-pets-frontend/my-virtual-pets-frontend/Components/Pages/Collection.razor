@@ -1,9 +1,11 @@
 @page "/collection"
+@using System.Security.Claims
 @using Microsoft.AspNetCore.Authorization
 @using my_virtual_pets_class_library.DTO
 @using my_virtual_pets_frontend.Components.Icons
 @using my_virtual_pets_frontend.Components.DisplayCards
 @inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@inject AuthenticationStateProvider AuthStateProvider
 @inject NavigationManager Navigation
 @rendermode InteractiveAuto
 
@@ -12,6 +14,7 @@
 <AuthorizeView>
     <Authorized>
         <p>Hello, @context.User.Identity?.Name!</p>
+        <p>@context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value</p>
     </Authorized>
     <NotAuthorized>
         @{
@@ -49,12 +52,14 @@
 
 @code {
 
-    private string UserId = "f3922887-7fc2-447b-a08f-4fbbc663ba81";
+    private string UserId;
 
     private List<PetCardDataDTO> _petCardDataDTOs = new List<PetCardDataDTO>();
 
     protected override async Task OnInitializedAsync()
     {
+        var user = (await AuthStateProvider.GetAuthenticationStateAsync()).User;
+        UserId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var getclient = new BackendClient<List<PetCardDataDTO>>($"api/pets/user/{UserId}");
         _petCardDataDTOs = await getclient.GetRequest(); 
     }

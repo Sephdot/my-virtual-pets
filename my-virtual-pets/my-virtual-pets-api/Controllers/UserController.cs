@@ -69,7 +69,8 @@ namespace my_virtual_pets_api.Controllers
             return Ok(new
             {
 
-                token = new JwtSecurityTokenHandler().WriteToken(token)
+                token = new JwtSecurityTokenHandler().WriteToken(token),
+                userid = userId 
             });
         }
 
