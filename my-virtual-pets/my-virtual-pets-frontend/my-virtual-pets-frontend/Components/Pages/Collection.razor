@@ -11,33 +11,28 @@
 <PageTitle>Collection | MyVirtualPets</PageTitle>
 
 <AuthorizeView>
-    <Authorized>
-        <p>Hello, @context.User.Identity?.Name!</p>
-    </Authorized>
     <NotAuthorized>
         @{
             Navigation.NavigateTo("/login");
         }
     </NotAuthorized>
-</AuthorizeView>
-
-@if (UserId == null)
-{
-    Navigation.NavigateTo("/login"); 
-} else if (_petCardDataDTOs is null) 
-{
-    <Cat_Loader></Cat_Loader>
-} else if (_petCardDataDTOs.Count() == 0)
-{
-    <section class="container text-center">
-        <div class="container">
-            <h1 class="fw-bold py-6">My Collection</h1>
-            <button onclick="() => HandleAddPet" class="btn btn-primary my-2">Add Pet</button>
-            <hr class="my-4"/>
-        </div>
-    </section>
-} else if (_petCardDataDTOs.Count() > 0)
-{
+    <Authorized>
+        <p>Hello, @context.User.Identity?.Name!</p>
+        
+        @if (_petCardDataDTOs is null) 
+        {
+            <Cat_Loader></Cat_Loader>
+        } else if (_petCardDataDTOs.Count() == 0)
+        {
+            <section class="container text-center">
+                <div class="container">
+                    <h1 class="fw-bold py-6">My Collection</h1>
+                    <button onclick="() => HandleAddPet" class="btn btn-primary my-2">Add Pet</button>
+                    <hr class="my-4"/>
+                </div>
+            </section>
+        } else if (_petCardDataDTOs.Count() > 0)
+        {
             <div class="container">
                 <div class="row">
                     <Virtualize Items="_petCardDataDTOs" Context="petCardDataDTO">
@@ -45,8 +40,10 @@
                     </Virtualize>
                 </div>
             </div>
-}
+        }
 
+    </Authorized>
+</AuthorizeView>
 
 @code {
 
