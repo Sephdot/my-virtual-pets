@@ -1,17 +1,21 @@
 @using System.Net
 @using my_virtual_pets_class_library.DTO
 @using my_virtual_pets_class_library.Enums
+@using my_virtual_pets_frontend.Components.Icons
+
 @rendermode InteractiveServer
 
-@if (PetDetails == null)
+@if (_postIsInProgress)
 {
-    <Loader />
+    <h3 class="text-center mb-4">Uploading Pet...</h3>
+    <div class="d-block mx-auto my-6">
+        <Cat_Loader></Cat_Loader>
+    </div>
 }
 else
 {
     <EditForm Model="@PetDetails" OnInvalidSubmit="HandleInvalidSubmit" OnValidSubmit="HandleValidSubmit">
-        <h3>Add Pet Details</h3>
-        <h6 class="@(_success == "Submitted!" ? "text-success" : "text-info")">@_success</h6>
+        <h3>Add Details</h3>
         <DataAnnotationsValidator/>
 
         <div class="form-group">
@@ -30,26 +34,31 @@ else
             </InputSelect>
             <ValidationMessage For="@(() => PetDetails.Personality)"/>
         </div>
-    
+
         <div class="form-group">
             <label for="InputDescription">Description: <span class="text-danger">*</span></label>
             <InputTextArea id="InputDescription" class="form-control" @bind-Value="@PetDetails.Description"/>
             <ValidationMessage For="@(() => PetDetails.Description)"/>
         </div>
-    
+        <h6 class="mt-1 @_feedbackCssStyle"><i>@_feedbackMessage</i></h6>
         <button id="submitpetdetailsbutton" class="btn btn-light d-block mx-auto mt-4" type="submit">Create Your Pet!</button>
-
     </EditForm>
 }
 
+
 @code {
-    [CascadingParameter] 
-    public AddPetDTO? PetDetails { get; set; }
+    [CascadingParameter] public required AddPetDTO PetDetails { get; set; }
     
-    [Parameter]
-    public EventCallback<bool> OnSuccessfulPetPost { get; set; }
+    [Parameter] public EventCallback<bool> PetPostPending { get; set; }
     
-    private string? _success { get; set; }
+    [Parameter] public EventCallback<bool> PetPostSucceeded { get; set; }
+
+    [Parameter] public EventCallback<bool> PetPostFailed { get; set; }
+
+    private string _feedbackMessage = "";
+    private string _feedbackCssStyle = "text-info";
+
+    private bool _postIsInProgress;
     
     private List<Personality> _personalities = Enum
         .GetValues(typeof(Personality))
@@ -58,30 +67,36 @@ else
 
     protected override void OnInitialized()
     {
-        
+        _postIsInProgress = false;
     }
 
     public void HandleInvalidSubmit()
     {
-        _success = "Something has gone wrong... Very wrong indeed..."; 
-        Console.WriteLine($"invalid: {PetDetails.PetName} {PetDetails.Personality} {PetDetails.Description}");
+        
     }
 
     public async Task HandleValidSubmit()
     {
-        _success = "Submitted!";
-        Console.WriteLine($"valid: {PetDetails.PetName} {PetDetails.Personality} {PetDetails.Description}");
+        _feedbackMessage = "Submitted!";
+        _feedbackCssStyle = "text-success";
+
+        _postIsInProgress = true;
+        StateHasChanged();
+        await PetPostPending.InvokeAsync();
+        
         var webclient = new BackendClient<AddPetDTO>("api/pets");
         var response = await webclient.PostRequest(PetDetails); // just gets status code no body
         
         if (response == HttpStatusCode.OK)
         {
-            await OnSuccessfulPetPost.InvokeAsync();
+            await PetPostSucceeded.InvokeAsync();
         }
         else
         {
-            _success = "Uh oh, the server hamsters didn't like that! Try again.";
+            await PetPostFailed.InvokeAsync();
+            _postIsInProgress = false;
+            _feedbackMessage = "Uh oh, the server hamsters didn't like that! Try again.";
+            _feedbackCssStyle = "text-danger";
         }
-        // no need to get the data back from request since it's bound to variables in the form
     }
 }
