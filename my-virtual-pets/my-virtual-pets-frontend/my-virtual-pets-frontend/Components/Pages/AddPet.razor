@@ -19,9 +19,17 @@
     else
     {
         <div id="formcenter">
-            <div class="d-flex justify-content-center">
-                <img src="@PetDetails.ImageUrl" alt="" width="300" height="auto"/>
-            </div>
+            @if (PetDetails.ImageUrl != "")
+            {
+                <div class="d-flex justify-content-center">
+                    <figure>
+                        <img src="@PetDetails.ImageUrl" alt="" width="300" height="auto"/>
+                        @* <img src="https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/66004fb9-98da-4ae7-bfd6-2bdcbd0aa9ae.png" alt="" width="300" height="auto"/> *@
+                        <figcaption class="text-muted text-center mt-1"><i>Your new VirtualPet!</i></figcaption>
+                    </figure>
+                </div>
+            }
+            
             <CascadingValue Value="PetDetails">
                 @if (!IsSuccessfulUpload)
                 {
@@ -39,6 +47,9 @@
 
 @code {
     [CascadingParameter] AddPetDTO? PetDetails { get; set; }
+    
+    public bool IsSuccessfulUpload { get; set; } = false;
+    public bool IsSuccessfulPetPost { get; set; } = false;
 
     protected override void OnInitialized()
     {
@@ -59,9 +70,6 @@
         };
     }
     
-    public bool IsSuccessfulUpload { get; set; } = false;
-    public bool IsSuccessfulPetPost { get; set; } = false;
-
     public void SwitchToAddDetails()
     {
         IsSuccessfulUpload = true;
