@@ -1,12 +1,11 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using my_virtual_pets_api.Services.Interfaces;
 using my_virtual_pets_class_library.DTO;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
 
 namespace my_virtual_pets_api.Controllers
 {
@@ -17,7 +16,7 @@ namespace my_virtual_pets_api.Controllers
         private readonly IUserService _userService;
 
         private readonly IConfiguration _configuration;
-        
+
         public UserController(IUserService userService, IConfiguration configuration)
         {
             _configuration = configuration;
@@ -44,7 +43,7 @@ namespace my_virtual_pets_api.Controllers
             if (!_userService.ExistsByUsername(userLoginDto.Username)) return BadRequest("This username does not exist");
             if (!_userService.DoesPasswordMatch(userLoginDto)) return BadRequest("Password is incorrect");
 
-            
+
             Console.WriteLine($"User {userLoginDto.Username} logged in");
             Guid userId = _userService.GetUserIdByUsername(userLoginDto.Username);
 
@@ -54,7 +53,7 @@ namespace my_virtual_pets_api.Controllers
                 new Claim(ClaimTypes.Name, userLoginDto.Username),
                 new Claim(ClaimTypes.Role, "User"),
             };
-            
+
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Secret"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
@@ -62,7 +61,7 @@ namespace my_virtual_pets_api.Controllers
                 issuer: _configuration["Jwt:Issuer"],
                 audience: _configuration["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(30), 
+                expires: DateTime.Now.AddMinutes(30),
                 signingCredentials: creds
             );
 
@@ -70,20 +69,20 @@ namespace my_virtual_pets_api.Controllers
             {
 
                 token = new JwtSecurityTokenHandler().WriteToken(token),
-                userid = userId 
+                userid = userId
             });
         }
 
-        
+
         [Authorize]
         [HttpGet("auth")]
         public IActionResult AuthCheck()
         {
             var firstClaim = User.Claims.ElementAtOrDefault(0)?.Value;
-            return Ok(new CurrentUserDTO() { Id = firstClaim,  Username = User.Identity.Name } );
+            return Ok(new CurrentUserDTO() { Id = firstClaim, Username = User.Identity.Name });
         }
 
-        
+
         [HttpGet("{userId}")]
         public IActionResult GetUserDetailsByUserId(Guid userId)
         {
@@ -132,7 +131,7 @@ namespace my_virtual_pets_api.Controllers
             try
             {
                 bool isFavourited = _userService.IsFavourited(GlobalUserId, PetId);
-                return Ok( new IsFavourited(){ IsFavourite = isFavourited });
+                return Ok(new IsFavourited() { IsFavourite = isFavourited });
             }
             catch (KeyNotFoundException ex)
             {
@@ -144,9 +143,6 @@ namespace my_virtual_pets_api.Controllers
             }
         }
 
-        
-        
-        
         [HttpGet]
         [Route("{GlobalUserId}/FavouritePetIds")]
         public IActionResult GetFavouritePetIds(Guid GlobalUserId)
@@ -206,8 +202,40 @@ namespace my_virtual_pets_api.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("CheckUsername/{username}")]
+        public IActionResult CheckUsername(string username)
+        {
+            try
+            {
+                bool exists = _userService.ExistsByUsername(username);
+                return (Ok(exists));
+            }
+            catch
+            {
+                return StatusCode(500, "An error occurred while checking the username");
+            }
+        }
 
-        
+        [HttpGet]
+        [Route("CheckEmail/{email}")]
+        public IActionResult CheckEmail(string email)
+        {
+            try
+            {
+                bool exists = _userService.ExistsByEmail(email);
+                return (Ok(exists));
+            }
+            catch (FormatException ex)
+            {
+                return BadRequest("Invalid email format.");
+            }
+            catch
+            {
+                return StatusCode(500, "An error occurred while checking the email");
+            }
+        }
+
         [HttpPut("update")]
         public IActionResult UpdateUser([FromBody] UpdateUserDTO updateduser)
         {
