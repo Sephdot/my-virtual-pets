@@ -37,6 +37,9 @@ namespace my_virtual_pets_api.Entities
 
         public List<Favourite> Favourites { get; set; } = [];
 
+        [JsonPropertyName("score")]
+        public int Score { get; set; }
+
         [JsonPropertyName("dateCreated")]
         public DateTime? DateCreated { get; set; }
 
@@ -48,7 +51,7 @@ namespace my_virtual_pets_api.Entities
                 PetName = pet.Name,
                 ImageUrl = pet.Image.ImageUrl,
                 OwnerUsername = pet.GlobalUser.Username,
-                Score = 0,
+                Score = pet.Score,
                 Personality = pet.Personality,
                 PetType = pet.Type,
                 Description = pet.Description,
