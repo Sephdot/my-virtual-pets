@@ -17,7 +17,6 @@
         @{
             Navigation.NavigateTo("/login");
         }
-        <p>You're not authorized.</p>
     </NotAuthorized>
 </AuthorizeView>
 
@@ -50,15 +49,6 @@
 
 @code {
 
-    // protected override async Task OnAfterRenderAsync(bool firstRender)
-    // {
-    //     var token = await sessionStorage.GetItemAsync<string>("jwtToken");
-    //     if (string.IsNullOrEmpty(token))
-    //     {
-    //         Navigation.NavigateTo("/login");
-    //     }
-    // }
-    //
     private string UserId = "f3922887-7fc2-447b-a08f-4fbbc663ba81";
 
     private List<PetCardDataDTO> _petCardDataDTOs = new List<PetCardDataDTO>();
@@ -78,7 +68,7 @@
     
     public async Task HandleAddPet()
     {
-        throw new NotImplementedException();
+        Navigation.NavigateTo("/add-pet");
     }
 
 }
