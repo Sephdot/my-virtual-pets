@@ -1,5 +1,4 @@
-﻿using ImageRecognition;
-using my_virtual_pets_api.Cloud;
+﻿using my_virtual_pets_api.Cloud;
 using my_virtual_pets_api.Repositories.Interfaces;
 using my_virtual_pets_api.Services.Interfaces;
 using my_virtual_pets_class_library.Enums;
@@ -11,11 +10,11 @@ public class ImagesService : IImagesService
 {
     private IStorageService _storageService;
     private IRecognitionService _recognitionService;
-    private IPixelate _pixelateService;
+    private IPixelateService _pixelateService;
     private IRemoveBackgroundService _removeBackgroundService;
     private IImageRepository _imageRepository;
 
-    public ImagesService(IStorageService storageService, IRecognitionService recognitionService, IPixelate pixelateService, IRemoveBackgroundService removeBackgroundService, IImageRepository imageRepository)
+    public ImagesService(IStorageService storageService, IRecognitionService recognitionService, IPixelateService pixelateService, IRemoveBackgroundService removeBackgroundService, IImageRepository imageRepository)
     {
         _storageService = storageService;
         _recognitionService = recognitionService;
@@ -30,12 +29,12 @@ public class ImagesService : IImagesService
         //TO DO: Ask Callum about error handling in recognitionService
         var recognitionResult = await _recognitionService.CheckImageInput(inputImage);
 
-        if (recognitionResult == null) return null;
+        if (recognitionResult == null) throw new Exception("Something went wrong while recongnising the image.");
 
 
         //Remove backround
         var removeBgResult = await _removeBackgroundService.RemoveBackgroundAsync(inputImage);
-        if (removeBgResult == null) return null;
+        if (removeBgResult == null) throw new Exception("Something went wrong while removing the background."); ;
 
         Bitmap inputBitmap;
 
@@ -49,17 +48,16 @@ public class ImagesService : IImagesService
 
         ImageConverter converter = new ImageConverter();
         byte[] pixelResult = (byte[])converter.ConvertTo(pixelatedImage, typeof(byte[]));
+        if (pixelResult == null) throw new Exception("Something went wrong while pixelating the image.");
 
 
-        //TO DO: upload image to bucket
+
+        //Upload image to bucket
         string imageUrlPrefix = Guid.NewGuid().ToString();
-
-        //Saves files 
-        File.WriteAllBytes($"Resources/Images/Results/{imageUrlPrefix}.png", pixelResult);
-
         var uploadResult = await _storageService.UploadObjectAsync(pixelResult, imageUrlPrefix);
+
         //return string image url and string pet type
-        if (!uploadResult.Item1) return null;
+        if (!uploadResult.isSuccess) throw new Exception(($"Something went wrong while uploading image: {uploadResult.imageUrl}"));
 
 
         if (Enum.TryParse(recognitionResult.displayName, true, out PetType petType))

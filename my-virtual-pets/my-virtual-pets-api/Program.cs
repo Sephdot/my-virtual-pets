@@ -45,7 +45,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IImagesService, ImagesService>();
 builder.Services.AddScoped<IStorageService, S3StorageService>();
 builder.Services.AddScoped<IRecognitionService, RecognitionService>();
-builder.Services.AddScoped<IPixelate, Pixelate>();
+builder.Services.AddScoped<IPixelateService, PixelateService>();
 builder.Services.AddScoped<IRemoveBackgroundService, RemoveBackgroundService>();
 
 builder.Services.AddScoped<IPetRepository, PetRepository>();
