@@ -1,15 +1,19 @@
 ﻿using my_virtual_pets_api.Services.Interfaces;
-using System.Drawing;
-
+using SkiaSharp;
 namespace PixelationTest
 {
 
     public class PixelateService : IPixelateService
     {
-        private List<Color> palette = [];
+        private List<SKColor> palette = [];
 
-        public Bitmap PixelateImage(Bitmap image, int blockCount, bool usePalette)
+        public byte[] PixelateImage(byte[] input, int blockCount, bool usePalette)
         {
+            SKBitmap image;
+            using (var stream = new SKMemoryStream(input))
+            {
+                image = SKBitmap.Decode(stream);
+            }
             int blockSize = Math.Min(image.Width, image.Height) / blockCount;
 
             //palette.Add(Color.FromArgb(241, 228, 232));
@@ -18,15 +22,14 @@ namespace PixelationTest
             //palette.Add(Color.FromArgb(185, 115, 117));
             //palette.Add(Color.FromArgb(45, 45, 52));
 
-            palette.Add(Color.FromArgb(221, 213, 208));
-            palette.Add(Color.FromArgb(207, 192, 189));
-            palette.Add(Color.FromArgb(184, 184, 170));
-            palette.Add(Color.FromArgb(127, 145, 131));
-            palette.Add(Color.FromArgb(88, 111, 107));
-            palette.Add(Color.FromArgb(40, 51, 49));
+            palette.Add(new SKColor(221, 213, 208));
+            palette.Add(new SKColor(207, 192, 189));
+            palette.Add(new SKColor(184, 184, 170));
+            palette.Add(new SKColor(127, 145, 131));
+            palette.Add(new SKColor(88, 111, 107));
+            palette.Add(new SKColor(40, 51, 49));
 
-
-            Bitmap result = new Bitmap(image.Width, image.Height);
+            SKBitmap result = new SKBitmap(image.Width, image.Height);
 
             // Iterate over the image in blocks of 'blockSize'
             for (int x = 0; x < image.Width; x += blockSize)
@@ -34,7 +37,7 @@ namespace PixelationTest
                 for (int y = 0; y < image.Height; y += blockSize)
                 {
                     // Calculate the average color of the block
-                    (Color averageColor, int averageAlpha) = GetAverageColour(image, x, y, blockSize);
+                    (SKColor averageColor, byte averageAlpha) = GetAverageColour(image, x, y, blockSize);
 
                     //Apply palette
                     if (usePalette && palette.Count > 0)
@@ -43,9 +46,9 @@ namespace PixelationTest
                     }
 
                     //Hard cutoff for alpha
-                    int finalAlpha = averageAlpha >= 128 ? 255 : 0;
+                    byte finalAlpha = averageAlpha >= 128 ? (byte)255 : (byte)0;
 
-                    Color finalColor = Color.FromArgb(finalAlpha, averageColor);
+                    SKColor finalColor = new SKColor(averageColor.Red, averageColor.Green, averageColor.Blue, finalAlpha);
 
                     // Apply the block color to every pixel in the block
                     for (int bx = 0; bx < blockSize; bx++)
@@ -61,11 +64,18 @@ namespace PixelationTest
                 }
             }
 
-            return result;
+            byte[] output;
+            using (var stream = new SKDynamicMemoryWStream())
+            {
+                result.Encode(stream, SKEncodedImageFormat.Png, 100);
+                SKData data = stream.DetachAsData();
+                output = data.ToArray();
+            }
+            return output;
         }
 
         // average colour of a block within the image
-        public (Color, int) GetAverageColour(Bitmap image, int startX, int startY, int blockSize)
+        private (SKColor, byte) GetAverageColour(SKBitmap image, int startX, int startY, int blockSize)
         {
             int r = 0, g = 0, b = 0, totalAlpha = 0, count = 0;
 
@@ -74,35 +84,36 @@ namespace PixelationTest
             {
                 for (int y = startY; y < startY + blockSize && y < image.Height; y++)
                 {
-                    Color pixel = image.GetPixel(x, y);
-                    r += pixel.R;
-                    g += pixel.G;
-                    b += pixel.B;
-                    totalAlpha += pixel.A;
+                    SKColor pixel = image.GetPixel(x, y);
+                    r += pixel.Red;
+                    g += pixel.Green;
+                    b += pixel.Blue;
+                    totalAlpha += pixel.Alpha;
                     count++;
                 }
             }
 
-            //  average for each colour channel
-            int avgAplha = totalAlpha / count;
-            r /= count;
-            g /= count;
-            b /= count;
-            totalAlpha /= count;
+            if (count == 0) return (new SKColor(0, 0, 0, 0), 0);
 
-            return (Color.FromArgb(255, r, g, b), avgAplha);
+            //  average for each colour channel
+            byte avgAlpha = (byte)(totalAlpha / count);
+            byte avgR = (byte)(r / count);
+            byte avgG = (byte)(g / count);
+            byte avgB = (byte)(b / count);
+
+            return (new SKColor(avgR, avgG, avgB, avgAlpha), avgAlpha);
         }
 
-        private Color FindClosestPaletteColor(Color target)
+        private SKColor FindClosestPaletteColor(SKColor target)
         {
-            Color closest = palette[0];
+            SKColor closest = palette[0];
             double minDistance = double.MaxValue;
 
-            foreach (Color color in palette)
+            foreach (SKColor color in palette)
             {
-                double distance = Math.Pow(color.R - target.R, 2) +
-                                  Math.Pow(color.G - target.G, 2) +
-                                  Math.Pow(color.B - target.B, 2);
+                double distance = Math.Pow(color.Red - target.Red, 2) +
+                                  Math.Pow(color.Green - target.Green, 2) +
+                                  Math.Pow(color.Blue - target.Blue, 2);
 
                 if (distance < minDistance)
                 {
@@ -111,7 +122,7 @@ namespace PixelationTest
                 }
             }
 
-            return Color.FromArgb(target.A, closest.R, closest.G, closest.B);
+            return new SKColor(closest.Red, closest.Green, closest.Blue, target.Alpha);
         }
     }
 }

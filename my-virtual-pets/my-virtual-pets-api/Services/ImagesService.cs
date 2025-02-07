@@ -2,7 +2,6 @@
 using my_virtual_pets_api.Repositories.Interfaces;
 using my_virtual_pets_api.Services.Interfaces;
 using my_virtual_pets_class_library.Enums;
-using System.Drawing;
 
 namespace my_virtual_pets_api.Services;
 
@@ -31,26 +30,14 @@ public class ImagesService : IImagesService
 
         if (recognitionResult == null) throw new Exception("Something went wrong while recongnising the image.");
 
-
         //Remove backround
         var removeBgResult = await _removeBackgroundService.RemoveBackgroundAsync(inputImage);
         if (removeBgResult == null) throw new Exception("Something went wrong while removing the background."); ;
 
-        Bitmap inputBitmap;
-
         //Pixelate image
-        using (var ms = new MemoryStream(removeBgResult))
-        {
-            inputBitmap = new Bitmap(ms);
-        }
 
-        Bitmap pixelatedImage = _pixelateService.PixelateImage(inputBitmap, 100, true);
-
-        ImageConverter converter = new ImageConverter();
-        byte[] pixelResult = (byte[])converter.ConvertTo(pixelatedImage, typeof(byte[]));
+        byte[] pixelResult = _pixelateService.PixelateImage(removeBgResult, 100, true);
         if (pixelResult == null) throw new Exception("Something went wrong while pixelating the image.");
-
-
 
         //Upload image to bucket
         string imageUrlPrefix = Guid.NewGuid().ToString();
@@ -58,7 +45,6 @@ public class ImagesService : IImagesService
 
         //return string image url and string pet type
         if (!uploadResult.isSuccess) throw new Exception(($"Something went wrong while uploading image: {uploadResult.imageUrl}"));
-
 
         if (Enum.TryParse(recognitionResult.displayName, true, out PetType petType))
         {
