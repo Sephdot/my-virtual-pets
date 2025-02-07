@@ -6,7 +6,9 @@
     "personality": 2,
     "description": "A playful and curious tabby cat.",
     "type": 0,
-    "imageid": "550e8400-e29b-41d4-a716-446655440000"
+    "imageid": "550e8400-e29b-41d4-a716-446655440000",
+    "score": 100,
+    "dateCreated": "2025-07-30T18:00:00.000Z"
   },
   {
     "id": "e2f3a4b5-6789-0123-4567-890123456789",
@@ -15,7 +17,9 @@
     "personality": 3,
     "description": "A loyal golden retriever who loves fetch.",
     "type": 1,
-    "imageid": "a9bcbce5-bc93-49d0-b7cd-68442ad73bb5"
+    "imageid": "a9bcbce5-bc93-49d0-b7cd-68442ad73bb5",
+    "score": 90,
+    "dateCreated": "2025-06-30T18:00:00.000Z"
   },
   {
     "id": "f3a4b5c6-7890-1234-5678-901234567890",
@@ -24,7 +28,9 @@
     "personality": 1,
     "description": "A shy but affectionate rabbit.",
     "type": 2,
-    "imageid": "fa4b84c6-e4c9-4ab4-b47a-9238a499c52f"
+    "imageid": "fa4b84c6-e4c9-4ab4-b47a-9238a499c52f",
+    "score": 85,
+    "dateCreated": "2024-07-30T18:00:00.000Z"
   },
   {
     "id": "a5b6c7d8-9012-3456-7890-123456789012",
@@ -33,7 +39,9 @@
     "personality": 3,
     "description": "A cuddly cat who loves sleeping in the sun.",
     "type": 0,
-    "imageid": "865fcd99-c3b7-49a4-b813-81fae96b577d"
+    "imageid": "865fcd99-c3b7-49a4-b813-81fae96b577d",
+    "score": 80,
+    "dateCreated": "2024-04-30T18:00:00.000Z"
   },
   {
     "id": "b6c7d8e9-0123-4567-8901-234567890123",
@@ -42,7 +50,9 @@
     "personality": 2,
     "description": "A small but brave terrier mix.",
     "type": 1,
-    "imageid": "e2d7c9b9-607f-4289-bf44-fc0e35ffcf67"
+    "imageid": "e2d7c9b9-607f-4289-bf44-fc0e35ffcf67",
+    "score": 10,
+    "dateCreated": "2024-03-30T18:00:00.000Z"
   },
   {
     "id": "c7d8e9f0-1234-5678-9012-345678901234",
@@ -51,7 +61,9 @@
     "personality": 1,
     "description": "An energetic rabbit that loves to explore.",
     "type": 2,
-    "imageid": "d7f7c57b-472f-4237-b464-caeacdb46738"
+    "imageid": "d7f7c57b-472f-4237-b464-caeacdb46738",
+    "score": 20,
+    "dateCreated": "2023-01-30T18:00:00.000Z"
   },
   {
     "id": "d8e9f0a1-2345-6789-0123-456789012345",
@@ -60,7 +72,9 @@
     "personality": 2,
     "description": "A sleek black cat with a mysterious aura.",
     "type": 0,
-    "imageid": "9deefb0a-f90f-4f33-9379-c9f1b45d05ea"
+    "imageid": "9deefb0a-f90f-4f33-9379-c9f1b45d05ea",
+    "score": 30,
+    "dateCreated": "2020-07-30T18:00:00.000Z"
   },
   {
     "id": "e9f0a1b2-3456-7890-1234-567890123456",
@@ -69,7 +83,9 @@
     "personality": 3,
     "description": "A gentle husky with a love for the snow.",
     "type": 1,
-    "imageid": "89a7cc4d-f68e-4650-b098-90a9f881f70a"
+    "imageid": "89a7cc4d-f68e-4650-b098-90a9f881f70a",
+    "score": 45,
+    "dateCreated": "2022-07-30T18:00:00.000Z"
   },
   {
     "id": "f0a1b2c3-4567-8901-2345-678901234567",
@@ -78,7 +94,9 @@
     "personality": 1,
     "description": "A tiny brown rabbit who loves carrots.",
     "type": 2,
-    "imageid": "9e58b73d-2e74-4c80-a19e-9b4c818d4cc4"
+    "imageid": "9e58b73d-2e74-4c80-a19e-9b4c818d4cc4",
+    "score": 40,
+    "dateCreated": "2021-07-30T18:00:00.000Z"
   },
   {
     "id": "a1b2c3d4-5678-9012-3456-789012345678",
@@ -87,7 +105,9 @@
     "personality": 3,
     "description": "An adventurous cat who loves climbing trees.",
     "type": 0,
-    "imageid": "d93e2be0-3a04-4f2f-9f4d-9ff45e17da1d"
+    "imageid": "d93e2be0-3a04-4f2f-9f4d-9ff45e17da1d",
+    "score": 60,
+    "dateCreated": "2019-07-30T18:00:00.000Z"
   },
   {
     "id": "b2c3d4e5-6789-0123-4567-890123456789",
@@ -96,6 +116,8 @@
     "personality": 2,
     "description": "A cheerful beagle who loves sniffing out treats.",
     "type": 1,
-    "imageid": "ce34c78f-6f2f-4ea9-9fa9-730b504ad202"
+    "imageid": "ce34c78f-6f2f-4ea9-9fa9-730b504ad202",
+    "score": 55,
+    "dateCreated": "2018-07-30T18:00:00.000Z"
   }
 ]

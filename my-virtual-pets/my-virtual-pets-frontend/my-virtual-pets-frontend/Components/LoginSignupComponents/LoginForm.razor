@@ -61,11 +61,13 @@
             if (tokenResponse != null)
             {
                 var token = tokenResponse.Token;
-                var currentUser =  AuthService.CurrentUser;
+                var userid = tokenResponse.UserId;
 
                 var identity = new ClaimsIdentity(
                     [
                         new Claim(ClaimTypes.Name, loginDetails.Username),
+                        new Claim(ClaimTypes.Hash, token),
+                        new Claim(ClaimTypes.NameIdentifier, userid)
                     ],
                     "Custom Authentication");
 
@@ -78,11 +80,6 @@
            loginDetails = new UserLoginDTO(); 
         }
 
-    }
-    
-    public class TokenResponse
-    {
-        public string Token { get; set; }
     }
 
 }

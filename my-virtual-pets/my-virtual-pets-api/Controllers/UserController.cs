@@ -69,7 +69,8 @@ namespace my_virtual_pets_api.Controllers
             return Ok(new
             {
 
-                token = new JwtSecurityTokenHandler().WriteToken(token)
+                token = new JwtSecurityTokenHandler().WriteToken(token),
+                userid = userId 
             });
         }
 
@@ -103,13 +104,13 @@ namespace my_virtual_pets_api.Controllers
         }
 
         [HttpPost]
-        [Route("{GlobalUserId}/AddToFavourites{PetId}")]
-
-        public IActionResult AddPetToFavourites(Guid GlobalUserId, Guid PetId)
+        [Route("AddToFavourites")]
+        public IActionResult AddPetToFavourites(Favourites favourites)
         {
+            Console.WriteLine($"AddPetToFavourites {favourites.GlobalUserId}/{favourites.PetId}");
             try
             {
-                bool isSuccess = _userService.AddToFavourites(GlobalUserId, PetId);
+                bool isSuccess = _userService.AddToFavourites(favourites.GlobalUserId, favourites.PetId);
                 if (isSuccess) return NoContent();
                 else return Conflict("Pet is already favourited");
             }
@@ -123,6 +124,29 @@ namespace my_virtual_pets_api.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("{GlobalUserId}/IsFavourited/{PetId}")]
+        public IActionResult IsFavourited(Guid GlobalUserId, Guid PetId)
+        {
+            Console.WriteLine($"CONTROLLER CALLED: IsFavourited {GlobalUserId}/{PetId}");
+            try
+            {
+                bool isFavourited = _userService.IsFavourited(GlobalUserId, PetId);
+                return Ok( new IsFavourited(){ IsFavourite = isFavourited });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound("User not found");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        
+        
+        
         [HttpGet]
         [Route("{GlobalUserId}/FavouritePetIds")]
         public IActionResult GetFavouritePetIds(Guid GlobalUserId)
@@ -162,7 +186,7 @@ namespace my_virtual_pets_api.Controllers
         }
 
         [HttpDelete]
-        [Route("{GlobalUserId}/RemoveFromFavourites{PetId}")]
+        [Route("{GlobalUserId}/RemoveFromFavourites/{PetId}")]
         public IActionResult RemoveFromFavourite(Guid GlobalUserId, Guid PetId)
         {
             try

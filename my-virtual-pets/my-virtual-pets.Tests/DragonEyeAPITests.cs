@@ -1,13 +1,6 @@
 ﻿using my_virtual_pets_api.Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Moq;
-using Moq.Protected;
 using ImageRecognition;
-using Castle.Core.Configuration;
 
 namespace my_virtual_pets.Tests
 {

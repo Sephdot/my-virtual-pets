@@ -112,6 +112,15 @@ namespace my_virtual_pets_api.Repositories
             return true;
         }
 
+        public bool IsFavourited(Guid GlobalUserId, Guid PetId)
+        {
+            var user = _context.GlobalUsers.Include(g => g.Favourites).SingleOrDefault(g => g.Id == GlobalUserId);
+            if (user == null) throw new KeyNotFoundException("GlobalUser does not exist");
+            return user.Favourites.Any(f => f.PetId == PetId);
+        }
+
+        
+        
         public List<Guid> GetFavoritePetIds(Guid GlobalUserId)
         {
             var user = _context.GlobalUsers.Include(g => g.Favourites).SingleOrDefault(g => g.Id == GlobalUserId);
@@ -149,24 +158,6 @@ namespace my_virtual_pets_api.Repositories
             return true;
         }
 
-       
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         
         public bool UpdateUser(UpdateUserDTO updatedUser)
         {
