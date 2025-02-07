@@ -148,5 +148,37 @@ namespace my_virtual_pets_api.Repositories
             _context.SaveChanges();
             return true;
         }
+
+        public bool UpdateUser(UpdateUserDTO updatedUser)
+        {
+            var globalUser = _context.GlobalUsers.FirstOrDefault(u => u.Id == updatedUser.UserId);
+            if (globalUser == null)
+            {
+                throw new KeyNotFoundException(" user not found.");
+            }
+
+            if (!string.IsNullOrWhiteSpace(updatedUser.NewUsername))
+            {
+                if (_context.GlobalUsers.Any(u => u.Username == updatedUser.NewUsername && u.Id != updatedUser.UserId))
+                {
+                    throw new InvalidOperationException("Username is already in use.");
+                }
+                globalUser.Username = updatedUser.NewUsername;
+            }
+
+            if (!string.IsNullOrWhiteSpace(updatedUser.NewPassword))
+            {
+                var localUser = _context.LocalUsers.FirstOrDefault(lu => lu.GlobalUserId == updatedUser.UserId);
+                if (localUser == null)
+                {
+                    throw new KeyNotFoundException("user record not found.");
+                }
+                localUser.Password = BCrypt.Net.BCrypt.EnhancedHashPassword(updatedUser.NewPassword);
+            }
+
+            _context.SaveChanges();
+            return true;
+        }
+
     }
 }

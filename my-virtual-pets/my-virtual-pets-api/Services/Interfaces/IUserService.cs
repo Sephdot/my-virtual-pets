@@ -18,4 +18,7 @@ public interface IUserService
     public List<PetCardDataDTO> GetFavouritePets(Guid GlobalUserId);
     public bool RemoveFromFavourites(Guid GlobalUserId, Guid PetId);
 
+    public bool UpdateUser(UpdateUserDTO updaedUser);
+
+
 }
