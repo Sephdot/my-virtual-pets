@@ -47,16 +47,16 @@ public class BackendClient<T>
             }
         }
 
-        public async Task<HttpStatusCode> PostRequest(T postValue)
+        public async Task<HttpResponseMessage> PostRequest(T postValue)
         {
             try
             {
                 var response = await client.PostAsJsonAsync<T>(Url, postValue);
-                return response.StatusCode;
+                return response;
             }
             catch
             {
-                return HttpStatusCode.ServiceUnavailable;
+                return new HttpResponseMessage(HttpStatusCode.ServiceUnavailable);
             }
         }
 

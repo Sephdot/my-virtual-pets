@@ -32,21 +32,22 @@
     <div class="col input form-group">
         <label for="InputUsername">Username:</label>
         <input type="text" id="InputUsername" class="form-control" @bind="Username" @bind:event="oninput"/>
-        <div style="height:10px">
-            <span style="color: @color">@UsernameTaken</span>
-        </div>
         <ValidationMessage For="@(() => userDetails.Username)"/>
+        <div style="height:10px">
+            <p style="color: @color">@UsernameTaken</p>
+        </div>
     </div>
     </div>
 
     <div class="row">
-    <div class="col input form-group">
+           <div class="col input form-group">
             <label for="InputPassword">Password:</label>
             <InputText id="InputPassword" type="password" class="form-control" @bind-Value="@userDetails.Password"/>
             <ValidationMessage For="@(() => userDetails.Password)"/>
             </div>
 
-    <div class="col input form-group">
+            
+            <div class="col input form-group">
         <label for="InputAnimal">Fav pet:</label>
         <InputText id="InputAnimal" class="form-control" @bind-Value="@userDetails.FavAnimal"/>
         <ValidationMessage For="@(() => userDetails.FavAnimal)"/>
@@ -76,7 +77,8 @@
         get => username;
         set
         {
-            username = value; 
+            username = value;
+            userDetails.Username = username;
             CheckUsernameAsync();
         }
     }
@@ -90,6 +92,7 @@
     protected override void OnInitialized()
     {
         userDetails = new NewUserDTO();
+        userDetails.GDPRPermissions = true; 
     }
 
     public async Task CheckUsernameAsync()
@@ -120,15 +123,17 @@
 
     public async Task HandleValidSubmit()
     {
-        userDetails.Username = Username; 
-        userDetails.GDPRPermissions = true; 
         var webclient = new BackendClient<NewUserDTO>("api/user/register");
         var response = await webclient.PostRequest(userDetails);
-        if (response == HttpStatusCode.Created)
+        if (response.StatusCode == HttpStatusCode.Created)
         {
             userDetails = new NewUserDTO();
-            NavMan.NavigateTo("/login");
-        } 
+            Username = "";
+            NavMan.Refresh(true);
+        } else if (response.StatusCode == HttpStatusCode.BadRequest)
+        {
+            Feedback =  await response.Content.ReadAsStringAsync();  
+        }
     }
-    
+
 }

@@ -74,7 +74,7 @@ else
         var webclient = new BackendClient<AddPetDTO>("api/pets");
         var response = await webclient.PostRequest(PetDetails); // just gets status code no body
         
-        if (response == HttpStatusCode.OK)
+        if (response.StatusCode == HttpStatusCode.OK)
         {
             await OnSuccessfulPetPost.InvokeAsync();
         }
