@@ -63,9 +63,7 @@ public class BackendClient<T>
         {
             try
             {
-                Console.WriteLine(Url);
                 var response = await client.DeleteAsync(Url);
-                Console.WriteLine(response.StatusCode);
                 return response.StatusCode;
             }
             catch

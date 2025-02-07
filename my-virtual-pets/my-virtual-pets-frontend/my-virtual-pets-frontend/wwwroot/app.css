@@ -228,3 +228,8 @@ h1:focus {
     position: absolute;
     z-index: 3000;
 }
+
+
+.navItem .active span {
+    color: whitesmoke;
+}
