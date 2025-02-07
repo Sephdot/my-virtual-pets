@@ -33,7 +33,7 @@ namespace my_virtual_pets_api.Repositories
                     PetName = p.Name,
                     ImageUrl = p.Image.ImageUrl,
                     OwnerUsername = p.GlobalUser.Username,
-                    Score = 0,
+                    Score = p.Score,
                     Personality = p.Personality,
                     PetType = p.Type,
                     Description = p.Description,
@@ -60,7 +60,7 @@ namespace my_virtual_pets_api.Repositories
                 PetName = pet.Name,
                 ImageUrl = pet.Image?.ImageUrl,
                 OwnerUsername = pet.GlobalUser?.Username,
-                Score = 0,
+                Score = pet.Score,
                 Personality = pet.Personality,
                 PetType = pet.Type,
                 Description = pet.Description,
@@ -68,7 +68,7 @@ namespace my_virtual_pets_api.Repositories
             };
         }
 
-        public PetCardDataDTO AddPet(AddPetDTO petData, Guid imageId)
+        public PetCardDataDTO AddPet(AddPetDTO petData, Guid imageId, int score)
         {
             Pet newPet = new Pet
             {
@@ -78,7 +78,8 @@ namespace my_virtual_pets_api.Repositories
                 Personality = petData.Personality,
                 Type = petData.PetType,
                 Description = petData.Description,
-                DateCreated = DateTime.UtcNow
+                DateCreated = DateTime.UtcNow,
+                Score = score
             };
             _context.Pets.Add(newPet);
             _context.SaveChanges();
@@ -108,7 +109,7 @@ namespace my_virtual_pets_api.Repositories
                 .Include(p => p.GlobalUser)
                 .Include(p => p.Image)
                 .AsEnumerable()  
-                .OrderByDescending(p => CalculateScore(p))  
+                .OrderByDescending(p => p.Score)  
                 .Take(10)
                 .Select(p => new PetCardDataDTO
                 {
@@ -116,7 +117,7 @@ namespace my_virtual_pets_api.Repositories
                     PetName = p.Name,
                     ImageUrl = p.Image.ImageUrl,
                     OwnerUsername = p.GlobalUser.Username,
-                    Score = CalculateScore(p),  
+                    Score = p.Score,  
                     Personality = p.Personality,
                     PetType = p.Type,
                     Description = p.Description,
@@ -140,7 +141,7 @@ namespace my_virtual_pets_api.Repositories
                 .Include(p => p.GlobalUser)
                 .Include(p => p.Image)
                 .AsEnumerable()
-                .OrderByDescending(p => p.Id)
+                .OrderByDescending(p => p.DateCreated)
                 .Take(10)
                 .Select(p => new PetCardDataDTO
                 {
@@ -148,7 +149,7 @@ namespace my_virtual_pets_api.Repositories
                     PetName = p.Name,
                     ImageUrl = p.Image.ImageUrl,
                     OwnerUsername = p.GlobalUser.Username,
-                    Score = CalculateScore(p),
+                    Score = p.Score,
                     Personality = p.Personality,
                     PetType = p.Type,
                     Description = p.Description,
@@ -165,29 +166,6 @@ namespace my_virtual_pets_api.Repositories
             return pets;
         }
 
-
-        private int CalculateScore(Pet pet)
-        {
-            int score = 0;
-
-            switch (pet.Type)
-            {
-                case PetType.DOG:
-                    score += 50; 
-                    break;
-                case PetType.CAT:
-                    score += 60; 
-                    break;
-                case PetType.RABBIT:
-                    score += 20;  
-                    break;
-                default:
-                    score += 10;  
-                    break;
-            }
-
-            return score;
-        }
 
     }
 }

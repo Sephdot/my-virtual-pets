@@ -9,7 +9,7 @@ namespace my_virtual_pets_api.Repositories.Interfaces
 
         public PetCardDataDTO GetPetById(Guid petId);
 
-        public PetCardDataDTO AddPet(AddPetDTO petData, Guid imageId);
+        public PetCardDataDTO AddPet(AddPetDTO petData, Guid imageId, int score);
 
         public bool DeletePet(Guid petId);
       

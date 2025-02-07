@@ -1,7 +1,10 @@
-﻿using my_virtual_pets_api.Entities;
+﻿using Microsoft.Extensions.Hosting;
+using my_virtual_pets_api.Entities;
 using my_virtual_pets_api.Repositories.Interfaces;
 using my_virtual_pets_api.Services.Interfaces;
 using my_virtual_pets_class_library.DTO;
+using my_virtual_pets_class_library.Enums;
+using System.Diagnostics;
 
 namespace my_virtual_pets_api.Services
 {
@@ -33,7 +36,38 @@ namespace my_virtual_pets_api.Services
         public PetCardDataDTO AddPet(AddPetDTO petData)
         {
             Guid imageId = _imagesService.AddImage(petData.ImageUrl);
-            return _petRepository.AddPet(petData, imageId);
+            int score = GenerateScore(petData);
+            return _petRepository.AddPet(petData, imageId, score);
+        }
+
+        public int GenerateScore(AddPetDTO pet)
+        {
+            Random rnd = new Random();
+            int roll1 = rnd.Next(90);
+            int roll2 = rnd.Next(90);
+            int roll3 = rnd.Next(90);
+            float baseScore = (roll1 + roll2 + roll3) / 3;
+
+            switch (pet.Personality)
+            {
+                case Personality.BOLD:
+                case Personality.BRAVE:
+                    baseScore *= 1.1f;
+                    break;
+                case Personality.TIMID:
+                case Personality.QUIET:
+                    baseScore *= 0.95f;
+                    break;
+                case Personality.NAUGHTY:
+                case Personality.HASTY:
+                    baseScore *= 0.9f;
+                    break;
+            }
+
+            if (String.IsNullOrEmpty(pet.Description)) baseScore *= 0.8f;
+
+            return ((int)baseScore);
+
         }
 
         public List<PetCardDataDTO> GetTop10Pets()
