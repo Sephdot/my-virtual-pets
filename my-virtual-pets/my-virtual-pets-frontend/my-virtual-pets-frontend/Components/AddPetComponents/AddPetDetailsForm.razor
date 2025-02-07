@@ -4,8 +4,7 @@
 
 @rendermode InteractiveServer
 <EditForm Model="@PetDetails" OnInvalidSubmit="HandleInvalidSubmit" OnValidSubmit="HandleValidSubmit">
-    <h3>Add Pet Details</h3>
-    <h6 class="@(_success == "Submitted!" ? "text-success" : "text-info")">@_success</h6>
+    <h3>Add Details</h3>
     <DataAnnotationsValidator/>
 
     <div class="form-group">
@@ -30,10 +29,9 @@
         <InputTextArea id="InputDescription" class="form-control" @bind-Value="@PetDetails.Description"/>
         <ValidationMessage For="@(() => PetDetails.Description)"/>
     </div>
-
+    <h6 class="mt-1 @_feedbackCssStyle"><i>@_feedbackMessage</i></h6>
     <button id="submitpetdetailsbutton" class="btn btn-light d-block mx-auto mt-4" type="submit">Create Your Pet!</button>
 </EditForm>
-}
 
 @code {
     [CascadingParameter] 
@@ -41,8 +39,9 @@
     
     [Parameter]
     public EventCallback<bool> OnSuccessfulPetPost { get; set; }
-    
-    private string? _success { get; set; }
+
+    private string _feedbackMessage = "";
+    private string _feedbackCssStyle = "text-info";
     
     private List<Personality> _personalities = Enum
         .GetValues(typeof(Personality))
@@ -56,14 +55,14 @@
 
     public void HandleInvalidSubmit()
     {
-        _success = "Something has gone wrong... Very wrong indeed..."; 
-        Console.WriteLine($"invalid: {PetDetails.PetName} {PetDetails.Personality} {PetDetails.Description}");
+        
     }
 
     public async Task HandleValidSubmit()
     {
-        _success = "Submitted!";
-        Console.WriteLine($"valid: {PetDetails.PetName} {PetDetails.Personality} {PetDetails.Description}");
+        _feedbackMessage = "Submitted!";
+        _feedbackCssStyle = "text-success";
+        
         var webclient = new BackendClient<AddPetDTO>("api/pets");
         var response = await webclient.PostRequest(PetDetails); // just gets status code no body
         
@@ -73,8 +72,8 @@
         }
         else
         {
-            _success = "Uh oh, the server hamsters didn't like that! Try again.";
+            _feedbackMessage = "Uh oh, the server hamsters didn't like that! Try again.";
+            _feedbackCssStyle = "text-danger";
         }
-        // no need to get the data back from request since it's bound to variables in the form
     }
 }

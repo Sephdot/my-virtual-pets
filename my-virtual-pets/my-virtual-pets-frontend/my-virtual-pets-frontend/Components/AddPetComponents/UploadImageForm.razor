@@ -36,7 +36,7 @@
                 class="form-control form-control-lg" />
             <ValidationMessage For="@(() => _file)"/>
         </div>
-        <h6 class="mt-1 @_feedbackCssStyle"><i>@_feedback</i></h6>
+        <h6 class="mt-1 @_feedbackCssStyle"><i>@_feedbackMessage</i></h6>
         <button id="uploadimagebutton" class="btn btn-light d-block mx-auto mt-4" type="submit">Upload Image</button>
     }
 </EditForm>
@@ -57,7 +57,7 @@
     public EventCallback<bool> OnSuccessfulUpload { get; set; }
     
     private IBrowserFile? _file;
-    private string _feedback = "";
+    private string _feedbackMessage = "";
     private string _feedbackCssStyle = "text-info";
 
     private bool _isFileBeingProcessed = false;
@@ -72,25 +72,25 @@
         {
             if (_isFileSizeValid(_file))
             {
-                _feedback = "Image size and type are ok! ✅";
+                _feedbackMessage = "Image size and type are ok! ✅";
                 _feedbackCssStyle = "text-success";
             }
             else
             {
-                _feedback = "That picture is too heavy for the server hamsters to carry... try a smaller picture. ❌";
+                _feedbackMessage = "That picture is too heavy for the server hamsters to carry... try a smaller picture. ❌";
                 _feedbackCssStyle = "text-warning";
             }
         }
         else
         {
-            _feedback = "That picture isn't a valid image type: the server hamsters won't know what to do with it! ❌";
+            _feedbackMessage = "That picture isn't a valid image type: the server hamsters won't know what to do with it! ❌";
             _feedbackCssStyle = "text-warning";
         }
     }
 
     public void HandleInvalidSubmit()
     {
-        _feedback = "Invalid image uploaded, try again. ❌";
+        _feedbackMessage = "Invalid image uploaded, try again. ❌";
         _feedbackCssStyle = "text-danger";
     }
 
@@ -105,7 +105,7 @@
                     using var memoryStream = new MemoryStream();
                     await new StreamReader(_file.OpenReadStream(Utility.MaxUploadFileSize)).BaseStream.CopyToAsync(memoryStream);
                     byte[] bytes = memoryStream.ToArray();
-                    _feedback = "Submitted!";
+                    _feedbackMessage = "Submitted!";
                     _feedbackCssStyle = "text-success";
                     _isFileBeingProcessed = true;
                     StateHasChanged();
@@ -113,19 +113,19 @@
                 }
                 else
                 {
-                    _feedback = "We tried to warn you... That pic's too big! ❌";
+                    _feedbackMessage = "We tried to warn you... That pic's too big! ❌";
                     _feedbackCssStyle = "text-danger";
                 }
             }
             else
             {
-                _feedback = "Oi! That's not a jpg or png; try again. ❌";
+                _feedbackMessage = "Oi! That's not a jpg or png; try again. ❌";
                 _feedbackCssStyle = "text-danger";
             }
         }
         else
         {
-            _feedback = "You haven't selected an image yet! ❌";
+            _feedbackMessage = "You haven't selected an image yet! ❌";
             _feedbackCssStyle = "text-danger";
         }
 
@@ -148,7 +148,7 @@
             }
             else
             {
-                _feedback = "Try again, that image wasn't accepted.";
+                _feedbackMessage = "Try again, that image wasn't accepted.";
             }
             
             Console.WriteLine($"Response body: {await postResponse.Content.ReadAsStringAsync()}; Status code: {postResponse.StatusCode}");

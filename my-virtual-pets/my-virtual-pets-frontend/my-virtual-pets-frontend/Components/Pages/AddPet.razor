@@ -12,36 +12,28 @@
 
 <div class="container">
     <h1 class="text-center mb-5">Add a Pet!</h1>
-    @if (PetDetails == null)
-    {
-        <Loader />
-    }
-    else
-    {
-        <div id="formcenter">
-            @if (PetDetails.ImageUrl != "")
+    <div id="formcenter">
+        @if (PetDetails.ImageUrl != "")
+        {
+            <div class="d-flex justify-content-center">
+                <figure>
+                    <img src="@PetDetails.ImageUrl" alt="" width="300" height="auto"/>
+                    <figcaption class="text-success text-center mt-1"><i>Your new VirtualPet!</i></figcaption>
+                </figure>
+            </div>
+        }
+        
+        <CascadingValue Value="PetDetails">
+            @if (!IsSuccessfulUpload)
             {
-                <div class="d-flex justify-content-center">
-                    <figure>
-                        <img src="@PetDetails.ImageUrl" alt="" width="300" height="auto"/>
-                        @* <img src="https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/66004fb9-98da-4ae7-bfd6-2bdcbd0aa9ae.png" alt="" width="300" height="auto"/> *@
-                        <figcaption class="text-muted text-center mt-1"><i>Your new VirtualPet!</i></figcaption>
-                    </figure>
-                </div>
+                <UploadImageForm OnSuccessfulUpload=@SwitchToAddDetails></UploadImageForm>
             }
-            
-            <CascadingValue Value="PetDetails">
-                @if (!IsSuccessfulUpload)
-                {
-                    <UploadImageForm OnSuccessfulUpload=@SwitchToAddDetails></UploadImageForm>
-                }
-                else
-                {
-                    <AddPetDetailsForm OnSuccessfulPetPost="@RedirectToCollections"></AddPetDetailsForm>
-                }
-            </CascadingValue>
-        </div>
-    }
+            else
+            {
+                <AddPetDetailsForm OnSuccessfulPetPost="@RedirectToCollections"></AddPetDetailsForm>
+            }
+        </CascadingValue>
+    </div>
 </div>
 
 
