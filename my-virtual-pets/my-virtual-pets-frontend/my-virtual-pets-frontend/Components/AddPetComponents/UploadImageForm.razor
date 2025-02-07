@@ -90,7 +90,7 @@
             Console.WriteLine(exception);
             _feedback = "Oi! We warned you... Too big!";
             _isFileBeingProcessed = false;
-            throw;
+            return;
         }
         
         _feedback = "Submitted!";
