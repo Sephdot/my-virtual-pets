@@ -31,7 +31,7 @@ else
         UserId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (UserId != null)
         {
-            var client = new BackendClient<IsFavourited>($"api/User/{UserId}/IsFavourited/{PetId}");
+            var client = new BackendClient<BoolReturn>($"api/User/{UserId}/IsFavourited/{PetId}");
             var IsFavourite = await client.GetRequest();
             if (IsFavourite != null)
             {

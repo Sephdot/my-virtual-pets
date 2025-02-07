@@ -29,7 +29,9 @@
 
     <div class="col input form-group">
         <label for="InputUsername">Username:</label>
-        <InputText id="InputUsername" class="form-control" @bind-Value="@userDetails.Username"/>
+        @* <InputText id="InputUsername" class="form-control" @bind-Value="@Username"/> *@
+
+        <input type="text" id="InputUsername" class="form-control" @bind="Username" @bind:event="oninput"/>
         <span>@UsernameTaken</span>
         <ValidationMessage For="@(() => userDetails.Username)"/>
     </div>
@@ -74,7 +76,6 @@
         {
             username = value; 
             CheckUsernameAsync();
-            
         }
     }
     
@@ -89,8 +90,19 @@
 
     public async Task CheckUsernameAsync()
     {
-        
-        UsernameTaken = "Username is taken"; 
+        var webclient = new BackendClient<BoolReturn>($"api/User/CheckUsername/{Username}");
+        BoolReturn UsernameCheck = await webclient.GetRequest();
+        if (UsernameCheck != null)
+        {
+            if (UsernameCheck.IsFavourite)
+            {
+                UsernameTaken = "Username is taken"; 
+            }
+            else
+            {
+                UsernameTaken = "Username is free"; 
+            }
+        }
     }
     
     public void HandleInvalidSubmit()
@@ -104,7 +116,7 @@
         userDetails.Username = Username; 
         userDetails.GDPRPermissions = true; 
         var webclient = new BackendClient<NewUserDTO>("api/user/register");
-         webclient.PostRequest(userDetails);
+        webclient.PostRequest(userDetails);
         userDetails = new NewUserDTO();
     }
     

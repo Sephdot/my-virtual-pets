@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace my_virtual_pets_class_library.DTO;
 
-public class IsFavourited
+public class BoolReturn
 {
     [JsonPropertyName("isFavourite")]
     public bool IsFavourite { get; set; }

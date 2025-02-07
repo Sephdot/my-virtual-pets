@@ -104,7 +104,6 @@ namespace my_virtual_pets_api.Controllers
         [Route("AddToFavourites")]
         public IActionResult AddPetToFavourites(Favourites favourites)
         {
-            Console.WriteLine($"AddPetToFavourites {favourites.GlobalUserId}/{favourites.PetId}");
             try
             {
                 bool isSuccess = _userService.AddToFavourites(favourites.GlobalUserId, favourites.PetId);
@@ -128,7 +127,7 @@ namespace my_virtual_pets_api.Controllers
             try
             {
                 bool isFavourited = _userService.IsFavourited(GlobalUserId, PetId);
-                return Ok(new IsFavourited() { IsFavourite = isFavourited });
+                return Ok(new BoolReturn() { IsFavourite = isFavourited });
             }
             catch (KeyNotFoundException ex)
             {
@@ -204,10 +203,12 @@ namespace my_virtual_pets_api.Controllers
         [Route("CheckUsername/{username}")]
         public IActionResult CheckUsername(string username)
         {
+            Console.WriteLine(username);
             try
             {
                 bool exists = _userService.ExistsByUsername(username);
-                return (Ok(exists));
+                Console.WriteLine(exists);
+                return (Ok( new BoolReturn(){ IsFavourite = exists} ));
             }
             catch
             {
@@ -222,7 +223,7 @@ namespace my_virtual_pets_api.Controllers
             try
             {
                 bool exists = _userService.ExistsByEmail(email);
-                return (Ok(exists));
+                return (Ok( new BoolReturn(){ IsFavourite = exists} ));
             }
             catch (FormatException ex)
             {
