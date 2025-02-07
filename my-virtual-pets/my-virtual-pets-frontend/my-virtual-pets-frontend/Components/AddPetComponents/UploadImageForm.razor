@@ -24,6 +24,7 @@
             <div>
                 Top Tips For Best Results:
                 <ul>
+                    <li>JPG or PNG image type</li>
                     <li>One pet per picture</li>
                     <li>Plain background, coloured differently to your pet</li>
                     <li>Upload a square image</li>
@@ -61,14 +62,23 @@
 
     private bool _isFileBeingProcessed = false;
 
-    private Func<IBrowserFile, bool> _isFileSizeOk = file => file.Size < Utility.MaxUploadFileSize - 56;
+    private Func<IBrowserFile, bool> _isFileSizeValid = file => file.Size < Utility.MaxUploadFileSize - 56;
+    private Func<IBrowserFile, bool> _isFileTypeValid = file => file.ContentType == "image/jpg" || file.ContentType == "image/jpeg" || file.ContentType == "image/png";
     
-    public void OnInputFileChange(InputFileChangeEventArgs args) // do this when file is added to check if the user's file is too big
+    public void OnInputFileChange(InputFileChangeEventArgs args)
     {
         _file = args.File;
-        _feedback = _isFileSizeOk(_file) // 56 bytes are reserved for the C# array part of byte arrays
-            ? "Image size is ok!"
-            : "That picture is too big for the server hamsters to carry... try uploading a smaller picture.";
+        if (_isFileTypeValid(_file))
+        {
+            _feedback = _isFileSizeValid(_file) 
+                ? "Image size and type are ok!" 
+                : "That picture is too heavy for the server hamsters to carry... try a smaller picture.";
+        }
+        else
+        {
+            _feedback = "That picture isn't a valid image type: the server hamsters won't know what to do with it!";
+        }
+        
     }
 
     public void HandleInvalidSubmit()
@@ -78,27 +88,35 @@
 
     public async Task HandleValidSubmit()
     {
-        _isFileBeingProcessed = true;
+        
 
         if (_file != null)
         {
-            if (_isFileSizeOk(_file))
+            if (_isFileTypeValid(_file))
             {
-                using var memoryStream = new MemoryStream();
-                await new StreamReader(_file.OpenReadStream(Utility.MaxUploadFileSize)).BaseStream.CopyToAsync(memoryStream);
-                _bytes = memoryStream.ToArray();
-                _feedback = "Submitted!";
-                await UploadValidImage();
+                if (_isFileSizeValid(_file))
+                {
+                    using var memoryStream = new MemoryStream();
+                    await new StreamReader(_file.OpenReadStream(Utility.MaxUploadFileSize)).BaseStream.CopyToAsync(memoryStream);
+                    _bytes = memoryStream.ToArray();
+                    _isFileBeingProcessed = true;
+                    _feedback = "Submitted!";
+                    await UploadValidImage();
+                }
+                else
+                {
+                    _feedback = "We tried to warn you... That pic's too big!";
+                    _isFileBeingProcessed = false;
+                }
             }
             else
             {
-                _feedback = "Oi! We warned you... Too big!";
-                _isFileBeingProcessed = false;
+                _feedback = "Oi! That's not a jpg or png; try again.";
             }
         }
         else
         {
-            _feedback = "You haven't uploaded an image yet...";
+            _feedback = "You haven't selected an image yet!";
             _isFileBeingProcessed = false;
         }
 
