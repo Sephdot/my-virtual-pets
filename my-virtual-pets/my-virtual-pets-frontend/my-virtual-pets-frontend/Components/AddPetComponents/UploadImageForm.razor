@@ -1,4 +1,3 @@
-@using System.ComponentModel.DataAnnotations
 @using System.Net
 @using System.Text.Json
 @using my_virtual_pets_class_library.DTO
@@ -57,67 +56,76 @@
     public EventCallback<bool> OnSuccessfulUpload { get; set; }
     
     private IBrowserFile? _file;
+    private byte[]? _bytes = null;
     private string? _feedback;
 
     private bool _isFileBeingProcessed = false;
+
+    private Func<IBrowserFile, bool> _isFileSizeOk = file => file.Size < Utility.MaxUploadFileSize - 56;
     
     public void OnInputFileChange(InputFileChangeEventArgs args) // do this when file is added to check if the user's file is too big
     {
         _file = args.File;
-        _feedback = _file.Size > Utility.MaxUploadFileSize - 56 // 56 bytes are reserved for the C# array part of byte arrays
-            ? "That picture is too big for the server hamsters to carry... try uploading a smaller picture."
-            : "Image size is ok!";
+        _feedback = _isFileSizeOk(_file) // 56 bytes are reserved for the C# array part of byte arrays
+            ? "Image size is ok!"
+            : "That picture is too big for the server hamsters to carry... try uploading a smaller picture.";
     }
 
     public void HandleInvalidSubmit()
     {
-        _feedback = "Something has gone wrong"; 
+        _feedback = "Invalid image uploaded, try again."; 
     }
 
     public async Task HandleValidSubmit()
     {
         _isFileBeingProcessed = true;
-        byte[]? bytes = null;
-        try
-        {
-            using var reader = new StreamReader(_file.OpenReadStream(Utility.MaxUploadFileSize));
-            using var memstream = new MemoryStream();
-            await reader.BaseStream.CopyToAsync(memstream);
-            bytes = memstream.ToArray();
-        }
-        catch (Exception exception)
-        {
-            Console.WriteLine(exception);
-            _feedback = "Oi! We warned you... Too big!";
-            _isFileBeingProcessed = false;
-            return;
-        }
-        
-        _feedback = "Submitted!";
-        
-        var webclient = new AddPetBackendClient<byte[]>("api/images");
-        var postResponse = await webclient.ImageUploadPostRequest(bytes);
 
-        if (postResponse.StatusCode == HttpStatusCode.OK)
+        if (_file != null)
         {
-            
-            Stream responseStream = await postResponse.Content.ReadAsStreamAsync();
-            ImagesResponseDTO imagesResponseDto = await JsonSerializer.DeserializeAsync<ImagesResponseDTO>(responseStream) 
-                                                  ?? throw new Exception("Something went wrong!");
-            
-            PetDetails.PetType = imagesResponseDto.PetType;
-            PetDetails.ImageUrl = imagesResponseDto.ImageUrl;
-            
-            await OnSuccessfulUpload.InvokeAsync(true);
+            if (_isFileSizeOk(_file))
+            {
+                using var memoryStream = new MemoryStream();
+                await new StreamReader(_file.OpenReadStream(Utility.MaxUploadFileSize)).BaseStream.CopyToAsync(memoryStream);
+                _bytes = memoryStream.ToArray();
+                _feedback = "Submitted!";
+                await UploadValidImage();
+            }
+            else
+            {
+                _feedback = "Oi! We warned you... Too big!";
+                _isFileBeingProcessed = false;
+            }
         }
         else
         {
-            Console.WriteLine($"Response wasn't OK: {postResponse.StatusCode}");
-            _feedback = "Try again, that image wasn't accepted.";
+            _feedback = "You haven't uploaded an image yet...";
+            _isFileBeingProcessed = false;
         }
-        Console.WriteLine($"Response body: {await postResponse.Content.ReadAsStringAsync()}; Status code: {postResponse.StatusCode}");
 
-        _isFileBeingProcessed = false;
+        async Task UploadValidImage() //local function for encapsulation/abstraction
+        {
+            var webclient = new AddPetBackendClient<byte[]>("api/images");
+            var postResponse = await webclient.ImageUploadPostRequest(_bytes);
+
+            if (postResponse.StatusCode == HttpStatusCode.OK)
+            {
+            
+                Stream responseStream = await postResponse.Content.ReadAsStreamAsync();
+                ImagesResponseDTO imagesResponseDto = await JsonSerializer.DeserializeAsync<ImagesResponseDTO>(responseStream) 
+                                                      ?? throw new Exception("Something went wrong!");
+            
+                PetDetails.PetType = imagesResponseDto.PetType;
+                PetDetails.ImageUrl = imagesResponseDto.ImageUrl;
+            
+                await OnSuccessfulUpload.InvokeAsync(true);
+            }
+            else
+            {
+                _feedback = "Try again, that image wasn't accepted.";
+            }
+            
+            Console.WriteLine($"Response body: {await postResponse.Content.ReadAsStringAsync()}; Status code: {postResponse.StatusCode}");
+            _isFileBeingProcessed = false;
+        }
     }
-    
 }
