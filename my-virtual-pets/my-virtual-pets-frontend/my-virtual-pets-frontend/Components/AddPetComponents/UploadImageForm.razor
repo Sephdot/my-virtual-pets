@@ -56,7 +56,7 @@
     public EventCallback<bool> OnSuccessfulUpload { get; set; }
     
     private IBrowserFile? _file;
-    private byte[]? _bytes = null;
+    private byte[]? _bytes;
     private string? _feedback;
 
     private bool _isFileBeingProcessed = false;
