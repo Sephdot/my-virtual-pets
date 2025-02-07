@@ -1,14 +1,57 @@
 ﻿@page "/"
 @page "/home"
-@using my_virtual_pets_frontend.Components.Icons
+@using my_virtual_pets_class_library.DTO
+@using my_virtual_pets_class_library.Enums
+@using my_virtual_pets_frontend.Components.DisplayCards
 @using my_virtual_pets_frontend.Components.LoginSignupComponents
 @rendermode InteractiveServer
 
 
 <PageTitle>Home | MyVirtualPets</PageTitle>
 <div class="container">
+    <h3 class="mt-5 pixeltext">build your pet collection now</h3>
+
+    <Carousel Autoplay="CarouselAutoPlay.StartOnPageLoad" ShowPreviousNextControls="true">
+        <CarouselItem Active="true">
+            <Image Src="https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/36fc0d04-407e-4e5e-ba56-6ff5c5f1878b.png"/>
+        </CarouselItem>
+        <CarouselItem>
+            <Image Src="https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/5c9bb80e-f68f-4150-9e1f-c6a1aa0caa17.png" />
+        </CarouselItem>
+        <CarouselItem>
+            <Image Src="https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/36fc0d04-407e-4e5e-ba56-6ff5c5f1878b.png" />
+        </CarouselItem>
+    </Carousel>
     
-    <h3 class="mt-5 pixeltext">take that doggo home with you</h3>
-    <Cat_Loader></Cat_Loader>
-    <FormSwitcher></FormSwitcher>
 </div>
+
+@code {
+
+    public PetCardDataDTO petDummyData = new PetCardDataDTO
+    {
+        PetId = Guid.NewGuid(),
+        PetName = "TestPet",
+        ImageUrl = "https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/36fc0d04-407e-4e5e-ba56-6ff5c5f1878b.png",
+        OwnerUsername = "TestOwner",
+        Score = 0,
+        Personality = Personality.BRAVE,
+        PetType = PetType.DOG,
+        Description = "Testdescription",
+        IsFavourited = false
+    };
+    
+    public PetCardDataDTO petDummyData2 = new PetCardDataDTO
+    {
+        PetId = Guid.NewGuid(),
+        PetName = "TestPet2",
+        ImageUrl = "https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/36fc0d04-407e-4e5e-ba56-6ff5c5f1878b.png",
+        OwnerUsername = "TestOwner",
+        Score = 0,
+        Personality = Personality.BRAVE,
+        PetType = PetType.DOG,
+        Description = "Testdescription",
+        IsFavourited = false
+    };
+
+
+}

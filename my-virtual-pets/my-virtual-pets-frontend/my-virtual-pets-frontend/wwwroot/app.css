@@ -116,10 +116,7 @@ h1:focus {
     padding: 10px;
 }
 
-.runner-up:hover {
-    border: 5px solid #fefedf;
-    /*box-shadow: 2px 2px 2px #141514;*/
-}
+
 
 .navbar {
     position: sticky;
@@ -174,16 +171,6 @@ h1:focus {
     border: 10px dashed #82578c;
     border-radius: 25px;
     background-color: #fefedf;
-    transition: transform 0.2s ease-in-out;
-}
-
-#formcenter:hover {
-    transform: scale(1.01);
-    border: 10px solid #82578c;
-}
-
-#formcenter:hover::after {
-    transition-duration: 0.2s;
 }
 
 
@@ -218,10 +205,6 @@ h1:focus {
     background-color: #fefedf;
     position: relative;
     padding: 10px;
-}
-
-.collectioncard:hover {
-    border: 5px solid #D18BE0;
 }
 
 #popupdelete {

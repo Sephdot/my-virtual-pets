@@ -15,7 +15,7 @@
                     {
                         <Second_svg></Second_svg>
                     }
-                    else
+                    else if (index == 3)
                     {
                         <Third_svg></Third_svg>
                     }
@@ -27,7 +27,7 @@
             <div class="col-sm-12 col-md-6 col-lg-4 col-xl-6">
                 <div class="leaderstats pixeltext"  style="display:flex;justify-content:left">
                     <p>Name: @petCard.PetName</p>
-                    <p>Score: @petCard.Score</p>
+                    <p><span class="badge bg-success">Score: @petCard.Score</span></p>
                     <p>Owner: @petCard.OwnerUsername</p>
                     <p>Personality: @petCard.Personality</p>
                     <IsPetted PetId="petCard.PetId"></IsPetted>
