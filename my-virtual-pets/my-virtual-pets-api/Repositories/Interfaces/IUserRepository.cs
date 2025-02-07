@@ -21,4 +21,5 @@ public interface IUserRepository
 
     public bool RemoveFromFavourites(Guid GlobalUserId, Guid PetId);
 
+    public bool IsFavourited(Guid GlobalUserId, Guid PetId);
 }

@@ -69,5 +69,11 @@ namespace my_virtual_pets_api.Services
             return _userRepository.RemoveFromFavourites(GlobalUserId, PetId);
         }
 
+        public bool IsFavourited(Guid GlobalUserId, Guid PetId)
+        {
+            return _userRepository.IsFavourited(GlobalUserId, PetId);
+        }
+
+
     }
 }

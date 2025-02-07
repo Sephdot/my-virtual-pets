@@ -21,7 +21,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 if (builder.Environment.IsDevelopment())
 {
-    string memoryDbConnectionString = "Data Source=:memory:";
+    string memoryDbConnectionString = "Data Source=:memory:;Pooling=true;";
     var sqlConnection = new SqliteConnection(memoryDbConnectionString);
     sqlConnection.Open();
     builder.Services.AddDbContext<IDbContext, VPSqliteContext>(options => options.UseSqlite(sqlConnection));
@@ -32,8 +32,7 @@ if (builder.Environment.IsDevelopment())
 }
 else if (builder.Environment.IsProduction())
 {
-    var connectionString = Environment.GetEnvironmentVariable("ConnectionString__my_virtual_pets");
-    Console.WriteLine(connectionString);
+    var connectionString = Environment.GetEnvironmentVariable("ConnectionString__my_virtual_pets") + ";Pooling=true;";
     builder.Services.AddHealthChecks().AddCheck("Db-check", new SqlServerHealthCheck(connectionString),HealthStatus.Unhealthy,new string[] { "orderingdb" });
     builder.Services.AddDbContext<IDbContext, VPSqlServerContext>(options => options.UseSqlServer(connectionString));
 }
