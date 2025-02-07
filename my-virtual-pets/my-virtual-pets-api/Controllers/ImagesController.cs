@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using my_virtual_pets_api.Services.Interfaces;
+using my_virtual_pets_class_library;
 using my_virtual_pets_class_library.Enums;
 using System.Drawing;
 
@@ -20,10 +21,9 @@ public class ImagesController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> TestPipeline(byte[] inputImage)
+    [RequestSizeLimit(Utility.MaxUploadFileSize)]
+    public async Task<IActionResult> PostImage(byte[] inputImage)
     {
-        //byte[] inputImage = System.IO.File.ReadAllBytes("Resources/Images/testimage.png");
-
         ImagesResponseDTO? result = await _imagesService.ProcessImageAsync(inputImage);
         if (result == null) return BadRequest();
         return Ok(result);
