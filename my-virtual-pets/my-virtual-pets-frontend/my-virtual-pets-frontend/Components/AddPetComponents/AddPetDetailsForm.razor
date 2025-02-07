@@ -1,50 +1,43 @@
 @using System.Net
 @using my_virtual_pets_class_library.DTO
 @using my_virtual_pets_class_library.Enums
+
 @rendermode InteractiveServer
+<EditForm Model="@PetDetails" OnInvalidSubmit="HandleInvalidSubmit" OnValidSubmit="HandleValidSubmit">
+    <h3>Add Pet Details</h3>
+    <h6 class="@(_success == "Submitted!" ? "text-success" : "text-info")">@_success</h6>
+    <DataAnnotationsValidator/>
 
-@if (PetDetails == null)
-{
-    <Loader />
-}
-else
-{
-    <EditForm Model="@PetDetails" OnInvalidSubmit="HandleInvalidSubmit" OnValidSubmit="HandleValidSubmit">
-        <h3>Add Pet Details</h3>
-        <h6 class="@(_success == "Submitted!" ? "text-success" : "text-info")">@_success</h6>
-        <DataAnnotationsValidator/>
+    <div class="form-group">
+        <label for="InputPetName">Name: <span class="text-danger">*</span></label>
+        <InputText id="InputPetName" class="form-control" @bind-Value="@PetDetails.PetName"/>
+        <ValidationMessage For="@(() => PetDetails.PetName)"/>
+    </div>
 
-        <div class="form-group">
-            <label for="InputPetName">Name: <span class="text-danger">*</span></label>
-            <InputText id="InputPetName" class="form-control" @bind-Value="@PetDetails.PetName"/>
-            <ValidationMessage For="@(() => PetDetails.PetName)"/>
-        </div>
+    <div class="form-group">
+        <label for="InputPersonality">Personality: <span class="text-danger">*</span></label>
+        <InputSelect id="InputPersonality" class="form-select" @bind-Value="@PetDetails.Personality">
+            @foreach (Personality p in _personalities)
+            {
+                <option value="@p">@p.ToString()</option>
+            }
+        </InputSelect>
+        <ValidationMessage For="@(() => PetDetails.Personality)"/>
+    </div>
 
-        <div class="form-group">
-            <label for="InputPersonality">Personality: <span class="text-danger">*</span></label>
-            <InputSelect id="InputPersonality" class="form-select" @bind-Value="@PetDetails.Personality">
-                @foreach (Personality p in _personalities)
-                {
-                    <option value="@p">@p.ToString()</option>
-                }
-            </InputSelect>
-            <ValidationMessage For="@(() => PetDetails.Personality)"/>
-        </div>
-    
-        <div class="form-group">
-            <label for="InputDescription">Description: <span class="text-danger">*</span></label>
-            <InputTextArea id="InputDescription" class="form-control" @bind-Value="@PetDetails.Description"/>
-            <ValidationMessage For="@(() => PetDetails.Description)"/>
-        </div>
-    
-        <button id="submitpetdetailsbutton" class="btn btn-light d-block mx-auto mt-4" type="submit">Create Your Pet!</button>
+    <div class="form-group">
+        <label for="InputDescription">Description: <span class="text-danger">*</span></label>
+        <InputTextArea id="InputDescription" class="form-control" @bind-Value="@PetDetails.Description"/>
+        <ValidationMessage For="@(() => PetDetails.Description)"/>
+    </div>
 
-    </EditForm>
+    <button id="submitpetdetailsbutton" class="btn btn-light d-block mx-auto mt-4" type="submit">Create Your Pet!</button>
+</EditForm>
 }
 
 @code {
     [CascadingParameter] 
-    public AddPetDTO? PetDetails { get; set; }
+    public required AddPetDTO PetDetails { get; set; }
     
     [Parameter]
     public EventCallback<bool> OnSuccessfulPetPost { get; set; }

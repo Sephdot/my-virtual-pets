@@ -96,8 +96,6 @@
 
     public async Task HandleValidSubmit()
     {
-        
-
         if (_file != null)
         {
             if (_isFileTypeValid(_file))
@@ -109,6 +107,8 @@
                     byte[] bytes = memoryStream.ToArray();
                     _feedback = "Submitted!";
                     _feedbackCssStyle = "text-success";
+                    _isFileBeingProcessed = true;
+                    StateHasChanged();
                     await UploadValidImage(bytes);
                 }
                 else
@@ -131,7 +131,6 @@
 
         async Task UploadValidImage(byte[] bytes) //local function for encapsulation/abstraction
         {
-            _isFileBeingProcessed = true;
             var webclient = new AddPetBackendClient<byte[]>("api/images");
             var postResponse = await webclient.ImageUploadPostRequest(bytes);
 
