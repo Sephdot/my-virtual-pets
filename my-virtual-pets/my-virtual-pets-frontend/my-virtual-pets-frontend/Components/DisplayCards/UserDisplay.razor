@@ -24,11 +24,11 @@
     [Parameter]
     public required List<PetCardDataDTO> UserFavePets { get; set; }
 
-    public required string FavePetType { get; set; } = "!!!!!!!!!";
+    public required string FavePetType { get; set; }
 
     protected override void OnInitialized()
     {
-        // FavePetType = GetFavouritePetType();
+        FavePetType = GetFavouritePetType();
     }
 
     private string GetFavouritePetType()
@@ -55,24 +55,31 @@
         {
             Console.WriteLine($"PetType: {kvp.Key.ToString()}");
         }
-        Console.WriteLine("---------------------------");
+        Console.WriteLine();
         
 
-
+        Console.WriteLine("---------ScoresKVPs----------");
         foreach (PetCardDataDTO favePet in UserFavePets)
         {
+            scores[favePet.PetType]++;
             // debugging!
-            Console.WriteLine("---------ScoresKVPs----------");
             foreach (var kvp in scores)
             {
-                Console.Write($"{kvp.Key}: {kvp.Value}; ");
+                Console.Write($"{kvp.Key} : {kvp.Value};  ");
             }
-            Console.WriteLine("-----------------------------");
-            scores[favePet.PetType]++;
+            Console.WriteLine();
         }
+        Console.WriteLine("---------ScoresKVPs----------");
+
+        var y = scores.OrderBy(kvp => kvp.Key);
+        foreach (var kvp in scores)
+        {
+            Console.Write($"{kvp.Key} : {kvp.Value};  ");
+        }
+        Console.WriteLine();
         
         string x = scores
-            .OrderByDescending(kvp => kvp.Key)
+            .OrderBy(kvp => kvp.Key)
             .First()
             .Key
             .ToString();
