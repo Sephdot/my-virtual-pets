@@ -9,10 +9,12 @@ namespace ImageRecognition
     {
         public string Model { get; set; }
         private string ApiKey { get; set; }
+        private IConfiguration Configuration { get; set; }
         public RecognitionService(IConfiguration configuration)
         {
             Model = "animals";
-            ApiKey = configuration["dragoneyeApiKey"] ?? throw new Exception("DragonEye API Key could not be found.");
+            ApiKey = null;
+            Configuration = configuration;
         }
         public RecognitionService()
         {
@@ -46,6 +48,7 @@ namespace ImageRecognition
         {
             try
             {
+                ApiKey = Configuration["dragoneyeApiKey"] ?? throw new Exception("DragonEye API Key could not be found.");
                 var client = new HttpClient();
                 var request = new HttpRequestMessage(HttpMethod.Post, "https://api.dragoneye.ai/predict");
                 request.Headers.Add("Authorization", $"Bearer {ApiKey}");
