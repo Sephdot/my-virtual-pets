@@ -17,27 +17,25 @@
         }
     </NotAuthorized>
     <Authorized>
-        <p>Hello, @context.User.Identity?.Name!</p>
-        
         @if (_petCardDataDTOs is null) 
         {
             <Cat_Loader></Cat_Loader>
-        } else if (_petCardDataDTOs.Count() == 0)
+        } else if (_petCardDataDTOs.Count() >= 0)
         {
             <section class="container text-center">
                 <div class="container">
-                    <h1 class="fw-bold py-6">My Collection</h1>
+                    <h1 class="fw-bold py-6">@context.User.Identity?.Name's Collection</h1>
                     <button onclick="() => HandleAddPet" class="btn btn-primary my-2">Add Pet</button>
                     <hr class="my-4"/>
                 </div>
             </section>
-        } else if (_petCardDataDTOs.Count() > 0)
-        {
+
             <div class="container">
                 <div class="row">
-                    <Virtualize Items="_petCardDataDTOs" Context="petCardDataDTO">
-                        <PetCard PetCardData="petCardDataDTO" DeleteMethod="DeleteFromCollection"/>
-                    </Virtualize>
+                    @foreach (var item in _petCardDataDTOs)
+                    {
+                        <PetCard PetCardData="item" DeleteMethod="DeleteFromCollection"/>
+                    }
                 </div>
             </div>
         }
