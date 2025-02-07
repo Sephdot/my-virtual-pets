@@ -9,7 +9,6 @@ namespace my_virtual_pets_api.Cloud
         private TransferUtility _fileTransferUtility;
         private AmazonS3Client _s3Client;
 
-        private string _filePath = "C:\\Users\\josep\\Documents\\Northcoders\\projects\\my-virtual-pets\\my-virtual-pets\\my-virtual-pets-api\\Resources\\Images\\testimage.png";
         private const string BUCKET_NAME = "my-virtual-pets-images";
         private const string URI_BEGINNING = "https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/";
         private string _accessKey;
@@ -22,26 +21,6 @@ namespace my_virtual_pets_api.Cloud
             BasicAWSCredentials credentials = new(_accessKey, _secretKey);
             _s3Client = new(credentials, Amazon.RegionEndpoint.EUWest2);
             _fileTransferUtility = new(_s3Client);
-        }
-
-        public async Task<(bool, string)> UploadFileAsync(string keyName)
-        {
-            try
-            {
-                await _fileTransferUtility.UploadAsync(_filePath, BUCKET_NAME, keyName);
-                return (true, URI_BEGINNING + keyName);
-
-            }
-            catch (AmazonS3Exception e)
-            {
-                Console.WriteLine("AWS Error: " + e.Message);
-                return (false, "");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return (false, "");
-            }
         }
 
         public async Task<(bool isSuccess, string imageUrl)> UploadObjectAsync(byte[] imgToUpload, string key)
@@ -64,12 +43,12 @@ namespace my_virtual_pets_api.Cloud
             catch (AmazonS3Exception e)
             {
                 Console.WriteLine($"AWS error:\n{e.Message}");
-                return (false, "");
+                return (false, e.Message);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-                return (false, "");
+                return (false, e.Message);
             }
 
         }

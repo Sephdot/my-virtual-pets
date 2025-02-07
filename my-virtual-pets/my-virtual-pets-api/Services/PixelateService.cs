@@ -1,11 +1,10 @@
-﻿//using System;
-using my_virtual_pets_api.Services.Interfaces;
+﻿using my_virtual_pets_api.Services.Interfaces;
 using System.Drawing;
 
 namespace PixelationTest
 {
 
-    public class Pixelate : IPixelate
+    public class PixelateService : IPixelateService
     {
         private List<Color> palette = [];
 
