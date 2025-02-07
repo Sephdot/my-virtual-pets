@@ -21,7 +21,6 @@ public class ImagesController : ControllerBase
     }
 
     [HttpPost]
-    [RequestSizeLimit(Utility.MaxUploadFileSize)]
     public async Task<IActionResult> PostImage(byte[] inputImage)
     {
         ImagesResponseDTO? result = await _imagesService.ProcessImageAsync(inputImage);
