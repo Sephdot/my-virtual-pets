@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Moq;
 using my_virtual_pets_api.Controllers;
 using my_virtual_pets_api.Services.Interfaces;
@@ -15,13 +16,15 @@ namespace my_virtual_pets.Tests
     public class UserControllerTests
     {
         private Mock<IUserService> _userServiceMock;
+        private Mock<IConfiguration> _configurationMock;
         private UserController _controller;
 
         [SetUp]
         public void Setup()
         {
             _userServiceMock = new Mock<IUserService>();
-            _controller = new UserController(_userServiceMock.Object);
+            _configurationMock = new Mock<IConfiguration>();
+            _controller = new UserController(_userServiceMock.Object, _configurationMock.Object);
         }
 
         [Test]
