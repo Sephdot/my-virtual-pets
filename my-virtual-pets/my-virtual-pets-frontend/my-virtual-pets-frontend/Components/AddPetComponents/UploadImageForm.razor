@@ -57,7 +57,6 @@
     public EventCallback<bool> OnSuccessfulUpload { get; set; }
     
     private IBrowserFile? _file;
-    private byte[]? _bytes;
     private string? _feedback;
 
     private bool _isFileBeingProcessed = false;
@@ -98,10 +97,9 @@
                 {
                     using var memoryStream = new MemoryStream();
                     await new StreamReader(_file.OpenReadStream(Utility.MaxUploadFileSize)).BaseStream.CopyToAsync(memoryStream);
-                    _bytes = memoryStream.ToArray();
-                    _isFileBeingProcessed = true;
+                    byte[] bytes = memoryStream.ToArray();
                     _feedback = "Submitted!";
-                    await UploadValidImage();
+                    await UploadValidImage(bytes);
                 }
                 else
                 {
@@ -120,10 +118,11 @@
             _isFileBeingProcessed = false;
         }
 
-        async Task UploadValidImage() //local function for encapsulation/abstraction
+        async Task UploadValidImage(byte[] bytes) //local function for encapsulation/abstraction
         {
+            _isFileBeingProcessed = true;
             var webclient = new AddPetBackendClient<byte[]>("api/images");
-            var postResponse = await webclient.ImageUploadPostRequest(_bytes);
+            var postResponse = await webclient.ImageUploadPostRequest(bytes);
 
             if (postResponse.StatusCode == HttpStatusCode.OK)
             {
