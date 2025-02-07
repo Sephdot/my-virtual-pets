@@ -45,6 +45,7 @@ namespace my_virtual_pets_api.Controllers
             if (!_userService.DoesPasswordMatch(userLoginDto)) return BadRequest("Password is incorrect");
 
             
+            Console.WriteLine($"User {userLoginDto.Username} logged in");
             Guid userId = _userService.GetUserIdByUsername(userLoginDto.Username);
 
             var claims = new[]

@@ -1,5 +1,6 @@
 @using my_virtual_pets_frontend.Components.Icons
 
+
 <div @onclick="Pet">
 @if (IsPet)
 {
@@ -12,7 +13,7 @@ else
 </div>
 
 @code {
-
+    
     [Parameter]
     public Guid PetId { get; set; }
     
@@ -34,7 +35,6 @@ else
     public async Task DoPet()
     {
         var client = new BackendClient<int>("api/user");
-        throw new NotImplementedException();
         
     }
 

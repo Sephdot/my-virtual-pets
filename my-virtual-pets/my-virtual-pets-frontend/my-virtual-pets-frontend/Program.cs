@@ -2,6 +2,8 @@ using my_virtual_pets_frontend.Components;
 using BlazorBootstrap;
 using Blazored.SessionStorage;
 using Microsoft.AspNetCore.Components.Authorization;
+using my_virtual_pets_frontend;
+using my_virtual_pets_frontend.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,10 +16,17 @@ builder.Services.AddBlazorBootstrap();
 
 builder.Services.AddBlazoredSessionStorage();
 
+builder.Services.AddServerSideBlazor();
+
 builder.Services.AddScoped<HttpClient>();
 
-builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationState>();
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
+builder.Services.AddScoped<CustomAuthenticationStateProvider>();
+builder.Services.AddSingleton<CustomAuthenticationService>();
 
+builder.Services.AddCascadingAuthenticationState();
+
+builder.Services.AddAuthorizationCore();
 
 var app = builder.Build();
 
@@ -32,6 +41,7 @@ else
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
 
 app.UseHttpsRedirection();
 

@@ -1,9 +1,12 @@
 @using System.Net
+@using System.Security.Claims
 @using Microsoft.AspNetCore.Components.WebAssembly.Http
 @using my_virtual_pets_class_library.DTO
 @inject HttpClient Http
-@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
-@rendermode InteractiveAuto 
+@inject NavigationManager Navigation
+@inject AuthenticationStateProvider CustomAuth
+@inject CustomAuthenticationService AuthService
+@rendermode InteractiveServer
 
 <EditForm FormName="Login" Model="@loginDetails" OnInvalidSubmit="HandleInvalidSubmit" OnValidSubmit="HandleValidSubmit">
     <h3 class="pixeltext">Login</h3>
@@ -58,9 +61,19 @@
             if (tokenResponse != null)
             {
                 var token = tokenResponse.Token;
-                await sessionStorage.SetItemAsync("jwtToken", token);
-                await sessionStorage.SetItemAsync("currentUser", loginDetails.Username);
-                Success = token;
+                var currentUser =  AuthService.CurrentUser;
+
+                var identity = new ClaimsIdentity(
+                    [
+                        new Claim(ClaimTypes.Name, loginDetails.Username),
+                    ],
+                    "Custom Authentication");
+
+                var newUser = new ClaimsPrincipal(identity);
+
+                AuthService.CurrentUser = newUser;
+                
+                Navigation.NavigateTo("/add-pet");
             }
            loginDetails = new UserLoginDTO(); 
         }
