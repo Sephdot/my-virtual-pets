@@ -1,6 +1,7 @@
 ﻿using my_virtual_pets_api.Repositories.Interfaces;
 using my_virtual_pets_api.Services.Interfaces;
 using my_virtual_pets_class_library.DTO;
+using System.Net.Mail;
 
 namespace my_virtual_pets_api.Services
 {
@@ -25,9 +26,10 @@ namespace my_virtual_pets_api.Services
 
         public bool ExistsByEmail(string email)
         {
+            bool validFormat = IsValidEmail(email);
+            if (!validFormat) throw new FormatException("Invalid email format.");
             return _userRepository.ExistsByEmail(email);
         }
-
 
         public void CreateNewLocalUser(NewUserDTO newUserDto)
         {
@@ -88,6 +90,22 @@ namespace my_virtual_pets_api.Services
 
         }
 
+        private static bool IsValidEmail(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                return false;
+            }
 
+            try
+            {
+                var addr = new MailAddress(email);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }
