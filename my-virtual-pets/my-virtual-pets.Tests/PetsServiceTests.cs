@@ -25,7 +25,7 @@ namespace my_virtual_pets.Tests
 
             _petService = new PetService(_petRepositoryMock.Object, _imagesServiceMock.Object);
         }
-
+        //GetPetsByUserId
         [Test]
         public void GetPetsByUser_ReturnsListOfPets_WhenUserExists()
         {
@@ -58,11 +58,40 @@ namespace my_virtual_pets.Tests
         }
 
         [Test]
+        public void GetAllPetsByUserID_ReturnsEmptyList_WhenUserHasNoPets()
+        {
+            // Arrange
+            var userId = Guid.NewGuid();
+            _petRepositoryMock.Setup(r => r.GetAllPetsByUserID(userId)).Returns(new List<PetCardDataDTO>());
+
+            // Act
+            var result = _petService.GetPetsByUser(userId);
+
+            // Assert
+            result.Should().BeEmpty();
+        }
+
+        [Test]
+        public void GetAllPetsByUserID_HandlesInvalidUserId()
+        {
+            // Arrange
+            _petRepositoryMock.Setup(r => r.GetAllPetsByUserID(Guid.Empty)).Returns(new List<PetCardDataDTO>());
+
+            // Act
+            var result = _petService.GetPetsByUser(Guid.Empty);
+
+            // Assert
+            result.Should().BeEmpty();
+        }
+
+
+        // GetPetsById
+        [Test]
         public void GetPetById_ReturnsPet_WhenPetExists()
         {
             // Arrange
             var petId = Guid.NewGuid();
-            var petDto = new PetCardDataDTO
+            var expectedPet = new PetCardDataDTO
             {
                 PetId = petId,
                 PetName = "TestPet",
@@ -77,15 +106,44 @@ namespace my_virtual_pets.Tests
 
 
             _petRepositoryMock.Setup(r => r.GetPetById(petId))
-                             .Returns(petDto);
+                             .Returns(expectedPet);
 
             // Act
             var result = _petService.GetPetById(petId);
 
             // Assert 
-            result.Should().BeEquivalentTo(petDto);
+            result.Should().BeEquivalentTo(expectedPet);
         }
 
+        [Test]
+        public void GetPetById_HandlesInvalidId()
+        {
+            // Arrange
+            _petRepositoryMock.Setup(r => r.GetPetById(Guid.Empty)).Returns((PetCardDataDTO?)null);
+
+            // Act
+            var result = _petService.GetPetById(Guid.Empty);
+
+            // Assert
+            result.Should().BeNull();
+        }
+        [Test]
+        public void GetPetById_ReturnsNull_WhenPetDoesNotExist()
+        {
+            // Arrange
+            var petId = Guid.NewGuid(); // Random but valid GUID
+            _petRepositoryMock.Setup(r => r.GetPetById(petId)).Returns((PetCardDataDTO?)null);
+
+            // Act
+            var result = _petService.GetPetById(petId);
+
+            // Assert
+            result.Should().BeNull();
+        }
+
+
+
+        //GetTop10Pets
         [Test]
         public void GetTop10Pets_ReturnsListOfPets()
         {
@@ -138,6 +196,19 @@ namespace my_virtual_pets.Tests
 
             // Assert:
             result.Should().BeEquivalentTo(listOfPets);
+        }
+
+        [Test]
+        public void GetTop10Pets_ReturnsEmptyList_WhenNoPetsExist()
+        {
+            // Arrange
+            _petRepositoryMock.Setup(r => r.GetTop10Pets()).Returns(new List<PetCardDataDTO>());
+
+            // Act
+            var result = _petService.GetTop10Pets();
+
+            // Assert
+            result.Should().BeEmpty();
         }
     }
 }
