@@ -8,10 +8,13 @@ namespace my_virtual_pets_api.Services
     {
 
         private readonly IUserRepository _userRepository;
+        private readonly IPetService _petService;
 
-        public UserService(IUserRepository userRepository)
+
+        public UserService(IUserRepository userRepository, IPetService petService)
         {
             _userRepository = userRepository;
+            _petService = petService;
         }
 
 
@@ -51,7 +54,12 @@ namespace my_virtual_pets_api.Services
 
         public bool AddToFavourites(Guid GlobalUserId, Guid PetId)
         {
-            return _userRepository.AddToFavourites(GlobalUserId, PetId);
+            var request = _userRepository.AddToFavourites(GlobalUserId, PetId);
+            if (request)
+            {
+                _petService.IncreaseScore(PetId);
+            }
+            return request;
         }
 
         public List<Guid> GetFavouritePetId(Guid GlobalUserId)

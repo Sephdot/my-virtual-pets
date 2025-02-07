@@ -136,7 +136,6 @@ namespace my_virtual_pets_api.Repositories
 
         public List<PetCardDataDTO> GetRecentPets()
         {
-            //TO DO: OrderByDescending creation date
             var pets = _context.Pets
                 .Include(p => p.GlobalUser)
                 .Include(p => p.Image)
@@ -164,6 +163,15 @@ namespace my_virtual_pets_api.Repositories
             }
 
             return pets;
+        }
+
+        public void IncreaseScore(Guid petId)
+        {
+            var pet = _context.Pets
+                .SingleOrDefault(p => p.Id == petId);
+            pet.Score += 1;
+            _context.SaveChanges();
+                
         }
 
 

@@ -69,6 +69,10 @@ namespace my_virtual_pets_api.Services
             return ((int)baseScore);
 
         }
+        public void IncreaseScore(Guid petId)
+        {
+            _petRepository.IncreaseScore(petId);
+        }
 
         public List<PetCardDataDTO> GetTop10Pets()
         {

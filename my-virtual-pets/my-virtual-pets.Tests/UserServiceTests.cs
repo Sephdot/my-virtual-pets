@@ -16,12 +16,14 @@ namespace my_virtual_pets.Tests
     {
         private Mock<IUserRepository> _userRepositoryMock;
         private IUserService _userService;
+        private Mock<IPetService> _petServiceMock;
 
         [SetUp]
         public void Setup()
         {
             _userRepositoryMock = new Mock<IUserRepository>();
-            _userService = new UserService(_userRepositoryMock.Object);
+            _petServiceMock = new Mock<IPetService>();
+            _userService = new UserService(_userRepositoryMock.Object, _petServiceMock.Object);
         }
 
         [Test]
