@@ -47,11 +47,13 @@ else
 
 
 @code {
-    [CascadingParameter] 
-    public required AddPetDTO PetDetails { get; set; }
+    [CascadingParameter] public required AddPetDTO PetDetails { get; set; }
     
-    [Parameter]
-    public EventCallback<bool> OnSuccessfulPetPost { get; set; }
+    [Parameter] public EventCallback<bool> PetPostPending { get; set; }
+    
+    [Parameter] public EventCallback<bool> PetPostSucceeded { get; set; }
+
+    [Parameter] public EventCallback<bool> PetPostFailed { get; set; }
 
     private string _feedbackMessage = "";
     private string _feedbackCssStyle = "text-info";
@@ -80,16 +82,18 @@ else
 
         _postIsInProgress = true;
         StateHasChanged();
+        await PetPostPending.InvokeAsync();
         
         var webclient = new BackendClient<AddPetDTO>("api/pets");
         var response = await webclient.PostRequest(PetDetails); // just gets status code no body
         
         if (response == HttpStatusCode.OK)
         {
-            await OnSuccessfulPetPost.InvokeAsync();
+            await PetPostSucceeded.InvokeAsync();
         }
         else
         {
+            await PetPostFailed.InvokeAsync();
             _postIsInProgress = false;
             _feedbackMessage = "Uh oh, the server hamsters didn't like that! Try again.";
             _feedbackCssStyle = "text-danger";

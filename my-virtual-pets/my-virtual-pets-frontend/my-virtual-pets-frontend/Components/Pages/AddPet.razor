@@ -1,46 +1,63 @@
+@using System.Security.Claims
 @using my_virtual_pets_class_library.DTO
 @using my_virtual_pets_frontend.Components.AddPetComponents
 @using my_virtual_pets_class_library.Enums
-@inject NavigationManager NavMan;
+@inject NavigationManager Navigation;
+@inject AuthenticationStateProvider AuthStateProvider;
 
 @rendermode InteractiveServer
 
 @page "/add-pet"
 
 <PageTitle>Add a Pet | MyVirtualPets</PageTitle>
-
-<div class="container">
-    <h1 class="text-center mb-5">Add a Pet!</h1>
-        <div id="formcenter">
-            @if (!_isSuccessfulPetPost)
-            {
-                @if (PetDetails.ImageUrl != "")
+<AuthorizeView>
+    <Authorized>
+        <div class="container">
+            <h1 class="text-center mb-5">Add a Pet!</h1>
+            <div id="formcenter">
+                @if (!_isSuccessfulPetPost)
                 {
-                    <div class="d-flex justify-content-center">
-                        <figure>
-                            <img src="@PetDetails.ImageUrl" alt="" width="300" height="auto"/>
-                            <figcaption class="text-success text-center mt-1"><i>Your new VirtualPet!</i></figcaption>
-                        </figure>
-                    </div>
-                }
-                <CascadingValue Value="PetDetails">
-                    @if (!_isSuccessfulUpload)
+                    @if (_displayPetPreview)
                     {
-                        <UploadImageForm OnSuccessfulUpload="@(() => { _isSuccessfulUpload = true; } )"></UploadImageForm>
+                        <div class="d-flex justify-content-center">
+                            <figure>
+                                <img src="@PetDetails.ImageUrl" alt="" width="300" height="auto"/>
+                                <figcaption class="text-success text-center mt-1"><i>Your new VirtualPet!</i></figcaption>
+                            </figure>
+                        </div>
                     }
-                    else
-                    {
-                        <AddPetDetailsForm OnSuccessfulPetPost="@(() => { _isSuccessfulPetPost = true; } )"></AddPetDetailsForm>
-                    }
+                    <CascadingValue Value="PetDetails">
+                        @if (!_isSuccessfulUpload)
+                        {
+                            <UploadImageForm
+                                OnSuccessfulUpload="@HandleSuccessfulUpload">
+                            </UploadImageForm>
+                        }
+                        else
+                        {
+                            <AddPetDetailsForm
+                                PetPostPending="@(() => _displayPetPreview = false)"
+                                PetPostFailed="@(() => _displayPetPreview = true)"
+                                PetPostSucceeded="@HandleSuccessfulPetPost">
+                            </AddPetDetailsForm>
+                        }
                     </CascadingValue>
-            }
-            else
-            {
-                <h3>Hooray! @PetDetails.PetName is waiting for you in Collection...</h3>
-                <button @onclick="@(() => NavMan.NavigateTo("/collection"))" id="submitpetdetailsbutton" class="btn btn-light d-block mx-auto mt-4" type="submit">To Collections!</button>
-            }
+                }
+                else
+                {
+                    <h3>Hooray! @PetDetails.PetName is waiting for you in Collection...</h3>
+                    <button @onclick="@(() => Navigation.NavigateTo("/collection"))" id="submitpetdetailsbutton" class="btn btn-light d-block mx-auto mt-4" type="submit">To Collections!</button>
+                }
+            </div>
         </div>
-</div>
+    </Authorized>
+    <NotAuthorized>
+        @{
+            Navigation.NavigateTo("/login");
+        }
+    </NotAuthorized>
+</AuthorizeView>
+
 
 
 @code {
@@ -48,19 +65,41 @@
 
     private bool _isSuccessfulUpload;
     private bool _isSuccessfulPetPost;
-
-    protected override void OnInitialized()
+    private bool _displayPetPreview;
+    
+    protected override async Task OnInitializedAsync()
     {
+        var user = (await AuthStateProvider.GetAuthenticationStateAsync()).User;
+        string? userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (userId == null)
+        {
+            Navigation.NavigateTo("/login");
+            return; // exit early if userId somehow is null here
+        }
+        
         PetDetails = new()
         {
             PetName = "",
             Description = "",
             ImageUrl = "",
-            OwnerId = new Guid("f3922887-7fc2-447b-a08f-4fbbc663ba81"), // TODO: get guids programmatically (This is guid for FurryFriendFan)
+            OwnerId = new Guid(userId),
             Personality = Enum.GetValues(typeof(Personality)).Cast<Personality>().ToList()[0],
             PetType = PetType.OTHER
         };
         _isSuccessfulUpload = false;
         _isSuccessfulPetPost = false;
+        _displayPetPreview = false;
+    }
+
+    private void HandleSuccessfulUpload()
+    {
+        _isSuccessfulUpload = true; 
+        _displayPetPreview = true;
+    }
+
+    private void HandleSuccessfulPetPost()
+    {
+        _isSuccessfulPetPost = true;
+        _displayPetPreview = false;
     }
 }
