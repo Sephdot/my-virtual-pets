@@ -236,23 +236,6 @@ namespace my_virtual_pets_api.Controllers
             }
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         [HttpPut("update")]
         public IActionResult UpdateUser([FromBody] UpdateUserDTO updateduser)
         {
