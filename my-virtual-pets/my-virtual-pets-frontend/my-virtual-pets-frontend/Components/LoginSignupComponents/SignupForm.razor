@@ -1,4 +1,6 @@
+@using System.Net
 @using my_virtual_pets_class_library.DTO
+@inject NavigationManager NavMan 
 @rendermode InteractiveAuto
 
 <div class="container">
@@ -29,10 +31,10 @@
 
     <div class="col input form-group">
         <label for="InputUsername">Username:</label>
-        @* <InputText id="InputUsername" class="form-control" @bind-Value="@Username"/> *@
-
         <input type="text" id="InputUsername" class="form-control" @bind="Username" @bind:event="oninput"/>
-        <span>@UsernameTaken</span>
+        <div style="height:10px">
+            <span style="color: @color">@UsernameTaken</span>
+        </div>
         <ValidationMessage For="@(() => userDetails.Username)"/>
     </div>
     </div>
@@ -56,7 +58,7 @@
         <p style="font-size:10px">By submitting this form you are agreeing to our service and privacy policy</p>
     </div>
     
-    <h6>@Feedback</h6>
+    <h6 style="color:red">@Feedback</h6>
     
     <button id="input registerbutton" class="btn btn-light d-block mx-auto mt-4" type="submit">Enter the doghouse</button>
 
@@ -81,8 +83,10 @@
     
     public string Feedback { get; set; }
     
-    public string UsernameTaken { get; set; } 
-    
+    public string UsernameTaken { get; set; }
+
+    public string color { get; set; } = "green";
+     
     protected override void OnInitialized()
     {
         userDetails = new NewUserDTO();
@@ -96,28 +100,35 @@
         {
             if (UsernameCheck.IsFavourite)
             {
-                UsernameTaken = "Username is taken"; 
+                UsernameTaken = "Username is taken";
+                color = "red";
+                StateHasChanged();
             }
             else
             {
-                UsernameTaken = "Username is free"; 
+                UsernameTaken = "Username is free";
+                color = "green";
+                StateHasChanged();
             }
         }
     }
     
     public void HandleInvalidSubmit()
     {
-        Feedback = "Something has gone wrong"; 
+        Feedback = "Oops let's try that again!"; 
     }
 
-    public void HandleValidSubmit()
+    public async Task HandleValidSubmit()
     {
-        Feedback = "Submitted!";
         userDetails.Username = Username; 
         userDetails.GDPRPermissions = true; 
         var webclient = new BackendClient<NewUserDTO>("api/user/register");
-        webclient.PostRequest(userDetails);
-        userDetails = new NewUserDTO();
+        var response = await webclient.PostRequest(userDetails);
+        if (response == HttpStatusCode.Created)
+        {
+            userDetails = new NewUserDTO();
+            NavMan.NavigateTo("/login");
+        } 
     }
     
 }

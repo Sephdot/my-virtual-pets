@@ -11,17 +11,19 @@
 <div class="container">
     <h3 class="mt-5 pixeltext">build your pet collection now</h3>
 
-    <Carousel Autoplay="CarouselAutoPlay.StartOnPageLoad" ShowPreviousNextControls="true">
-        <CarouselItem Active="true">
-            <Image Src="https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/36fc0d04-407e-4e5e-ba56-6ff5c5f1878b.png"/>
-        </CarouselItem>
-        <CarouselItem>
-            <Image Src="https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/5c9bb80e-f68f-4150-9e1f-c6a1aa0caa17.png" />
-        </CarouselItem>
-        <CarouselItem>
-            <Image Src="https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/36fc0d04-407e-4e5e-ba56-6ff5c5f1878b.png" />
-        </CarouselItem>
-    </Carousel>
+    <div style="width:600px">
+        <Carousel Autoplay="CarouselAutoPlay.StartOnPageLoad" ShowPreviousNextControls="true">
+            <CarouselItem Active="true">
+                <LeadershipCard petCard="petDummyData"></LeadershipCard>
+            </CarouselItem>
+            <CarouselItem>
+                <LeadershipCard petCard="petDummyData2"></LeadershipCard>
+            </CarouselItem>
+            <CarouselItem>
+                <LeadershipCard petCard="petDummyData"></LeadershipCard>
+            </CarouselItem>
+        </Carousel>
+    </div>
     
 </div>
 
