@@ -12,7 +12,7 @@ using my_virtual_pets_api.Data;
 namespace my_virtual_pets_api.Migrations
 {
     [DbContext(typeof(VPSqlServerContext))]
-    [Migration("20250207092157_initial")]
+    [Migration("20250207133901_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -158,57 +158,57 @@ namespace my_virtual_pets_api.Migrations
                         new
                         {
                             Id = new Guid("550e8400-e29b-41d4-a716-446655440000"),
-                            ImageUrl = "https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/dogyesyes"
+                            ImageUrl = "https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/36fc0d04-407e-4e5e-ba56-6ff5c5f1878b.png"
                         },
                         new
                         {
                             Id = new Guid("a9bcbce5-bc93-49d0-b7cd-68442ad73bb5"),
-                            ImageUrl = "https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/dogyesyes"
+                            ImageUrl = "https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/36fc0d04-407e-4e5e-ba56-6ff5c5f1878b.png"
                         },
                         new
                         {
                             Id = new Guid("fa4b84c6-e4c9-4ab4-b47a-9238a499c52f"),
-                            ImageUrl = "https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/dogyesyes"
+                            ImageUrl = "https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/36fc0d04-407e-4e5e-ba56-6ff5c5f1878b.png"
                         },
                         new
                         {
                             Id = new Guid("865fcd99-c3b7-49a4-b813-81fae96b577d"),
-                            ImageUrl = "https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/dogyesyes"
+                            ImageUrl = "https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/36fc0d04-407e-4e5e-ba56-6ff5c5f1878b.png"
                         },
                         new
                         {
                             Id = new Guid("e2d7c9b9-607f-4289-bf44-fc0e35ffcf67"),
-                            ImageUrl = "https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/dogyesyes"
+                            ImageUrl = "https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/36fc0d04-407e-4e5e-ba56-6ff5c5f1878b.png"
                         },
                         new
                         {
                             Id = new Guid("d7f7c57b-472f-4237-b464-caeacdb46738"),
-                            ImageUrl = "https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/dogyesyes"
+                            ImageUrl = "https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/36fc0d04-407e-4e5e-ba56-6ff5c5f1878b.png"
                         },
                         new
                         {
                             Id = new Guid("9deefb0a-f90f-4f33-9379-c9f1b45d05ea"),
-                            ImageUrl = "https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/dogyesyes"
+                            ImageUrl = "https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/36fc0d04-407e-4e5e-ba56-6ff5c5f1878b.png"
                         },
                         new
                         {
                             Id = new Guid("89a7cc4d-f68e-4650-b098-90a9f881f70a"),
-                            ImageUrl = "https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/dogyesyes"
+                            ImageUrl = "https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/36fc0d04-407e-4e5e-ba56-6ff5c5f1878b.png"
                         },
                         new
                         {
                             Id = new Guid("9e58b73d-2e74-4c80-a19e-9b4c818d4cc4"),
-                            ImageUrl = "https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/dogyesyes"
+                            ImageUrl = "https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/36fc0d04-407e-4e5e-ba56-6ff5c5f1878b.png"
                         },
                         new
                         {
                             Id = new Guid("d93e2be0-3a04-4f2f-9f4d-9ff45e17da1d"),
-                            ImageUrl = "https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/dogyesyes"
+                            ImageUrl = "https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/36fc0d04-407e-4e5e-ba56-6ff5c5f1878b.png"
                         },
                         new
                         {
                             Id = new Guid("ce34c78f-6f2f-4ea9-9fa9-730b504ad202"),
-                            ImageUrl = "https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/dogyesyes"
+                            ImageUrl = "https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/36fc0d04-407e-4e5e-ba56-6ff5c5f1878b.png"
                         });
                 });
 
@@ -329,111 +329,122 @@ namespace my_virtual_pets_api.Migrations
                         new
                         {
                             Id = new Guid("d1e2f3a4-5678-9101-1121-314151617181"),
+                            DateCreated = new DateTime(2025, 7, 30, 18, 0, 0, 0, DateTimeKind.Utc),
                             GlobalUserId = new Guid("cb7153f7-3101-444b-a91d-8c45280672d6"),
                             ImageId = new Guid("550e8400-e29b-41d4-a716-446655440000"),
                             Name = "Whiskers",
                             Personality = 2,
-                            Score = 0,
+                            Score = 100,
                             Type = 0
                         },
                         new
                         {
                             Id = new Guid("e2f3a4b5-6789-0123-4567-890123456789"),
+                            DateCreated = new DateTime(2025, 6, 30, 18, 0, 0, 0, DateTimeKind.Utc),
                             GlobalUserId = new Guid("f3922887-7fc2-447b-a08f-4fbbc663ba81"),
                             ImageId = new Guid("a9bcbce5-bc93-49d0-b7cd-68442ad73bb5"),
                             Name = "Buddy",
                             Personality = 3,
-                            Score = 0,
+                            Score = 90,
                             Type = 1
                         },
                         new
                         {
                             Id = new Guid("f3a4b5c6-7890-1234-5678-901234567890"),
+                            DateCreated = new DateTime(2024, 7, 30, 18, 0, 0, 0, DateTimeKind.Utc),
                             GlobalUserId = new Guid("3e2db5ff-0ac8-48b9-b341-e14371c42e7a"),
                             ImageId = new Guid("fa4b84c6-e4c9-4ab4-b47a-9238a499c52f"),
                             Name = "Floppy",
                             Personality = 1,
-                            Score = 0,
+                            Score = 85,
                             Type = 2
                         },
                         new
                         {
                             Id = new Guid("a5b6c7d8-9012-3456-7890-123456789012"),
+                            DateCreated = new DateTime(2024, 4, 30, 18, 0, 0, 0, DateTimeKind.Utc),
                             GlobalUserId = new Guid("cb7153f7-3101-444b-a91d-8c45280672d6"),
                             ImageId = new Guid("865fcd99-c3b7-49a4-b813-81fae96b577d"),
                             Name = "Mittens",
                             Personality = 3,
-                            Score = 0,
+                            Score = 80,
                             Type = 0
                         },
                         new
                         {
                             Id = new Guid("b6c7d8e9-0123-4567-8901-234567890123"),
+                            DateCreated = new DateTime(2024, 3, 30, 18, 0, 0, 0, DateTimeKind.Utc),
                             GlobalUserId = new Guid("f3922887-7fc2-447b-a08f-4fbbc663ba81"),
                             ImageId = new Guid("e2d7c9b9-607f-4289-bf44-fc0e35ffcf67"),
                             Name = "Rocky",
                             Personality = 2,
-                            Score = 0,
+                            Score = 10,
                             Type = 1
                         },
                         new
                         {
                             Id = new Guid("c7d8e9f0-1234-5678-9012-345678901234"),
+                            DateCreated = new DateTime(2023, 1, 30, 18, 0, 0, 0, DateTimeKind.Utc),
                             GlobalUserId = new Guid("3e2db5ff-0ac8-48b9-b341-e14371c42e7a"),
                             ImageId = new Guid("d7f7c57b-472f-4237-b464-caeacdb46738"),
                             Name = "Hopper",
                             Personality = 1,
-                            Score = 0,
+                            Score = 20,
                             Type = 2
                         },
                         new
                         {
                             Id = new Guid("d8e9f0a1-2345-6789-0123-456789012345"),
+                            DateCreated = new DateTime(2020, 7, 30, 18, 0, 0, 0, DateTimeKind.Utc),
                             GlobalUserId = new Guid("cb7153f7-3101-444b-a91d-8c45280672d6"),
                             ImageId = new Guid("9deefb0a-f90f-4f33-9379-c9f1b45d05ea"),
                             Name = "Shadow",
                             Personality = 2,
-                            Score = 0,
+                            Score = 30,
                             Type = 0
                         },
                         new
                         {
                             Id = new Guid("e9f0a1b2-3456-7890-1234-567890123456"),
+                            DateCreated = new DateTime(2022, 7, 30, 18, 0, 0, 0, DateTimeKind.Utc),
                             GlobalUserId = new Guid("f3922887-7fc2-447b-a08f-4fbbc663ba81"),
                             ImageId = new Guid("89a7cc4d-f68e-4650-b098-90a9f881f70a"),
                             Name = "Luna",
                             Personality = 3,
-                            Score = 0,
+                            Score = 45,
                             Type = 1
                         },
                         new
                         {
                             Id = new Guid("f0a1b2c3-4567-8901-2345-678901234567"),
+                            DateCreated = new DateTime(2021, 7, 30, 18, 0, 0, 0, DateTimeKind.Utc),
                             GlobalUserId = new Guid("3e2db5ff-0ac8-48b9-b341-e14371c42e7a"),
                             ImageId = new Guid("9e58b73d-2e74-4c80-a19e-9b4c818d4cc4"),
                             Name = "Cocoa",
                             Personality = 1,
-                            Score = 0,
+                            Score = 40,
                             Type = 2
                         },
                         new
                         {
                             Id = new Guid("a1b2c3d4-5678-9012-3456-789012345678"),
+                            DateCreated = new DateTime(2019, 7, 30, 18, 0, 0, 0, DateTimeKind.Utc),
                             GlobalUserId = new Guid("cb7153f7-3101-444b-a91d-8c45280672d6"),
                             ImageId = new Guid("d93e2be0-3a04-4f2f-9f4d-9ff45e17da1d"),
                             Name = "Tiger",
                             Personality = 3,
-                            Score = 0,
+                            Score = 60,
                             Type = 0
                         },
                         new
                         {
                             Id = new Guid("b2c3d4e5-6789-0123-4567-890123456789"),
+                            DateCreated = new DateTime(2018, 7, 30, 18, 0, 0, 0, DateTimeKind.Utc),
                             GlobalUserId = new Guid("f3922887-7fc2-447b-a08f-4fbbc663ba81"),
                             ImageId = new Guid("ce34c78f-6f2f-4ea9-9fa9-730b504ad202"),
                             Name = "Baxter",
                             Personality = 2,
-                            Score = 0,
+                            Score = 55,
                             Type = 1
                         });
                 });
