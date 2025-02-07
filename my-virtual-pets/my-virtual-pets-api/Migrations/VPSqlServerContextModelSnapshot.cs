@@ -282,6 +282,10 @@ namespace my_virtual_pets_api.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasAnnotation("Relational:JsonPropertyName", "id");
 
+                    b.Property<DateTime?>("DateCreated")
+                        .HasColumnType("datetime2")
+                        .HasAnnotation("Relational:JsonPropertyName", "dateCreated");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "Description");
@@ -301,6 +305,10 @@ namespace my_virtual_pets_api.Migrations
                     b.Property<int>("Personality")
                         .HasColumnType("int")
                         .HasAnnotation("Relational:JsonPropertyName", "personality");
+
+                    b.Property<int>("Score")
+                        .HasColumnType("int")
+                        .HasAnnotation("Relational:JsonPropertyName", "score");
 
                     b.Property<int>("Type")
                         .HasColumnType("int")
@@ -322,6 +330,7 @@ namespace my_virtual_pets_api.Migrations
                             ImageId = new Guid("550e8400-e29b-41d4-a716-446655440000"),
                             Name = "Whiskers",
                             Personality = 2,
+                            Score = 0,
                             Type = 0
                         },
                         new
@@ -331,6 +340,7 @@ namespace my_virtual_pets_api.Migrations
                             ImageId = new Guid("a9bcbce5-bc93-49d0-b7cd-68442ad73bb5"),
                             Name = "Buddy",
                             Personality = 3,
+                            Score = 0,
                             Type = 1
                         },
                         new
@@ -340,6 +350,7 @@ namespace my_virtual_pets_api.Migrations
                             ImageId = new Guid("fa4b84c6-e4c9-4ab4-b47a-9238a499c52f"),
                             Name = "Floppy",
                             Personality = 1,
+                            Score = 0,
                             Type = 2
                         },
                         new
@@ -349,6 +360,7 @@ namespace my_virtual_pets_api.Migrations
                             ImageId = new Guid("865fcd99-c3b7-49a4-b813-81fae96b577d"),
                             Name = "Mittens",
                             Personality = 3,
+                            Score = 0,
                             Type = 0
                         },
                         new
@@ -358,6 +370,7 @@ namespace my_virtual_pets_api.Migrations
                             ImageId = new Guid("e2d7c9b9-607f-4289-bf44-fc0e35ffcf67"),
                             Name = "Rocky",
                             Personality = 2,
+                            Score = 0,
                             Type = 1
                         },
                         new
@@ -367,6 +380,7 @@ namespace my_virtual_pets_api.Migrations
                             ImageId = new Guid("d7f7c57b-472f-4237-b464-caeacdb46738"),
                             Name = "Hopper",
                             Personality = 1,
+                            Score = 0,
                             Type = 2
                         },
                         new
@@ -376,6 +390,7 @@ namespace my_virtual_pets_api.Migrations
                             ImageId = new Guid("9deefb0a-f90f-4f33-9379-c9f1b45d05ea"),
                             Name = "Shadow",
                             Personality = 2,
+                            Score = 0,
                             Type = 0
                         },
                         new
@@ -385,6 +400,7 @@ namespace my_virtual_pets_api.Migrations
                             ImageId = new Guid("89a7cc4d-f68e-4650-b098-90a9f881f70a"),
                             Name = "Luna",
                             Personality = 3,
+                            Score = 0,
                             Type = 1
                         },
                         new
@@ -394,6 +410,7 @@ namespace my_virtual_pets_api.Migrations
                             ImageId = new Guid("9e58b73d-2e74-4c80-a19e-9b4c818d4cc4"),
                             Name = "Cocoa",
                             Personality = 1,
+                            Score = 0,
                             Type = 2
                         },
                         new
@@ -403,6 +420,7 @@ namespace my_virtual_pets_api.Migrations
                             ImageId = new Guid("d93e2be0-3a04-4f2f-9f4d-9ff45e17da1d"),
                             Name = "Tiger",
                             Personality = 3,
+                            Score = 0,
                             Type = 0
                         },
                         new
@@ -412,6 +430,7 @@ namespace my_virtual_pets_api.Migrations
                             ImageId = new Guid("ce34c78f-6f2f-4ea9-9fa9-730b504ad202"),
                             Name = "Baxter",
                             Personality = 2,
+                            Score = 0,
                             Type = 1
                         });
                 });
