@@ -149,6 +149,25 @@ namespace my_virtual_pets_api.Repositories
             return true;
         }
 
+       
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         public bool UpdateUser(UpdateUserDTO updatedUser)
         {
             var globalUser = _context.GlobalUsers.FirstOrDefault(u => u.Id == updatedUser.UserId);
