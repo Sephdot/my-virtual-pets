@@ -45,7 +45,6 @@ namespace my_virtual_pets_api.Controllers
             if (!_userService.DoesPasswordMatch(userLoginDto)) return BadRequest("Password is incorrect");
 
             
-            Console.WriteLine($"User {userLoginDto.Username} logged in");
             Guid userId = _userService.GetUserIdByUsername(userLoginDto.Username);
 
             var claims = new[]
@@ -99,7 +98,7 @@ namespace my_virtual_pets_api.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"An error occurred while fetching top pets: {ex.Message}");
+                return StatusCode(500, $"An error occurred while fetching user details: {ex.Message}");
             }
         }
 
@@ -128,7 +127,6 @@ namespace my_virtual_pets_api.Controllers
         [Route("{GlobalUserId}/IsFavourited/{PetId}")]
         public IActionResult IsFavourited(Guid GlobalUserId, Guid PetId)
         {
-            Console.WriteLine($"CONTROLLER CALLED: IsFavourited {GlobalUserId}/{PetId}");
             try
             {
                 bool isFavourited = _userService.IsFavourited(GlobalUserId, PetId);
@@ -143,8 +141,6 @@ namespace my_virtual_pets_api.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
-        
         
         
         [HttpGet]

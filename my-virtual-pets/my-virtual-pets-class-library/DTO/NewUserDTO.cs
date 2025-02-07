@@ -16,7 +16,7 @@ public class NewUserDTO
     public string LastName { get; set; }
     
     [JsonPropertyName("email")]
-    [Required(ErrorMessage = "We need your email!")]
+    [Required(ErrorMessage = "We need your email!"), EmailValidator]
     public string Email { get; set; }
 
     [JsonPropertyName("username")]
