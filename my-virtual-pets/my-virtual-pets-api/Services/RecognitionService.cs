@@ -2,6 +2,8 @@
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using ImageRecognition;
+using my_virtual_pets_class_library.Enums;
 
 namespace ImageRecognition
 {
@@ -123,7 +125,14 @@ namespace ImageRecognition
 
         public bool CheckIfAnimal(IPredicted animal)
         {
-            List<string> validAnimals = new List<string>{  "cat", "dog", "fish", "rabbit", "horse" };
+            // List<string> validAnimals = new List<string>{  "cat", "dog", "fish", "rabbit", "horse" }
+            PetType[] petTypes = Enum.GetValues(typeof(PetType)).Cast<PetType>().ToArray();
+            List<string> validAnimals = new List<string>();
+            for (int i = 0; i < petTypes.Length; i++)
+            { 
+                validAnimals.Add(petTypes[i].ToString().ToLower());
+                Console.WriteLine(validAnimals[i]);
+            }
             try
             {
                 var result = validAnimals.Contains(animal.name);
@@ -133,7 +142,6 @@ namespace ImageRecognition
             {
                 return false;
             }
-
         }
     }
 
