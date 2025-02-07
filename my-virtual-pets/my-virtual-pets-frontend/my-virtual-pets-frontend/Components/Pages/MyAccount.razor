@@ -1,17 +1,67 @@
 @page "/my-account"
+@using System.Security.Claims
+@using my_virtual_pets_class_library.DTO
+@using my_virtual_pets_frontend.Components.Icons
+@using my_virtual_pets_frontend.Components.DisplayCards
+@inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthStateProvider
 <PageTitle>My Account | MyVirtualPets</PageTitle>
 
-@if (!_isLoggedIn)
-{
-    <div>
-        <h3>You're not logged in!</h3>
-    </div>
-}
-else
-{
-    
-}
+<AuthorizeView>
+    <NotAuthorized>
+        @{
+            Navigation.NavigateTo("/login");
+        }
+    </NotAuthorized>
+    <Authorized>
+        <div class="container">
+            <h1 class="d-flex align-text-center">My Account</h1>
+            @if (_userInfo == null || _favePets == null)
+            {
+                <h3>Loading your info...!</h3>
+                <Cat_Loader></Cat_Loader>
+            }
+            else
+            {
+                <UserDisplay 
+                    UserDisplayDto = "@_userInfo"
+                    UserFavePets = "@_favePets"
+                    />
+            }
+        </div>
+    </Authorized>
+</AuthorizeView>
 
 @code {
-    private bool _isLoggedIn = false; //TODO: add auth checking
+    private UserDisplayDTO? _userInfo;
+    private List<PetCardDataDTO>? _favePets = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var user = (await AuthStateProvider.GetAuthenticationStateAsync()).User;
+        string? userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (userId == null)
+        {
+            Navigation.NavigateTo("/login");
+            return;
+        }
+        
+        await GetUserInfo();
+        // await GetFavePets();
+        async Task GetUserInfo()
+        {
+            var userClient = new BackendClient<UserDisplayDTO>($"api/User/{userId}");
+            Console.WriteLine($"https://localhost:7091/{userId}");
+            _userInfo = await userClient.GetRequest();
+            Console.WriteLine(_userInfo.Username);
+        }
+        
+        // async Task GetFavePets()
+        // {
+        //     var favePetClient = new BackendClient<List<PetCardDataDTO>>($"api/User/{userId}/FavouritePets");
+        //     _favePets = await favePetClient.GetRequest();
+        //     Console.WriteLine(_favePets.Count);
+        // }
+    }
 }

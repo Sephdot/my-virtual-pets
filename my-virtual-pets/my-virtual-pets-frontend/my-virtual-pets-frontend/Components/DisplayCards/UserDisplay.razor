@@ -1,0 +1,83 @@
+@using my_virtual_pets_class_library.DTO
+@using my_virtual_pets_class_library.Enums
+@using my_virtual_pets_frontend.Components.Icons;
+@rendermode InteractiveAuto
+
+<div class="usercard">
+    <div class="container">
+        <div class="card">
+            <h1 class="card-title">Hello, @(UserDisplayDto.Username)!</h1>
+            <div class="card-content">
+                <p>Name (not visible to others): @UserDisplayDto.FirstName @UserDisplayDto.LastName</p>
+                <p>Email: @UserDisplayDto.Email</p>
+                <p>Pets Owned: @UserDisplayDto.PetCount</p>
+                <p>The type of pet you've favourited the most: @FavePetType</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public required UserDisplayDTO UserDisplayDto { get; set; }
+    
+    [Parameter]
+    public required List<PetCardDataDTO> UserFavePets { get; set; }
+
+    public required string FavePetType { get; set; } = "!!!!!!!!!";
+
+    protected override void OnInitialized()
+    {
+        // FavePetType = GetFavouritePetType();
+    }
+
+    private string GetFavouritePetType()
+    {
+        if (UserFavePets.Count == 0)
+        {
+            Console.WriteLine("no pets faved");
+            return "No pets favourited yet...";
+        }
+        if (UserFavePets.Count == 1)
+        {
+            Console.WriteLine(UserFavePets[0].PetType.ToString());
+            return UserFavePets[0].PetType.ToString();
+        }
+        
+        Dictionary<PetType, int> scores = Enum
+            .GetValues(typeof(PetType))
+            .Cast<PetType>()
+            .SkipLast(1) // ignore "OTHER"
+            .ToDictionary(petType => petType, pt => 0);
+
+        Console.WriteLine("---------PetTypes----------");
+        foreach (var kvp in scores)
+        {
+            Console.WriteLine($"PetType: {kvp.Key.ToString()}");
+        }
+        Console.WriteLine("---------------------------");
+        
+
+
+        foreach (PetCardDataDTO favePet in UserFavePets)
+        {
+            // debugging!
+            Console.WriteLine("---------ScoresKVPs----------");
+            foreach (var kvp in scores)
+            {
+                Console.Write($"{kvp.Key}: {kvp.Value}; ");
+            }
+            Console.WriteLine("-----------------------------");
+            scores[favePet.PetType]++;
+        }
+        
+        string x = scores
+            .OrderByDescending(kvp => kvp.Key)
+            .First()
+            .Key
+            .ToString();
+        Console.WriteLine(x);
+        
+        return $"{x[0]}{x.Substring(1).ToLower()}";
+    }
+}
