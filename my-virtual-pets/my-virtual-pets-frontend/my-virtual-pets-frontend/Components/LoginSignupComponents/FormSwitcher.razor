@@ -1,8 +1,6 @@
-@* @using my_virtual_pets_frontend.Client.Components *@
 @rendermode InteractiveAuto
 
-<div id="formcenter" class="robottext" style="margin-left:auto;margin-right:auto;width:400px;height:100%;">
-<a style="cursor: pointer" @onclick="ToggleForm">@(IsUser ?  SwitchText[0] : SwitchText[1])</a>
+<div id="formcenter" class="robottext" style="margin-left:auto;margin-right:auto;width:600px;height:100%;">
     @if (IsUser)
     {
           <LoginForm></LoginForm>
@@ -11,6 +9,7 @@
     {
             <SignupForm></SignupForm>
     }
+    <a style="cursor: pointer; font-size: 12px; margin-top: 20px;" @onclick="ToggleForm">@(IsUser ?  SwitchText[0] : SwitchText[1])</a>
 </div>
 
 @code{
