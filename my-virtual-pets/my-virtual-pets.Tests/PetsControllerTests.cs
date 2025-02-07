@@ -26,7 +26,7 @@ namespace my_virtual_pets.Tests
             _controller = new PetsController(_petServiceMock.Object);
         }
 
-
+        //GetAllPetsByUserId
         [Test]
         public void GetAllPetsByUserID_ReturnsOkResult_WithListOfPets()
         {
@@ -63,7 +63,22 @@ namespace my_virtual_pets.Tests
         }
 
         [Test]
-        public void GetPetById_ReturnsOkResult_WithPetDto()
+        public void GetAllPetsByUserID_ReturnsBadRequest_WhenInvaldUserId()
+        {
+            // Arrange
+            var emptyUserId = Guid.Empty;
+
+            // Act
+            var result = _controller.GetAllPetsByUserID(emptyUserId);
+
+            // Assert
+            result.Should().BeOfType<BadRequestObjectResult>()
+                  .Which.StatusCode.Should().Be(400);
+        }
+
+        //GetPetById
+        [Test]
+        public void GetPetById_ReturnsOkResult_WithPet()
         {
             // Arrange
             var petId = Guid.NewGuid();
@@ -92,6 +107,36 @@ namespace my_virtual_pets.Tests
             result.Should().BeOfType<OkObjectResult>()
                   .Which.Value.Should().BeEquivalentTo(petDto);
         }
+
+        [Test]
+        public void GetPetById_ReturnsNotFound_WhenPetDoesNotExist()
+        {
+            // Arrange
+            var petId = Guid.NewGuid();
+            _petServiceMock.Setup(s => s.GetPetById(petId)).Returns((PetCardDataDTO?)null);
+
+            // Act
+            var result =  _controller.GetPetById(petId);
+
+            // Assert
+            result.Should().BeOfType<NotFoundObjectResult>();
+        }
+
+        [Test]
+        public void GetPetById_ReturnsBadRequest_InvalidId()
+        {
+            // Arrange
+            var invalidId = Guid.Empty;
+
+            // Act
+            var result = _controller.GetPetById(invalidId);
+
+            // Assert
+            result.Should().BeOfType<BadRequestObjectResult>()
+                  .Which.StatusCode.Should().Be(400);
+        }
+
+        //GetTop10Pets
         [Test]
         public void GetTop10Pets_ReturnsOkResult_WithListOfPets()
         {
@@ -135,6 +180,8 @@ namespace my_virtual_pets.Tests
             okResult.StatusCode.Should().Be(200);
             okResult.Value.Should().BeEquivalentTo(top10Pets);
         }
+
+
     }
 
 }

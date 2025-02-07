@@ -30,7 +30,7 @@ namespace my_virtual_pets_api.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"An error occurred while fetching top pets: {ex.Message}");
+                return StatusCode(500, $"An error occurred while fetching pets: {ex.Message}");
             }
         }
 
@@ -39,12 +39,17 @@ namespace my_virtual_pets_api.Controllers
         {
             try
             {
-                var petCards = _petService.GetPetsByUser(userId);
-                return Ok(petCards);
+                if (userId == Guid.Empty)
+                {
+                    return BadRequest(new { message = "Invalid user ID." });
+                }
+
+                var pets = _petService.GetPetsByUser(userId);
+                return Ok(pets);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"An error occurred while fetching top pets: {ex.Message}");
+                return StatusCode(500, $"An error occurred while retrieving pets: {ex.Message}");
             }
         }
 
@@ -53,12 +58,22 @@ namespace my_virtual_pets_api.Controllers
         {
             try
             {
+                if (petId == Guid.Empty)
+                {
+                    return BadRequest(new { message = "Invalid pet ID." });
+                }
+
                 var pet = _petService.GetPetById(petId);
+                if (pet == null)
+                {
+                    return NotFound(new { message = "Pet not found." });
+                }
+
                 return Ok(pet);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"An error occurred while fetching top pets: {ex.Message}");
+                return StatusCode(500, new { message = "An error occurred while retrieving the pet.", error = ex.Message });
             }
 
         }
@@ -73,7 +88,7 @@ namespace my_virtual_pets_api.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"An error occurred while fetching top pets: {ex.Message}");
+                return StatusCode(500, $"An error occurred while adding pet: {ex.Message}");
             }
         }
 
@@ -87,7 +102,7 @@ namespace my_virtual_pets_api.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"An error occurred while fetching top pets: {ex.Message}");
+                return StatusCode(500, $"An error occurred while retrieving the top pets: {ex.Message}");
             }
         }
 
