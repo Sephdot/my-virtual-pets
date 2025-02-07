@@ -1,7 +1,6 @@
 @using my_virtual_pets_class_library.DTO
 @using my_virtual_pets_frontend.Components.AddPetComponents
 @using my_virtual_pets_class_library.Enums
-@using my_virtual_pets_frontend.Components.Icons
 @inject NavigationManager NavMan;
 
 @rendermode InteractiveServer
@@ -12,46 +11,50 @@
 
 <div class="container">
     <h1 class="text-center mb-5">Add a Pet!</h1>
-    <div id="formcenter">
-        @if (PetDetails.ImageUrl != "")
-        {
-            <div class="d-flex justify-content-center">
-                <figure>
-                    <img src="@PetDetails.ImageUrl" alt="" width="300" height="auto"/>
-                    <figcaption class="text-success text-center mt-1"><i>Your new VirtualPet!</i></figcaption>
-                </figure>
-            </div>
-        }
-        
-        <CascadingValue Value="PetDetails">
-            @if (!IsSuccessfulUpload)
+        <div id="formcenter">
+            @if (!_isSuccessfulPetPost)
             {
-                <UploadImageForm OnSuccessfulUpload=@SwitchToAddDetails></UploadImageForm>
+                @if (PetDetails.ImageUrl != "")
+                {
+                    <div class="d-flex justify-content-center">
+                        <figure>
+                            <img src="@PetDetails.ImageUrl" alt="" width="300" height="auto"/>
+                            <figcaption class="text-success text-center mt-1"><i>Your new VirtualPet!</i></figcaption>
+                        </figure>
+                    </div>
+                }
+                else
+                {
+                    <CascadingValue Value="PetDetails">
+                        @if (!_isSuccessfulUpload)
+                        {
+                            <UploadImageForm OnSuccessfulUpload="@(() => { _isSuccessfulUpload = true; } )"></UploadImageForm>
+                        }
+                        else
+                        {
+                            <AddPetDetailsForm OnSuccessfulPetPost="@(() => { _isSuccessfulPetPost = true; } )"></AddPetDetailsForm>
+                        }
+                    </CascadingValue>
+                }
             }
             else
             {
-                <AddPetDetailsForm OnSuccessfulPetPost="@RedirectToCollections"></AddPetDetailsForm>
+                <h3>Hooray! @PetDetails.PetName is waiting for you in Collection...</h3>
+                <button @onclick="@(() => NavMan.NavigateTo("/collection"))" id="submitpetdetailsbutton" class="btn btn-light d-block mx-auto mt-4" type="submit">To Collections!</button>
             }
-        </CascadingValue>
-    </div>
+        </div>
 </div>
 
 
 @code {
-    [CascadingParameter] AddPetDTO? PetDetails { get; set; }
-    
-    public bool IsSuccessfulUpload { get; set; } = false;
-    public bool IsSuccessfulPetPost { get; set; } = false;
+    [CascadingParameter] public required AddPetDTO PetDetails { get; set; }
+
+    private bool _isSuccessfulUpload;
+    private bool _isSuccessfulPetPost;
 
     protected override void OnInitialized()
     {
-        ResetPetDetails();
-        IsSuccessfulUpload = false;
-    }
-
-    private void ResetPetDetails()
-    {
-        PetDetails = new AddPetDTO()
+        PetDetails = new()
         {
             PetName = "",
             Description = "",
@@ -60,16 +63,7 @@
             Personality = Enum.GetValues(typeof(Personality)).Cast<Personality>().ToList()[0],
             PetType = PetType.OTHER
         };
-    }
-    
-    private void SwitchToAddDetails()
-    {
-        IsSuccessfulUpload = true;
-    }
-
-    private void RedirectToCollections()
-    {
-        IsSuccessfulPetPost = true;
-        NavMan.NavigateTo("/collection"); // 🦇 Nana-nana-nana-nana-nana-nana-nana-nana NavMan! 🦸
+        _isSuccessfulUpload = false;
+        _isSuccessfulPetPost = false;
     }
 }

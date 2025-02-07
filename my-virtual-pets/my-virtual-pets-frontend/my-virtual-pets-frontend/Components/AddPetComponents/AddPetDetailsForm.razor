@@ -1,37 +1,50 @@
 @using System.Net
 @using my_virtual_pets_class_library.DTO
 @using my_virtual_pets_class_library.Enums
+@using my_virtual_pets_frontend.Components.Icons
 
 @rendermode InteractiveServer
-<EditForm Model="@PetDetails" OnInvalidSubmit="HandleInvalidSubmit" OnValidSubmit="HandleValidSubmit">
-    <h3>Add Details</h3>
-    <DataAnnotationsValidator/>
 
-    <div class="form-group">
-        <label for="InputPetName">Name: <span class="text-danger">*</span></label>
-        <InputText id="InputPetName" class="form-control" @bind-Value="@PetDetails.PetName"/>
-        <ValidationMessage For="@(() => PetDetails.PetName)"/>
+@if (_postIsInProgress)
+{
+    <h3 class="text-center mb-4">Uploading Pet...</h3>
+    <div class="d-block mx-auto my-6">
+        <Cat_Loader></Cat_Loader>
     </div>
+}
+else
+{
+    <EditForm Model="@PetDetails" OnInvalidSubmit="HandleInvalidSubmit" OnValidSubmit="HandleValidSubmit">
+        <h3>Add Details</h3>
+        <DataAnnotationsValidator/>
 
-    <div class="form-group">
-        <label for="InputPersonality">Personality: <span class="text-danger">*</span></label>
-        <InputSelect id="InputPersonality" class="form-select" @bind-Value="@PetDetails.Personality">
-            @foreach (Personality p in _personalities)
-            {
-                <option value="@p">@p.ToString()</option>
-            }
-        </InputSelect>
-        <ValidationMessage For="@(() => PetDetails.Personality)"/>
-    </div>
+        <div class="form-group">
+            <label for="InputPetName">Name: <span class="text-danger">*</span></label>
+            <InputText id="InputPetName" class="form-control" @bind-Value="@PetDetails.PetName"/>
+            <ValidationMessage For="@(() => PetDetails.PetName)"/>
+        </div>
 
-    <div class="form-group">
-        <label for="InputDescription">Description: <span class="text-danger">*</span></label>
-        <InputTextArea id="InputDescription" class="form-control" @bind-Value="@PetDetails.Description"/>
-        <ValidationMessage For="@(() => PetDetails.Description)"/>
-    </div>
-    <h6 class="mt-1 @_feedbackCssStyle"><i>@_feedbackMessage</i></h6>
-    <button id="submitpetdetailsbutton" class="btn btn-light d-block mx-auto mt-4" type="submit">Create Your Pet!</button>
-</EditForm>
+        <div class="form-group">
+            <label for="InputPersonality">Personality: <span class="text-danger">*</span></label>
+            <InputSelect id="InputPersonality" class="form-select" @bind-Value="@PetDetails.Personality">
+                @foreach (Personality p in _personalities)
+                {
+                    <option value="@p">@p.ToString()</option>
+                }
+            </InputSelect>
+            <ValidationMessage For="@(() => PetDetails.Personality)"/>
+        </div>
+
+        <div class="form-group">
+            <label for="InputDescription">Description: <span class="text-danger">*</span></label>
+            <InputTextArea id="InputDescription" class="form-control" @bind-Value="@PetDetails.Description"/>
+            <ValidationMessage For="@(() => PetDetails.Description)"/>
+        </div>
+        <h6 class="mt-1 @_feedbackCssStyle"><i>@_feedbackMessage</i></h6>
+        <button id="submitpetdetailsbutton" class="btn btn-light d-block mx-auto mt-4" type="submit">Create Your Pet!</button>
+    </EditForm>
+}
+
 
 @code {
     [CascadingParameter] 
@@ -42,6 +55,8 @@
 
     private string _feedbackMessage = "";
     private string _feedbackCssStyle = "text-info";
+
+    private bool _postIsInProgress;
     
     private List<Personality> _personalities = Enum
         .GetValues(typeof(Personality))
@@ -50,7 +65,7 @@
 
     protected override void OnInitialized()
     {
-        
+        _postIsInProgress = false;
     }
 
     public void HandleInvalidSubmit()
@@ -62,6 +77,9 @@
     {
         _feedbackMessage = "Submitted!";
         _feedbackCssStyle = "text-success";
+
+        _postIsInProgress = true;
+        StateHasChanged();
         
         var webclient = new BackendClient<AddPetDTO>("api/pets");
         var response = await webclient.PostRequest(PetDetails); // just gets status code no body
@@ -72,6 +90,7 @@
         }
         else
         {
+            _postIsInProgress = false;
             _feedbackMessage = "Uh oh, the server hamsters didn't like that! Try again.";
             _feedbackCssStyle = "text-danger";
         }

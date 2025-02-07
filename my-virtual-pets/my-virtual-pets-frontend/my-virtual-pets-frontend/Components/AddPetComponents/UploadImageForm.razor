@@ -149,6 +149,7 @@
             else
             {
                 _feedbackMessage = "Try again, that image wasn't accepted.";
+                _feedbackMessage = "text-danger";
             }
             
             Console.WriteLine($"Response body: {await postResponse.Content.ReadAsStringAsync()}; Status code: {postResponse.StatusCode}");
