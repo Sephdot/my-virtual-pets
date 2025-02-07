@@ -205,5 +205,45 @@ namespace my_virtual_pets_api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        [HttpPut("update")]
+        public IActionResult UpdateUser([FromBody] UpdateUserDTO updateduser)
+        {
+            try
+            {
+                _userService.UpdateUser(updateduser);
+                return Ok("User updated successfully.");
+            }
+            catch (KeyNotFoundException knfEx)
+            {
+                return NotFound(knfEx.Message);
+            }
+            catch (InvalidOperationException invOpEx)
+            {
+                return BadRequest(invOpEx.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while updating the user.");
+            }
+        }
     }
 }
