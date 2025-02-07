@@ -16,12 +16,14 @@ namespace my_virtual_pets.Tests
     {
         private Mock<IUserRepository> _userRepositoryMock;
         private IUserService _userService;
+        private Mock<IPetService> _petServiceMock;
 
         [SetUp]
         public void Setup()
         {
             _userRepositoryMock = new Mock<IUserRepository>();
-            _userService = new UserService(_userRepositoryMock.Object);
+            _petServiceMock = new Mock<IPetService>();
+            _userService = new UserService(_userRepositoryMock.Object, _petServiceMock.Object);
         }
 
         [Test]
@@ -38,13 +40,46 @@ namespace my_virtual_pets.Tests
                 PetCount = 3
             };
 
-            _userRepositoryMock.Setup(r => r.GetUserDetailsByUserId(userId)).Returns(userDisplayDto);
+                _userRepositoryMock.Setup(r => r.GetUserDetailsByUserId(userId)).Returns(userDisplayDto);
 
-            // Act
-            var result = _userService.GetUserDetailsByUserId(userId);
+                // Act
+                var result = _userService.GetUserDetailsByUserId(userId);
 
-            // Assert
-            result.Should().BeEquivalentTo(userDisplayDto);
+                // Assert
+                result.Should().BeEquivalentTo(userDisplayDto);
+            }
+
+            [Test]
+            public void UpdateUser_ShouldReturnTrue_WhenValidData()
+            {
+                // Arrange
+                var updatedUser = new UpdateUserDTO { UserId = Guid.NewGuid(), NewUsername = "newUsername", NewPassword = "newPassword" };
+
+
+
+                _userRepositoryMock.Setup(r => r.UpdateUser(updatedUser)).Returns(true);
+
+                // Act
+                var result = _userService.UpdateUser(updatedUser);
+
+                // Assert
+                result.Should().BeTrue();  
+            }
+
+            [Test]
+            public void UpdateUser_ShouldThrowInvalidOperationException_WhenUsernameConflict()
+            {
+            // Arrange
+            var updatedUser = new UpdateUserDTO { UserId = Guid.NewGuid(), NewUsername = "newUsername", NewPassword = "newPassword" };
+
+
+            _userRepositoryMock.Setup(r => r.UpdateUser(updatedUser)).Throws(new InvalidOperationException("Username is already in use."));
+
+                // Act and Assert
+                Action act = () => _userService.UpdateUser(updatedUser);
+                act.Should().Throw<InvalidOperationException>()
+                    .WithMessage("Username is already in use.");
+            }
+
         }
     }
-}

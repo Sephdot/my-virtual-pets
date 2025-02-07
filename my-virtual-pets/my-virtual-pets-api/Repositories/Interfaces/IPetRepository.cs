@@ -17,6 +17,7 @@ namespace my_virtual_pets_api.Repositories.Interfaces
 
         public List<PetCardDataDTO> GetTop10Pets();
         public List<PetCardDataDTO> GetRecentPets();
+        public void IncreaseScore(Guid petId);
 
 
 

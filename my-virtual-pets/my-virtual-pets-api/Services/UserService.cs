@@ -1,6 +1,7 @@
 ﻿using my_virtual_pets_api.Repositories.Interfaces;
 using my_virtual_pets_api.Services.Interfaces;
 using my_virtual_pets_class_library.DTO;
+using System.Net.Mail;
 
 namespace my_virtual_pets_api.Services
 {
@@ -8,10 +9,13 @@ namespace my_virtual_pets_api.Services
     {
 
         private readonly IUserRepository _userRepository;
+        private readonly IPetService _petService;
 
-        public UserService(IUserRepository userRepository)
+
+        public UserService(IUserRepository userRepository, IPetService petService)
         {
             _userRepository = userRepository;
+            _petService = petService;
         }
 
 
@@ -22,9 +26,10 @@ namespace my_virtual_pets_api.Services
 
         public bool ExistsByEmail(string email)
         {
+            bool validFormat = IsValidEmail(email);
+            if (!validFormat) throw new FormatException("Invalid email format.");
             return _userRepository.ExistsByEmail(email);
         }
-
 
         public void CreateNewLocalUser(NewUserDTO newUserDto)
         {
@@ -51,7 +56,12 @@ namespace my_virtual_pets_api.Services
 
         public bool AddToFavourites(Guid GlobalUserId, Guid PetId)
         {
-            return _userRepository.AddToFavourites(GlobalUserId, PetId);
+            var request = _userRepository.AddToFavourites(GlobalUserId, PetId);
+            if (request)
+            {
+                _petService.IncreaseScore(PetId);
+            }
+            return request;
         }
 
         public List<Guid> GetFavouritePetId(Guid GlobalUserId)
@@ -69,11 +79,33 @@ namespace my_virtual_pets_api.Services
             return _userRepository.RemoveFromFavourites(GlobalUserId, PetId);
         }
 
+        public bool UpdateUser(UpdateUserDTO updateDto)
+        {
+            return _userRepository.UpdateUser(updateDto);
+        }
+
         public bool IsFavourited(Guid GlobalUserId, Guid PetId)
         {
             return _userRepository.IsFavourited(GlobalUserId, PetId);
+
         }
 
+        private static bool IsValidEmail(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                return false;
+            }
 
+            try
+            {
+                var addr = new MailAddress(email);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

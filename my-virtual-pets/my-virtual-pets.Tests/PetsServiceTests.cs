@@ -131,7 +131,7 @@ namespace my_virtual_pets.Tests
         public void GetPetById_ReturnsNull_WhenPetDoesNotExist()
         {
             // Arrange
-            var petId = Guid.NewGuid(); // Random but valid GUID
+            var petId = Guid.NewGuid(); 
             _petRepositoryMock.Setup(r => r.GetPetById(petId)).Returns((PetCardDataDTO?)null);
 
             // Act

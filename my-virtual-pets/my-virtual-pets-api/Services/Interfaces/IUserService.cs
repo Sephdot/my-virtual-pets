@@ -19,4 +19,7 @@ public interface IUserService
     public bool RemoveFromFavourites(Guid GlobalUserId, Guid PetId);
     public bool IsFavourited(Guid GlobalUserId, Guid PetId);
 
+    public bool UpdateUser(UpdateUserDTO updaedUser);
+
+
 }
