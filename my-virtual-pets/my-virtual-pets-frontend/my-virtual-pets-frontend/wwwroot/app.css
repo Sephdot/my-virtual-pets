@@ -1,3 +1,10 @@
+:root {
+    --primary-color: #82578c;
+    --secondary-color: #D18BE0;
+    --tertiary-color: #fefedf;
+    --body-color: #FDCFD7;
+}
+
 @font-face {
     font-family: "Pixelify_Sans";
     src: url("./fonts/Pixelify_Sans/PixelifySans-VariableFont_wght.ttf") format('truetype');
@@ -30,7 +37,7 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    background: #FDCFD7;
+    background: var(--body-color);
     font-family: "Roboto_Mono", serif;
 }
 
@@ -73,9 +80,9 @@ h1:focus {
 
 .leadercard {
     margin: 20px;
-    border: 20px groove #D18BE0;
+    border: 20px groove var(--secondary-color);
     border-radius: 25px;
-    background-color:  #fefedf;
+    background-color:  var(--tertiary-color);
     position: relative;
 }
 
@@ -108,14 +115,14 @@ h1:focus {
 
 
 .purple {
-    background-color: #82578c;
+    background-color: var(--primary-color);
 }
 
 .runner-up {
     margin: 20px;
-    border: 5px dashed #fefedf;
+    border: 5px dashed var(--tertiary-color);
     border-radius: 5px;
-    background-color:  #D18BE0;
+    background-color:  var(--secondary-color);
     position: relative;
     padding: 10px;
 }
@@ -151,12 +158,12 @@ h1:focus {
 }
 
 .btn {
-    border: 0.2rem dashed #82578c;
+    border: 0.2rem dashed var(--primary-color);
     background-color: white;
 }
 
 .btn:hover {
-    border-color: #D18BE0;
+    border-color: var(--secondary-color);
     border-style: dashed;
     background-color: white;
 }
@@ -168,8 +175,8 @@ h1:focus {
 }
 
 #popupboard {
-    border: 1px dashed #D18BE0;
-    background-color:  #fefedf;
+    border: 1px dashed var(--secondary-color);
+    background-color:  var(--tertiary-color);
 }
 
 #popuptext {
@@ -183,9 +190,9 @@ h1:focus {
 #formcenter {
     margin-bottom: 15px;
     padding: 25px;
-    border: 10px dashed #82578c;
+    border: 10px dashed var(--primary-color);
     border-radius: 25px;
-    background-color: #fefedf;
+    background-color: var(--tertiary-color);
 }
 
 
@@ -209,14 +216,14 @@ h1:focus {
 }
 
 #trash:hover {
-    color: #82578c;
+    color: var(--primary-color);
 }
 
 .collectioncard {
     border-radius: 25px;
     margin: 40px;
-    border: 5px dashed #D18BE0;
-    background-color: #fefedf;
+    border: 5px dashed var(--secondary-color);
+    background-color: var(--tertiary-color);
     position: relative;
     padding: 10px;
 }
