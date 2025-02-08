@@ -1,6 +1,5 @@
 using System.Text;
 using ImageRecognition;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using my_virtual_pets_api.Cloud;
