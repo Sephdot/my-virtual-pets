@@ -155,14 +155,28 @@ h1:focus {
     padding: 0;
 }
 
-.nav-item {
-    font-weight: 500;
+.nav-item > a {
+    font-weight: 600;
 }
 
-.nav-link:hover {
-    color: var(--tertiary-color) !important;
+.navbar-brand,
+.nav-item > a {
+    transition: font-weight 0.15s, color 0.15s, transform 0.15s;
+}
+
+.navbar-brand:hover,
+.nav-item > a:hover {
+    color: var(--secondary-color);
+}
+
+.nav-item > a:hover {
     font-weight: 800;
-    transition: font-weight 0.2s;
+}
+
+.navbar-brand:active,
+.nav-item > a:active {
+    color: var(--tertiary-color);
+    transform: scale(1.1);
 }
 
 /* change this to look better! */
