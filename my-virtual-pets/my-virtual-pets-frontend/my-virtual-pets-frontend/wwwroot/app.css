@@ -2,7 +2,7 @@
     --primary-color: #81568a;
     --secondary-color: #D18BE0;
     --tertiary-color: #fefedf;
-    --body-color: #FDCFD7;
+    --quaternary-color: #FDCFD7;
 }
 
 @font-face {
@@ -37,7 +37,7 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    background: var(--body-color);
+    background: var(--quaternary-color);
     font-family: "Roboto_Mono", serif;
 }
 
@@ -164,7 +164,22 @@ h1:focus {
     transition: font-weight 0.15s, color 0.15s, transform 0.15s;
 }
 
-p.para {
+.home_row:nth-of-type(1) {
+    background-color: var(--quaternary-color);
+    padding-top: 70px;
+}
+
+.home_row:nth-of-type(2) {
+    background-color: var(--tertiary-color);
+}
+
+.home_row {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+}
+
+.para {
     max-width: 60ch;
     word-wrap: break-word;
     margin: auto;
