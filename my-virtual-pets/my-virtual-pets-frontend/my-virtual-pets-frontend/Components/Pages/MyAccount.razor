@@ -184,7 +184,7 @@
         
         async Task GetFavePets()
         {
-            var favePetClient = new BackendClient<List<PetCardDataDTO>>($"api/User/{userId}/FavouritePets");
+            var favePetClient = new BackendClient<List<PetCardDataDTO>>($"api/User/{userId}/FavouritePets", AuthStateProvider);
             _favePets = await favePetClient.GetRequest();
             Console.WriteLine(_favePets.Count);
         }
