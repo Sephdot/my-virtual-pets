@@ -30,6 +30,13 @@ body {
     font-family: "Roboto_Mono", serif;
 }
 
+html, body {
+    height: 100%;
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+    overflow: hidden;
+}
+
 .pixeltext {
     font-family: "Pixelify_Sans", serif;
 }
