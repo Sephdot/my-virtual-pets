@@ -26,6 +26,7 @@ public class BackendClient<T>
             try
             {
                 T response = await client.GetFromJsonAsync<T>(Url);
+                Console.WriteLine($"Response {(response == null ? "is" : "isn't")} null here");
                 return response;
             }
             catch (HttpRequestException ex)

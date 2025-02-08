@@ -35,7 +35,7 @@
 
 @code {
     private UserDisplayDTO? _userInfo;
-    private List<PetCardDataDTO>? _favePets = new()
+    /*private List<PetCardDataDTO>? _favePets = new()
     {
         new PetCardDataDTO
         {
@@ -157,7 +157,9 @@
             Description = "A majestic koi fish with a regal presence.",
             IsFavourited = true
         }
-    }; // seed data for testing
+    }; // seed data for testing*/
+
+    private List<PetCardDataDTO>? _favePets { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -171,7 +173,7 @@
         }
         
         await GetUserInfo();
-        // await GetFavePets();
+        await GetFavePets();
         async Task GetUserInfo()
         {
             var userClient = new BackendClient<UserDisplayDTO>($"api/User/{userId}");
@@ -180,11 +182,11 @@
             Console.WriteLine(_userInfo.Username);
         }
         
-        // async Task GetFavePets()
-        // {
-        //     var favePetClient = new BackendClient<List<PetCardDataDTO>>($"api/User/{userId}/FavouritePets");
-        //     _favePets = await favePetClient.GetRequest();
-        //     Console.WriteLine(_favePets.Count);
-        // }
+        async Task GetFavePets()
+        {
+            var favePetClient = new BackendClient<List<PetCardDataDTO>>($"api/User/{userId}/FavouritePets");
+            _favePets = await favePetClient.GetRequest();
+            Console.WriteLine(_favePets.Count);
+        }
     }
 }
