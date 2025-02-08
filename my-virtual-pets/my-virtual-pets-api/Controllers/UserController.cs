@@ -174,7 +174,6 @@ namespace my_virtual_pets_api.Controllers
             }
         }
 
-        [Authorize]
         [HttpGet]
         [Route("CheckUsername/{username}")]
         public IActionResult CheckUsername(string username)
@@ -192,7 +191,6 @@ namespace my_virtual_pets_api.Controllers
             }
         }
 
-        [Authorize]
         [HttpGet]
         [Route("CheckEmail/{email}")]
         public IActionResult CheckEmail(string email)
