@@ -120,17 +120,20 @@ h1:focus {
     padding: 10px;
 }
 
-
-
 .navbar {
     position: sticky;
     top: 0;
     z-index: 1000;
 }
 
+.navbar-brand {
+    font-size: 2rem;
+    padding: 0;    
+}
+
 .form-control,
 .form-select {
-    border: 0.15rem dashed black;
+    border: 0.2rem dashed #141514;
 }
 
 .form-control:focus,
@@ -139,7 +142,8 @@ h1:focus {
 }
 
 .btn {
-    border: 0.15rem dashed #82578c;
+    border: 0.2rem dashed #82578c;
+    background-color: white;
 }
 
 .btn:hover {
@@ -147,7 +151,6 @@ h1:focus {
     border-style: dashed;
     background-color: white;
 }
-
 
 #popupcard {
     position: absolute;
@@ -166,7 +169,6 @@ h1:focus {
 
 #popupimage {
     border: 1px dotted black;
-
 }
 
 #formcenter {
@@ -188,7 +190,6 @@ h1:focus {
 .input {
     margin-top: 20px;
     margin-bottom: 20px;
-
 }
 
 .delete {
@@ -214,9 +215,4 @@ h1:focus {
 #popupdelete {
     position: absolute;
     z-index: 3000;
-}
-
-
-.navItem .active span {
-    color: whitesmoke;
 }
