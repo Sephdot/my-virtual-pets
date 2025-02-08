@@ -1,5 +1,5 @@
 :root {
-    --primary-color: #82578c;
+    --primary-color: #81568a;
     --secondary-color: #D18BE0;
     --tertiary-color: #fefedf;
     --body-color: #FDCFD7;
@@ -125,6 +125,16 @@ h1:focus {
     background-color:  var(--secondary-color);
     position: relative;
     padding: 10px;
+}
+
+.navbar,
+.footer {
+    background-color: var(--primary-color);
+}
+
+.footer > p {
+    margin: 0;
+    font-style: italic;
 }
 
 .navbar {
