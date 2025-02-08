@@ -1,3 +1,10 @@
+:root {
+    --primary-color: #81568a;
+    --secondary-color: #D18BE0;
+    --tertiary-color: #fefedf;
+    --body-color: #FDCFD7;
+}
+
 @font-face {
     font-family: "Pixelify_Sans";
     src: url("./fonts/Pixelify_Sans/PixelifySans-VariableFont_wght.ttf") format('truetype');
@@ -20,13 +27,17 @@
     box-sizing: border-box;
 }
 
-main > .container {
-    padding: 60px 15px 0;
+main {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 50px 0;
 }
 
-
 body {
-    background: #FDCFD7;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: var(--body-color);
     font-family: "Roboto_Mono", serif;
 }
 
@@ -76,9 +87,9 @@ h1:focus {
 
 .leadercard {
     margin: 20px;
-    border: 20px groove #D18BE0;
+    border: 20px groove var(--secondary-color);
     border-radius: 25px;
-    background-color:  #fefedf;
+    background-color:  var(--tertiary-color);
     position: relative;
 }
 
@@ -111,19 +122,27 @@ h1:focus {
 
 
 .purple {
-    background-color: #82578c;
+    background-color: var(--primary-color);
 }
 
 .runner-up {
     margin: 20px;
-    border: 5px dashed #fefedf;
+    border: 5px dashed var(--tertiary-color);
     border-radius: 5px;
-    background-color:  #D18BE0;
+    background-color:  var(--secondary-color);
     position: relative;
     padding: 10px;
 }
 
+.navbar,
+.footer {
+    background-color: var(--primary-color);
+}
 
+.footer > p {
+    margin: 0;
+    font-style: italic;
+}
 
 .navbar {
     position: sticky;
@@ -131,9 +150,23 @@ h1:focus {
     z-index: 1000;
 }
 
+.navbar-brand {
+    font-size: 2rem;
+    padding: 0;    
+}
+
+.nav-item > a:hover {
+    color: whitesmoke !important;
+    transition: color 0.3s ease-in-out;
+}
+
+.nav-item > a {
+    font-weight: bold;
+}
+
 .form-control,
 .form-select {
-    border: 0.15rem dashed black;
+    border: 0.2rem dashed #141514;
 }
 
 .form-control:focus,
@@ -142,15 +175,15 @@ h1:focus {
 }
 
 .btn {
-    border: 0.15rem dashed #82578c;
-}
-
-.btn:hover {
-    border-color: #D18BE0;
-    border-style: dashed;
+    border: 0.2rem dashed var(--primary-color);
     background-color: white;
 }
 
+.btn:hover {
+    border-color: var(--secondary-color);
+    border-style: dashed;
+    background-color: white;
+}
 
 #popupcard {
     position: absolute;
@@ -159,8 +192,8 @@ h1:focus {
 }
 
 #popupboard {
-    border: 1px dashed #D18BE0;
-    background-color:  #fefedf;
+    border: 1px dashed var(--secondary-color);
+    background-color:  var(--tertiary-color);
 }
 
 #popuptext {
@@ -169,15 +202,14 @@ h1:focus {
 
 #popupimage {
     border: 1px dotted black;
-
 }
 
 #formcenter {
     margin-bottom: 15px;
     padding: 25px;
-    border: 10px dashed #82578c;
+    border: 10px dashed var(--primary-color);
     border-radius: 25px;
-    background-color: #fefedf;
+    background-color: var(--tertiary-color);
 }
 
 
@@ -191,7 +223,6 @@ h1:focus {
 .input {
     margin-top: 20px;
     margin-bottom: 20px;
-
 }
 
 .delete {
@@ -202,13 +233,14 @@ h1:focus {
 }
 
 #trash:hover {
-    color: #82578c;
+    color: var(--primary-color);
 }
 
 .collectioncard {
     border-radius: 25px;
     margin: 40px;
     background-color: #fefedf;
+    border: 5px dashed var(--secondary-color);
     position: relative;
     padding: 10px;
 }
