@@ -45,12 +45,11 @@
             <InputText id="InputPassword" type="password" class="form-control" @bind-Value="@userDetails.Password"/>
             <ValidationMessage For="@(() => userDetails.Password)"/>
             </div>
-
-            
+                    
             <div class="col input form-group">
-        <label for="InputAnimal">Fav pet:</label>
-        <InputText id="InputAnimal" class="form-control" @bind-Value="@userDetails.FavAnimal"/>
-        <ValidationMessage For="@(() => userDetails.FavAnimal)"/>
+            <label for="InputComparePassword">Fav pet:</label>
+            <InputText id="InputComparePassword" type="password" class="form-control" @bind-Value="@userDetails.ComparePassword"/>
+            <ValidationMessage For="@(() => userDetails.ComparePassword)"/>
     </div>
     </div>
 
@@ -86,7 +85,7 @@
     public string Feedback { get; set; }
     
     public string UsernameTaken { get; set; }
-
+    
     public string color { get; set; } = "green";
      
     protected override void OnInitialized()
