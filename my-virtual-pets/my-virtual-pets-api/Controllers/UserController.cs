@@ -70,17 +70,8 @@ namespace my_virtual_pets_api.Controllers
                 userid = userId
             });
         }
-
-
+        
         [Authorize]
-        [HttpGet("auth")]
-        public IActionResult AuthCheck()
-        {
-            var firstClaim = User.Claims.ElementAtOrDefault(0)?.Value;
-            return Ok(new CurrentUserDTO() { Id = firstClaim, Username = User.Identity.Name });
-        }
-
-
         [HttpGet("{userId}")]
         public IActionResult GetUserDetailsByUserId(Guid userId)
         {
@@ -100,6 +91,7 @@ namespace my_virtual_pets_api.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         [Route("AddToFavourites")]
         public IActionResult AddPetToFavourites(Favourites favourites)
@@ -120,7 +112,7 @@ namespace my_virtual_pets_api.Controllers
             }
         }
         
-
+        [Authorize]
         [HttpGet]
         [Route("{GlobalUserId}/FavouritePetIds")]
         public IActionResult GetFavouritePetIds(Guid GlobalUserId)
@@ -140,6 +132,7 @@ namespace my_virtual_pets_api.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet]
         [Route("{GlobalUserId}/FavouritePets")]
         public IActionResult GetFavouritePets(Guid GlobalUserId)
@@ -159,6 +152,7 @@ namespace my_virtual_pets_api.Controllers
             }
         }
 
+        [Authorize]
         [HttpDelete]
         [Route("{GlobalUserId}/RemoveFromFavourites/{PetId}")]
         public IActionResult RemoveFromFavourite(Guid GlobalUserId, Guid PetId)
@@ -180,6 +174,7 @@ namespace my_virtual_pets_api.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet]
         [Route("CheckUsername/{username}")]
         public IActionResult CheckUsername(string username)
@@ -197,6 +192,7 @@ namespace my_virtual_pets_api.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet]
         [Route("CheckEmail/{email}")]
         public IActionResult CheckEmail(string email)
@@ -216,6 +212,7 @@ namespace my_virtual_pets_api.Controllers
             }
         }
 
+        [Authorize]
         [HttpPut("update")]
         public IActionResult UpdateUser([FromBody] UpdateUserDTO updateduser)
         {

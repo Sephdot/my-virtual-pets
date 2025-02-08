@@ -1,12 +1,13 @@
 using System.Net;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Http;
 
 namespace my_virtual_pets_frontend.Client;
 
 public class AddPetBackendClient<T> : BackendClient<T>
 {
-        public AddPetBackendClient(string endpoint) 
-        : base(endpoint)
+        public AddPetBackendClient(string endpoint, AuthenticationStateProvider authenticationStateProvider) 
+        : base(endpoint, authenticationStateProvider)
         {
         }
 

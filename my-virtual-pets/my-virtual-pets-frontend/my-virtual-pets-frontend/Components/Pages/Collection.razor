@@ -67,16 +67,16 @@
         UserId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (UserId != null)
         {
-            var getclient = new BackendClient<List<PetCardDataDTO>>($"api/pets/user/{UserId}");
+            var getclient = new BackendClient<List<PetCardDataDTO>>($"api/pets/user/{UserId}", AuthStateProvider);
             _petCardDataDTOs = await getclient.GetRequest();
         }
     }
 
     public async Task DeleteFromCollection(Guid petId)
     {
-        var client = new BackendClient<int>($"api/pets/{petId}");
+        var client = new BackendClient<int>($"api/pets/{petId}", AuthStateProvider);
         await client.DeleteRequest();
-        var getclient = new BackendClient<List<PetCardDataDTO>>($"api/pets/user/{UserId}");
+        var getclient = new BackendClient<List<PetCardDataDTO>>($"api/pets/user/{UserId}", AuthStateProvider);
         _petCardDataDTOs = await getclient.GetRequest();
     }
 

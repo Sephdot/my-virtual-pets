@@ -60,7 +60,7 @@ else
         {
             Navigation.NavigateTo("/login");
         }
-        var client = new BackendClient<Favourites>($"api/User/AddToFavourites");
+        var client = new BackendClient<Favourites>($"api/User/AddToFavourites", AuthStateProvider);
         await client.PostRequest(new Favourites { GlobalUserId = Guid.Parse(UserId), PetId = PetId });
     }
 
@@ -70,7 +70,7 @@ else
         {
             Navigation.NavigateTo("/login");
         }
-        var client = new BackendClient<Favourites>($"api/User/{UserId}/RemoveFromFavourites/{PetId}");
+        var client = new BackendClient<Favourites>($"api/User/{UserId}/RemoveFromFavourites/{PetId}", AuthStateProvider);
         await client.DeleteRequest();
     }
     

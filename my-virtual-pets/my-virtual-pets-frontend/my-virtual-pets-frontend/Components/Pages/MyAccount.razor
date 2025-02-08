@@ -174,7 +174,7 @@
         // await GetFavePets();
         async Task GetUserInfo()
         {
-            var userClient = new BackendClient<UserDisplayDTO>($"api/User/{userId}");
+            var userClient = new BackendClient<UserDisplayDTO>($"api/User/{userId}", AuthStateProvider);
             Console.WriteLine($"https://localhost:7091/{userId}");
             _userInfo = await userClient.GetRequest();
             Console.WriteLine(_userInfo.Username);

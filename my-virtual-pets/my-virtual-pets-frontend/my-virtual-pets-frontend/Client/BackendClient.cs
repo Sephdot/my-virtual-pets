@@ -1,4 +1,5 @@
 using System.Net;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Http;
 using my_virtual_pets_class_library.DTO;
@@ -12,17 +13,26 @@ public class BackendClient<T>
 
         public HttpClient client { get; init; }
         
-        public string Token { get; set; }
+        public AuthenticationStateProvider AuthenticationStateProvider { get; init; }
         
-        public BackendClient(string endpoint, string accessToken = "") {
+        public BackendClient(string endpoint, AuthenticationStateProvider provider) {
             Url = "https://localhost:7091/" + endpoint;
             client = new HttpClient(); 
-            Token = accessToken;
-            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + Token);
+            AuthenticationStateProvider = provider;
         }
 
+        public async Task<string?> GetToken()
+        {
+            var user = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User;
+            var token = user.FindFirst(ClaimTypes.Hash)?.Value;
+            return token;
+        }
+        
         public async Task<T> GetRequest()
         {
+            var token = await GetToken();   
+            Console.WriteLine("token" + token);
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
             try
             {
                 T response = await client.GetFromJsonAsync<T>(Url);
@@ -36,6 +46,8 @@ public class BackendClient<T>
 
         public async Task<HttpStatusCode> PutRequest(T updateValue)
         {
+            var token = await GetToken();     
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
             try
             {
                 var response = await client.PutAsJsonAsync<T>(Url, updateValue);
@@ -49,6 +61,8 @@ public class BackendClient<T>
 
         public async Task<HttpResponseMessage> PostRequest(T postValue)
         {
+            var token = await GetToken();     
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
             try
             {
                 var response = await client.PostAsJsonAsync<T>(Url, postValue);
@@ -62,6 +76,8 @@ public class BackendClient<T>
 
         public async Task<HttpStatusCode> DeleteRequest()
         {
+            var token = await GetToken();     
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
             try
             {
                 var response = await client.DeleteAsync(Url);

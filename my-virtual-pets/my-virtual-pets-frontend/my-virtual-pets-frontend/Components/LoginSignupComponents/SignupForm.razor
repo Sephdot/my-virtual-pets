@@ -1,6 +1,7 @@
 @using System.Net
 @using my_virtual_pets_class_library.DTO
 @inject NavigationManager NavMan 
+@inject AuthenticationStateProvider AuthState
 @rendermode InteractiveAuto
 
 <div class="container">
@@ -102,7 +103,7 @@
 
     public async Task CheckUsernameAsync()
     {
-        var webclient = new BackendClient<BoolReturn>($"api/User/CheckUsername/{Username}");
+        var webclient = new BackendClient<BoolReturn>($"api/User/CheckUsername/{Username}", AuthState);
         BoolReturn UsernameCheck = await webclient.GetRequest();
         if (UsernameCheck != null)
         {
@@ -128,7 +129,7 @@
 
     public async Task HandleValidSubmit()
     {
-        var webclient = new BackendClient<NewUserDTO>("api/user/register");
+        var webclient = new BackendClient<NewUserDTO>("api/user/register", AuthState);
         var response = await webclient.PostRequest(userDetails);
         if (response.StatusCode == HttpStatusCode.Created)
         {
