@@ -5,5 +5,13 @@
 <PageTitle>Login</PageTitle>
 
 <div class="container">
+    <CascadingValue Value="Refresh">
     <FormSwitcher></FormSwitcher>
+    </CascadingValue>
 </div>
+
+@code {
+
+    public bool Refresh { get; set; } = false; 
+
+}

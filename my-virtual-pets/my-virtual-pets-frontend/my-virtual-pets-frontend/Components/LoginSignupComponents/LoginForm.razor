@@ -39,6 +39,9 @@
     
     public string Feedback { get; set; }
     
+    [CascadingParameter]
+    public bool Refresh { get; set; }
+    
     protected override void OnInitialized()
     {
         loginDetails = new UserLoginDTO();
@@ -76,8 +79,13 @@
                 var newUser = new ClaimsPrincipal(identity);
 
                 AuthService.CurrentUser = newUser;
-                
-                Navigation.NavigateTo("/add-pet");
+                if (Refresh)
+                {
+                    Navigation.Refresh(true);
+                } else 
+                {                
+                    Navigation.NavigateTo("/add-pet");
+                }
             }
            loginDetails = new UserLoginDTO(); 
         } else if (response.StatusCode == HttpStatusCode.BadRequest)

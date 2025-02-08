@@ -4,6 +4,7 @@
 @using my_virtual_pets_class_library.DTO
 @using my_virtual_pets_frontend.Components.Icons
 @using my_virtual_pets_frontend.Components.DisplayCards
+@using my_virtual_pets_frontend.Components.LoginSignupComponents
 @inject AuthenticationStateProvider AuthStateProvider
 @inject NavigationManager Navigation
 @rendermode InteractiveAuto
@@ -16,7 +17,9 @@
             <div class="container">
                 <h1 class="fw-bold py-6">Your Collection</h1>
                 <p>Login to view your collection</p>
-                <Login></Login>
+                <CascadingValue Value="Refresh">
+                <FormSwitcher></FormSwitcher>
+                </CascadingValue>
                 <hr class="my-4"/>
             </div>
         </section>
@@ -56,6 +59,7 @@
 
     public string token { get; set; }
 
+    public bool Refresh { get; set; } = true;
     
     protected override async Task OnInitializedAsync()
     {
