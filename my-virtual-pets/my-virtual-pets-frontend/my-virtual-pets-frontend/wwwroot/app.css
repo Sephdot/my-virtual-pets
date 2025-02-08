@@ -152,16 +152,23 @@ h1:focus {
 
 .navbar-brand {
     font-size: 2rem;
-    padding: 0;    
+    padding: 0;
 }
 
-.nav-item > a:hover {
-    color: whitesmoke !important;
-    transition: color 0.3s ease-in-out;
+.nav-item {
+    font-weight: 500;
 }
 
-.nav-item > a {
-    font-weight: bold;
+.nav-link:hover {
+    color: var(--tertiary-color) !important;
+    font-weight: 800;
+    transition: font-weight 0.2s;
+}
+
+/* change this to look better! */
+.navbar .active {
+    color: var(--tertiary-color) !important;
+    font-weight: 800;
 }
 
 .form-control,
@@ -248,11 +255,6 @@ h1:focus {
 #popupdelete {
     position: absolute;
     z-index: 3000;
-}
-
-
-.navItem .active span {
-    color: whitesmoke;
 }
 
 .carousel {

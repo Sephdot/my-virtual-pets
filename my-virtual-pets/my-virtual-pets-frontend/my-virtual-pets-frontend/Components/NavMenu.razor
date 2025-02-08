@@ -10,17 +10,17 @@
         <div class="collapse navbar-collapse @NavBarCssClass" id="navbarCollapse" @onclick="ToggleNavMenu">
             <ul class="navbar-nav me-auto mb-2 mb-md-0">
                 <li class="nav-item">
-                    <NavLink class="nav-link" href="/" ActiveClass="nav-active" Match="NavLinkMatch.All">
+                    <NavLink class="nav-link" href="/" Match="NavLinkMatch.All">
                         <span class="oi oi-home" aria-hidden="true"></span> Home
                     </NavLink>
                 </li>
                 <li class="nav-item">
-                    <NavLink class="nav-link" href="/leaderboard"  ActiveClass="nav-active" Match=@NavLinkMatch.All>
+                    <NavLink class="nav-link" href="/leaderboard" Match=@NavLinkMatch.All>
                         <span class="oi oi-plus" aria-hidden="true"></span> Leaderboard
                     </NavLink>
                 </li>
                 <li class="nav-item">
-                    <NavLink class="nav-link" href="/collection" ActiveClass="nav-active" Match=@NavLinkMatch.All>
+                    <NavLink class="nav-link" href="/collection" Match=@NavLinkMatch.All>
                         <span class="oi oi-plus" aria-hidden="true"></span> Collection
                     </NavLink>
                 </li>
@@ -28,7 +28,7 @@
                 <AuthorizeView>
                 <Authorized>
                 <li class="nav-item">
-                    <NavLink class="nav-link" href="/my-account" ActiveClass="nav-active" Match=@NavLinkMatch.All>
+                    <NavLink class="nav-link" href="/my-account" Match=@NavLinkMatch.All>
                         <span class="oi oi-plus" aria-hidden="true"></span> My Account
                     </NavLink>
                 </li>
@@ -36,8 +36,8 @@
                 <NotAuthorized>
 
                 <li class="nav-item">
-                    <NavLink class="nav-link" href="/login" ActiveClass="nav-active" Match=@NavLinkMatch.All>
-                        <span class="oi oi-plus" aria-hidden="true"></span> Log-in
+                    <NavLink class="nav-link" href="/login" Match=@NavLinkMatch.All>
+                        <span class="oi oi-plus" aria-hidden="true"></span> Log In
                     </NavLink>
                 </li>
                 </NotAuthorized>
