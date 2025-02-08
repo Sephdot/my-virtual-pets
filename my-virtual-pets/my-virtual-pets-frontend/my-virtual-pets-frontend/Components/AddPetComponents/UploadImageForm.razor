@@ -62,7 +62,7 @@
 
     private bool _isFileBeingProcessed = false;
 
-    private Func<IBrowserFile, bool> _isFileSizeValid = file => file.Size < Utility.MaxUploadFileSize - 56;
+    private Func<IBrowserFile, bool> _isFileSizeValid = file => file.Size < 512000 - 56;
     private Func<IBrowserFile, bool> _isFileTypeValid = file => file.ContentType == "image/jpg" || file.ContentType == "image/jpeg" || file.ContentType == "image/png";
     
     public void OnInputFileChange(InputFileChangeEventArgs args)
@@ -103,7 +103,7 @@
                 if (_isFileSizeValid(_file))
                 {
                     using var memoryStream = new MemoryStream();
-                    await new StreamReader(_file.OpenReadStream(Utility.MaxUploadFileSize)).BaseStream.CopyToAsync(memoryStream);
+                    await new StreamReader(_file.OpenReadStream()).BaseStream.CopyToAsync(memoryStream);
                     byte[] bytes = memoryStream.ToArray();
                     _feedbackMessage = "Submitted!";
                     _feedbackCssStyle = "text-success";
