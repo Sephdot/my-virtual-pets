@@ -25,18 +25,21 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
         Task.FromResult(authenticationState);
 
     
-    public void AuthenticateUser(string userIdentifier)
-    {
-        var identity = new ClaimsIdentity(
-        [
-            new Claim(ClaimTypes.Name, userIdentifier),
-        ], "Custom Authentication");
-
-        var user = new ClaimsPrincipal(identity);
-
-        NotifyAuthenticationStateChanged(
-            Task.FromResult(new AuthenticationState(user)));
-    }
+    // public void AuthenticateUser(string username, string token, string userid)
+    // {
+    //     var identity = new ClaimsIdentity(
+    //         [
+    //             new Claim(ClaimTypes.Name, username),
+    //             new Claim(ClaimTypes.Hash, token),
+    //             new Claim(ClaimTypes.NameIdentifier, userid)
+    //         ],
+    //         "Custom Authentication");
+    //     
+    //     authenticationState.CurrentUser = new ClaimsPrincipal(identity);
+    //
+    //     NotifyAuthenticationStateChanged(
+    //         Task.FromResult(new AuthenticationState(user)));
+    // }
     
 }
 
