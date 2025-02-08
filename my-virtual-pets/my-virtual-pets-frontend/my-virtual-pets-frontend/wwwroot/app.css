@@ -164,6 +164,12 @@ h1:focus {
     transition: font-weight 0.15s, color 0.15s, transform 0.15s;
 }
 
+p.para {
+    max-width: 60ch;
+    word-wrap: break-word;
+    margin: auto;
+}
+
 .navbar-brand:hover,
 .nav-item > a:hover {
     color: var(--secondary-color);
