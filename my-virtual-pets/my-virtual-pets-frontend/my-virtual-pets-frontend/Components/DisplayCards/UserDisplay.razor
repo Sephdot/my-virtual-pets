@@ -35,12 +35,10 @@
     {
         if (UserFavePets.Count == 0)
         {
-            Console.WriteLine("no pets faved");
             return "No pets favourited yet...";
         }
         if (UserFavePets.Count == 1)
         {
-            Console.WriteLine(UserFavePets[0].PetType.ToString());
             return UserFavePets[0].PetType.ToString();
         }
         
@@ -49,42 +47,31 @@
             .Cast<PetType>()
             .SkipLast(1) // ignore "OTHER"
             .ToDictionary(petType => petType, pt => 0);
-
-        Console.WriteLine("---------PetTypes----------");
-        foreach (var kvp in scores)
-        {
-            Console.WriteLine($"PetType: {kvp.Key.ToString()}");
-        }
-        Console.WriteLine();
         
-
-        Console.WriteLine("---------ScoresKVPs----------");
         foreach (PetCardDataDTO favePet in UserFavePets)
         {
             scores[favePet.PetType]++;
-            // debugging!
-            foreach (var kvp in scores)
-            {
-                Console.Write($"{kvp.Key} : {kvp.Value};  ");
-            }
-            Console.WriteLine();
         }
-        Console.WriteLine("---------ScoresKVPs----------");
+        
+        var topScore = scores.OrderBy(kvp => kvp.Key).First().Value;
+        List<string> topPets = scores
+            .Where(kvp => kvp.Value >= topScore)
+            .Select(kvp => kvp.Key.ToString())
+            .ToList();
 
-        var y = scores.OrderBy(kvp => kvp.Key);
-        foreach (var kvp in scores)
+        switch (topPets.Count)
         {
-            Console.Write($"{kvp.Key} : {kvp.Value};  ");
+            case 1: return topPets[0].ToLower();
+            case 2: return $"{topPets[0]} and {topPets[1]}";
+            default:
+            {
+                string result = "";
+                for (int i = 0; i < topPets.Count - 1; i++)
+                {
+                    result += $"{topPets[i]}, ";
+                }
+                return result + $"and {topPets[^1]}";
+            }
         }
-        Console.WriteLine();
-        
-        string x = scores
-            .OrderBy(kvp => kvp.Key)
-            .First()
-            .Key
-            .ToString();
-        Console.WriteLine(x);
-        
-        return $"{x[0]}{x.Substring(1).ToLower()}";
     }
 }
