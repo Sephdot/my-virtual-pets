@@ -1,8 +1,7 @@
 ﻿@page "/"
 @using my_virtual_pets_class_library.DTO
-@using my_virtual_pets_class_library.Enums
 @using my_virtual_pets_frontend.Components.Icons
-@using my_virtual_pets_frontend.Components.DisplayCards
+@using my_virtual_pets_frontend.Components.HomeComponents
 @inject AuthenticationStateProvider AuthState 
 @rendermode InteractiveServer
 
@@ -12,33 +11,20 @@
     <h3 class="mt-5 pixeltext">build your pet collection now</h3>
     <div id="carousel" style="width:600px">
         <h4 class="pixeltext">New to the Doghouse:</h4>
-        @if (_petCardDataDTOs.Count == 0)
+        @if (_petCardDataDTOs == null)
         {
             <Cat_Loader></Cat_Loader>
         }
         else
         {
-            <Carousel Autoplay="CarouselAutoPlay.StartOnPageLoad" Interval="1000">
-                <CarouselItem Active="true">
-                    <LeadershipCard petCard="_petCardDataDTOs[0]"></LeadershipCard>
-                </CarouselItem>
-                @foreach (var card in _petCardDataDTOs.Skip(1))
-                {
-                    <CarouselItem>
-                        <LeadershipCard petCard="card"></LeadershipCard>
-                    </CarouselItem>
-                }
-            </Carousel>
-
+            <HomeCarousel PetCardDataDTOs="@_petCardDataDTOs"></HomeCarousel>
         }
-
     </div>
-    
 </div>
 
 @code {
 
-    private List<PetCardDataDTO> _petCardDataDTOs = new List<PetCardDataDTO>();
+    private List<PetCardDataDTO>? _petCardDataDTOs;
 
     protected override async Task OnInitializedAsync()
     {
