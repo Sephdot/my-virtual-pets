@@ -33,7 +33,7 @@
             <section class="container text-center">
                 <div class="container">
                     <h1 class="fw-bold py-6">@context.User.Identity?.Name's Collection</h1>
-                    <button onclick="() => HandleAddPet" class="btn btn-primary my-2">Add Pet</button>
+                    <button @onclick="HandleAddPet" class="btn btn-light d-block mx-auto mt-4" >Add Pet</button>
                     <hr class="my-4"/>
                 </div>
             </section>
@@ -60,7 +60,7 @@
     public string token { get; set; }
 
     public bool Refresh { get; set; } = true;
-    
+
     protected override async Task OnInitializedAsync()
     {
         var user = (await AuthStateProvider.GetAuthenticationStateAsync()).User;
@@ -71,16 +71,18 @@
             _petCardDataDTOs = await getclient.GetRequest();
         }
     }
-    
-    public async Task DeleteFromCollection(Guid petId) {
+
+    public async Task DeleteFromCollection(Guid petId)
+    {
         var client = new BackendClient<int>($"api/pets/{petId}");
         await client.DeleteRequest();
         var getclient = new BackendClient<List<PetCardDataDTO>>($"api/pets/user/{UserId}");
-        _petCardDataDTOs = await getclient.GetRequest(); 
+        _petCardDataDTOs = await getclient.GetRequest();
     }
-    
+
     public void HandleAddPet()
     {
+        Console.WriteLine("CLICKED");
         Navigation.NavigateTo("/add-pet");
     }
 

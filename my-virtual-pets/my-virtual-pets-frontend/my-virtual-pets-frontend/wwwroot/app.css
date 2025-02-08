@@ -239,8 +239,8 @@ h1:focus {
 .collectioncard {
     border-radius: 25px;
     margin: 40px;
+    background-color: #fefedf;
     border: 5px dashed var(--secondary-color);
-    background-color: var(--tertiary-color);
     position: relative;
     padding: 10px;
 }
@@ -248,4 +248,15 @@ h1:focus {
 #popupdelete {
     position: absolute;
     z-index: 3000;
+}
+
+
+.navItem .active span {
+    color: whitesmoke;
+}
+
+.carousel {
+    background-color: #fefedf;
+    border: 5px dotted black;
+    border-radius: 25px;
 }
