@@ -1,6 +1,5 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Components.Authorization;
-using Blazored.SessionStorage;
 using my_virtual_pets_frontend.Client;
 
 namespace my_virtual_pets_frontend;
@@ -9,7 +8,7 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
 {
     private AuthenticationState authenticationState;
 
-    private ClaimsPrincipal _currentUser = new ClaimsPrincipal(new ClaimsIdentity());
+    // private ClaimsPrincipal _currentUser = new ClaimsPrincipal(new ClaimsIdentity());
 
     public CustomAuthenticationStateProvider(CustomAuthenticationService customAuthenticationService)
     {
