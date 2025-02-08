@@ -119,32 +119,12 @@ namespace my_virtual_pets_api.Controllers
                 return BadRequest();
             }
         }
-
-        [HttpGet]
-        [Route("{GlobalUserId}/IsFavourited/{PetId}")]
-        public IActionResult IsFavourited(Guid GlobalUserId, Guid PetId)
-        {
-            try
-            {
-                bool isFavourited = _userService.IsFavourited(GlobalUserId, PetId);
-                return Ok(new BoolReturn() { IsFavourite = isFavourited });
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound("User not found");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
+        
 
         [HttpGet]
         [Route("{GlobalUserId}/FavouritePetIds")]
         public IActionResult GetFavouritePetIds(Guid GlobalUserId)
         {
-            Console.WriteLine("THIS HAS BEEN CALLED");
             try
             {
                 var favouritePetIds = _userService.GetFavouritePetId(GlobalUserId);
@@ -209,7 +189,7 @@ namespace my_virtual_pets_api.Controllers
             {
                 bool exists = _userService.ExistsByUsername(username);
                 Console.WriteLine(exists);
-                return (Ok( new BoolReturn(){ IsFavourite = exists} ));
+                return (Ok( new BoolReturn(){ IsTrue = exists} ));
             }
             catch
             {
@@ -224,7 +204,7 @@ namespace my_virtual_pets_api.Controllers
             try
             {
                 bool exists = _userService.ExistsByEmail(email);
-                return (Ok( new BoolReturn(){ IsFavourite = exists} ));
+                return (Ok( new BoolReturn(){ IsTrue = exists} ));
             }
             catch (FormatException ex)
             {

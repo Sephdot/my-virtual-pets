@@ -4,6 +4,6 @@ namespace my_virtual_pets_class_library.DTO;
 
 public class BoolReturn
 {
-    [JsonPropertyName("isFavourite")]
-    public bool IsFavourite { get; set; }
+    [JsonPropertyName("isTrue")]
+    public bool IsTrue { get; set; }
 }

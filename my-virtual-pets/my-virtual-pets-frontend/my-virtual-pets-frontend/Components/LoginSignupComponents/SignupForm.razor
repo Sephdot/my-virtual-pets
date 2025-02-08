@@ -9,17 +9,20 @@
     <DataAnnotationsValidator/>
 
     <div class="row">
-    <div class="col input form-group">
-        <label for="InputFirstName">First Name:</label>
-        <InputText id="InputFirstName" class="form-control" @bind-Value="@userDetails.FirstName"/>
-        <ValidationMessage For="@(() => userDetails.FirstName)"/>
+        <div class="col input form-group">
+            <label for="InputFirstName">First Name:</label>
+            <InputText id="InputFirstName" class="form-control" @bind-Value="@userDetails.FirstName"/>
+            <ValidationMessage For="@(() => userDetails.FirstName)"/>
+        </div>
+
+        <div class="col input form-group">
+            <label for="InputLastName">Last Name:</label>
+            <InputText id="InputLastName" class="form-control" @bind-Value="@userDetails.LastName"/>
+            <ValidationMessage For="@(() => userDetails.LastName)"/>
+        </div>
     </div>
 
-    <div class="col input form-group">
-        <label for="InputLastName">Last Name:</label>
-        <InputText id="InputLastName" class="form-control" @bind-Value="@userDetails.LastName"/>
-        <ValidationMessage For="@(() => userDetails.LastName)"/>
-    </div>
+    <div style="height:8px">
     </div>
     
     <div class="row">
@@ -33,7 +36,7 @@
         <label for="InputUsername">Username:</label>
         <input type="text" id="InputUsername" class="form-control" @bind="Username" @bind:event="oninput"/>
         <ValidationMessage For="@(() => userDetails.Username)"/>
-        <div style="height:10px">
+        <div style="height:8px">
             <p style="color: @color">@UsernameTaken</p>
         </div>
     </div>
@@ -45,12 +48,16 @@
             <InputText id="InputPassword" type="password" class="form-control" @bind-Value="@userDetails.Password"/>
             <ValidationMessage For="@(() => userDetails.Password)"/>
             </div>
-                    
+
             <div class="col input form-group">
-            <label for="InputComparePassword">Fav pet:</label>
-            <InputText id="InputComparePassword" type="password" class="form-control" @bind-Value="@userDetails.ComparePassword"/>
-            <ValidationMessage For="@(() => userDetails.ComparePassword)"/>
-    </div>
+                <label for="InputComparePassword">Confirm Password:</label>
+                <InputText id="InputComparePassword" type="password" class="form-control" @bind-Value="@userDetails.ComparePassword"/>
+                <ValidationMessage For="@(() => userDetails.ComparePassword)"/>
+            </div>
+
+        <div style="height:8px">
+        </div>
+            
     </div>
 
     <div class="row">
@@ -99,7 +106,7 @@
         BoolReturn UsernameCheck = await webclient.GetRequest();
         if (UsernameCheck != null)
         {
-            if (UsernameCheck.IsFavourite)
+            if (UsernameCheck.IsTrue)
             {
                 UsernameTaken = "Username is taken";
                 color = "red";

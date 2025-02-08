@@ -93,11 +93,7 @@ else
         {   
             var getListClient = new BackendClient<List<Guid>>($"api/user/{UserId}/FavouritePetIds");
             FavouriteList = await getListClient.GetRequest(); 
-            Console.WriteLine("FAOURITED LIST");
-            Console.WriteLine("FAOURITED LIST" + FavouriteList[0]);
         }
-
-
     }
 
 }
