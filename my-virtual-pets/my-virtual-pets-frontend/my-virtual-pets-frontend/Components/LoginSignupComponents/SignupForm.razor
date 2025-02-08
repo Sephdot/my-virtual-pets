@@ -1,4 +1,6 @@
+@using System.Net
 @using my_virtual_pets_class_library.DTO
+@inject NavigationManager NavMan 
 @rendermode InteractiveAuto
 
 <div class="container">
@@ -7,17 +9,20 @@
     <DataAnnotationsValidator/>
 
     <div class="row">
-    <div class="col input form-group">
-        <label for="InputFirstName">First Name:</label>
-        <InputText id="InputFirstName" class="form-control" @bind-Value="@userDetails.FirstName"/>
-        <ValidationMessage For="@(() => userDetails.FirstName)"/>
+        <div class="col input form-group">
+            <label for="InputFirstName">First Name:</label>
+            <InputText id="InputFirstName" class="form-control" @bind-Value="@userDetails.FirstName"/>
+            <ValidationMessage For="@(() => userDetails.FirstName)"/>
+        </div>
+
+        <div class="col input form-group">
+            <label for="InputLastName">Last Name:</label>
+            <InputText id="InputLastName" class="form-control" @bind-Value="@userDetails.LastName"/>
+            <ValidationMessage For="@(() => userDetails.LastName)"/>
+        </div>
     </div>
 
-    <div class="col input form-group">
-        <label for="InputLastName">Last Name:</label>
-        <InputText id="InputLastName" class="form-control" @bind-Value="@userDetails.LastName"/>
-        <ValidationMessage For="@(() => userDetails.LastName)"/>
-    </div>
+    <div style="height:8px">
     </div>
     
     <div class="row">
@@ -26,35 +31,40 @@
         <InputText id="InputEmail" class="form-control" @bind-Value="@userDetails.Email"/>
         <ValidationMessage For="@(() => userDetails.Email)"/>
     </div>
-
+    
     <div class="col input form-group">
         <label for="InputUsername">Username:</label>
-        <InputText id="InputUsername" class="form-control" @bind-Value="@userDetails.Username"/>
-        <span>@UsernameTaken</span>
+        <input type="text" id="InputUsername" class="form-control" @bind="Username" @bind:event="oninput"/>
         <ValidationMessage For="@(() => userDetails.Username)"/>
+        <div style="height:8px">
+            <p style="color: @color">@UsernameTaken</p>
+        </div>
     </div>
     </div>
 
     <div class="row">
-    <div class="col input form-group">
+           <div class="col input form-group">
             <label for="InputPassword">Password:</label>
             <InputText id="InputPassword" type="password" class="form-control" @bind-Value="@userDetails.Password"/>
             <ValidationMessage For="@(() => userDetails.Password)"/>
             </div>
 
-    <div class="col input form-group">
-        <label for="InputAnimal">Fav pet:</label>
-        <InputText id="InputAnimal" class="form-control" @bind-Value="@userDetails.FavAnimal"/>
-        <ValidationMessage For="@(() => userDetails.FavAnimal)"/>
-    </div>
+            <div class="col input form-group">
+                <label for="InputComparePassword">Confirm Password:</label>
+                <InputText id="InputComparePassword" type="password" class="form-control" @bind-Value="@userDetails.ComparePassword"/>
+                <ValidationMessage For="@(() => userDetails.ComparePassword)"/>
+            </div>
+
+        <div style="height:8px">
+        </div>
+            
     </div>
 
     <div class="row">
-
         <p style="font-size:10px">By submitting this form you are agreeing to our service and privacy policy</p>
     </div>
     
-    <h6>@Feedback</h6>
+    <h6 style="color:red">@Feedback</h6>
     
     <button id="input registerbutton" class="btn btn-light d-block mx-auto mt-4" type="submit">Enter the doghouse</button>
 
@@ -72,40 +82,63 @@
         get => username;
         set
         {
-            username = value; 
+            username = value;
+            userDetails.Username = username;
             CheckUsernameAsync();
-            
         }
     }
     
     public string Feedback { get; set; }
     
-    public string UsernameTaken { get; set; } 
+    public string UsernameTaken { get; set; }
     
+    public string color { get; set; } = "green";
+     
     protected override void OnInitialized()
     {
         userDetails = new NewUserDTO();
+        userDetails.GDPRPermissions = true; 
     }
 
     public async Task CheckUsernameAsync()
     {
-        
-        UsernameTaken = "Username is taken"; 
+        var webclient = new BackendClient<BoolReturn>($"api/User/CheckUsername/{Username}");
+        BoolReturn UsernameCheck = await webclient.GetRequest();
+        if (UsernameCheck != null)
+        {
+            if (UsernameCheck.IsTrue)
+            {
+                UsernameTaken = "Username is taken";
+                color = "red";
+                StateHasChanged();
+            }
+            else
+            {
+                UsernameTaken = "Username is free";
+                color = "green";
+                StateHasChanged();
+            }
+        }
     }
     
     public void HandleInvalidSubmit()
     {
-        Feedback = "Something has gone wrong"; 
+        Feedback = "Oops let's try that again!"; 
     }
 
-    public void HandleValidSubmit()
+    public async Task HandleValidSubmit()
     {
-        Feedback = "Submitted!";
-        userDetails.Username = Username; 
-        userDetails.GDPRPermissions = true; 
         var webclient = new BackendClient<NewUserDTO>("api/user/register");
-         webclient.PostRequest(userDetails);
-        userDetails = new NewUserDTO();
+        var response = await webclient.PostRequest(userDetails);
+        if (response.StatusCode == HttpStatusCode.Created)
+        {
+            userDetails = new NewUserDTO();
+            Username = "";
+            NavMan.Refresh(true);
+        } else if (response.StatusCode == HttpStatusCode.BadRequest)
+        {
+            Feedback =  await response.Content.ReadAsStringAsync();  
+        }
     }
-    
+
 }

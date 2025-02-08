@@ -27,8 +27,9 @@ public class NewUserDTO
     [Required(ErrorMessage = "We need a password!"), PasswordValidator]
     public string Password { get; set; }
     
-    [JsonIgnore]
-    public string? FavAnimal { get; set; }
+    [JsonPropertyName("comparepassword")]
+    [Required, Compare(nameof(Password), ErrorMessage = "Password do not match.")]
+    public string ComparePassword { get; set; }
     
     [JsonPropertyName("gdprpermissions")]
     [Required]

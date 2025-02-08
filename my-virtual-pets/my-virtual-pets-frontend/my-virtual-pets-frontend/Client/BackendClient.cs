@@ -1,4 +1,5 @@
 using System.Net;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Http;
 using my_virtual_pets_class_library.DTO;
 
@@ -11,9 +12,13 @@ public class BackendClient<T>
 
         public HttpClient client { get; init; }
         
-        public BackendClient(string endpoint) {
+        public string Token { get; set; }
+        
+        public BackendClient(string endpoint, string accessToken = "") {
             Url = "https://localhost:7091/" + endpoint;
             client = new HttpClient(); 
+            Token = accessToken;
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + Token);
         }
 
         public async Task<T> GetRequest()
@@ -24,10 +29,6 @@ public class BackendClient<T>
                 return response;
             }
             catch (HttpRequestException ex)
-            {
-                return default;
-            }
-            catch (Exception ex)
             {
                 return default;
             }
@@ -46,16 +47,16 @@ public class BackendClient<T>
             }
         }
 
-        public async Task<HttpStatusCode> PostRequest(T postValue)
+        public async Task<HttpResponseMessage> PostRequest(T postValue)
         {
             try
             {
                 var response = await client.PostAsJsonAsync<T>(Url, postValue);
-                return response.StatusCode;
+                return response;
             }
             catch
             {
-                return HttpStatusCode.ServiceUnavailable;
+                return new HttpResponseMessage(HttpStatusCode.ServiceUnavailable);
             }
         }
 
