@@ -10,7 +10,7 @@
 
 <EditForm FormName="Login" Model="@loginDetails" OnInvalidSubmit="HandleInvalidSubmit" OnValidSubmit="HandleValidSubmit">
     <h3 class="pixeltext">Login</h3>
-    <h6>@Success</h6>
+
     <DataAnnotationsValidator/>
 
         <div class="input form-group">
@@ -19,13 +19,15 @@
             <ValidationMessage For="@(() => loginDetails.Username)"/>
         </div>
     
-        <div class="input form-group">
-            <label for="InputPassword">Password:</label>
-            <InputText type="password" id="InputPassword" class="form-control" @bind-Value="@loginDetails.Password"/>
-            <ValidationMessage For="@(() => loginDetails.Password)"/>
-        </div>
-
-        <button id="loginbutton" class="btn btn-light d-block mx-auto mt-4" type="submit">Enter the doghouse</button>
+    <div class="input form-group">
+        <label for="InputPassword">Password:</label>
+        <InputText type="password" id="InputPassword" class="form-control" @bind-Value="@loginDetails.Password"/>
+        <ValidationMessage For="@(() => loginDetails.Password)"/>
+    </div>
+    
+    <h6>@Feedback</h6>
+    
+    <button id="loginbutton" class="btn btn-light d-block mx-auto mt-4" type="submit">Enter the doghouse</button>
     
 </EditForm>
 
@@ -35,7 +37,7 @@
 
     public UserLoginDTO loginDetails { get; set; } 
     
-    public string Success { get; set; }
+    public string Feedback { get; set; }
     
     protected override void OnInitialized()
     {
@@ -44,7 +46,7 @@
 
     public void HandleInvalidSubmit()
     {
-        Success = "Something has gone wrong"; 
+        Feedback = "Something has gone wrong"; 
     }
 
     public async Task HandleValidSubmit()
@@ -78,6 +80,9 @@
                 Navigation.NavigateTo("/add-pet");
             }
            loginDetails = new UserLoginDTO(); 
+        } else if (response.StatusCode == HttpStatusCode.BadRequest)
+        {
+            Feedback = await response.Content.ReadAsStringAsync();   
         }
 
     }
