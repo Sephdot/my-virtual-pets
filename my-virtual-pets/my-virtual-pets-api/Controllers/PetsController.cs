@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using my_virtual_pets_api.Data;
 using my_virtual_pets_api.Services.Interfaces;
@@ -34,6 +35,7 @@ namespace my_virtual_pets_api.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet("user/{userId}")]
         public IActionResult GetAllPetsByUserID(Guid userId)
         {
@@ -53,6 +55,7 @@ namespace my_virtual_pets_api.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet("{petId}")]
         public IActionResult GetPetById(Guid petId)
         {

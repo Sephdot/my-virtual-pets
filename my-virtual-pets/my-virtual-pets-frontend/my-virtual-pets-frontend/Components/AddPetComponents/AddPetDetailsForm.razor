@@ -2,7 +2,7 @@
 @using my_virtual_pets_class_library.DTO
 @using my_virtual_pets_class_library.Enums
 @using my_virtual_pets_frontend.Components.Icons
-
+@inject AuthenticationStateProvider AuthState 
 @rendermode InteractiveServer
 
 @if (_postIsInProgress)
@@ -84,7 +84,7 @@ else
         StateHasChanged();
         await PetPostPending.InvokeAsync();
         
-        var webclient = new BackendClient<AddPetDTO>("api/pets");
+        var webclient = new BackendClient<AddPetDTO>("api/pets", AuthState);
         var response = await webclient.PostRequest(PetDetails); // just gets status code no body
         
         if (response.StatusCode == HttpStatusCode.OK)

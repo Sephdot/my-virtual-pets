@@ -4,6 +4,7 @@
 @using my_virtual_pets_class_library.Enums
 @using my_virtual_pets_class_library
 @using my_virtual_pets_frontend.Components.Icons
+@inject AuthenticationStateProvider AuthState 
 @rendermode InteractiveServer
 
 
@@ -131,7 +132,7 @@
 
         async Task UploadValidImage(byte[] bytes) //local function for encapsulation/abstraction
         {
-            var webclient = new AddPetBackendClient<byte[]>("api/images");
+            var webclient = new AddPetBackendClient<byte[]>("api/images", AuthState);
             var postResponse = await webclient.ImageUploadPostRequest(bytes);
 
             if (postResponse.StatusCode == HttpStatusCode.OK)
