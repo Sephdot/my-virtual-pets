@@ -28,7 +28,7 @@
         <InputText id="InputEmail" class="form-control" @bind-Value="@userDetails.Email"/>
         <ValidationMessage For="@(() => userDetails.Email)"/>
     </div>
-
+    
     <div class="col input form-group">
         <label for="InputUsername">Username:</label>
         <input type="text" id="InputUsername" class="form-control" @bind="Username" @bind:event="oninput"/>
@@ -54,7 +54,6 @@
     </div>
 
     <div class="row">
-
         <p style="font-size:10px">By submitting this form you are agreeing to our service and privacy policy</p>
     </div>
     

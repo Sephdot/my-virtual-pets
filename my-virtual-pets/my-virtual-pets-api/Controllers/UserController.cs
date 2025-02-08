@@ -144,6 +144,7 @@ namespace my_virtual_pets_api.Controllers
         [Route("{GlobalUserId}/FavouritePetIds")]
         public IActionResult GetFavouritePetIds(Guid GlobalUserId)
         {
+            Console.WriteLine("THIS HAS BEEN CALLED");
             try
             {
                 var favouritePetIds = _userService.GetFavouritePetId(GlobalUserId);

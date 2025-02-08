@@ -25,17 +25,18 @@ else
     
     public bool IsPet { get; set; } = false;
 
+    [CascadingParameter] 
+    public List<Guid> FavouriteList { get; set; } = new List<Guid>(); 
+    
     protected override async Task OnInitializedAsync()
     {
         var user = (await AuthStateProvider.GetAuthenticationStateAsync()).User;
         UserId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (UserId != null)
         {
-            var client = new BackendClient<BoolReturn>($"api/User/{UserId}/IsFavourited/{PetId}");
-            var IsFavourite = await client.GetRequest();
-            if (IsFavourite != null)
+            if (FavouriteList.Contains(PetId))
             {
-                IsPet = IsFavourite.IsFavourite; 
+                IsPet = true; 
             }
         }
     }
@@ -60,7 +61,7 @@ else
             Navigation.NavigateTo("/login");
         }
         var client = new BackendClient<Favourites>($"api/User/AddToFavourites");
-        client.PostRequest(new Favourites { GlobalUserId = Guid.Parse(UserId), PetId = PetId });
+        await client.PostRequest(new Favourites { GlobalUserId = Guid.Parse(UserId), PetId = PetId });
     }
 
     public async Task UnPet()
@@ -70,7 +71,7 @@ else
             Navigation.NavigateTo("/login");
         }
         var client = new BackendClient<Favourites>($"api/User/{UserId}/RemoveFromFavourites/{PetId}");
-        client.DeleteRequest();
+        await client.DeleteRequest();
     }
     
     

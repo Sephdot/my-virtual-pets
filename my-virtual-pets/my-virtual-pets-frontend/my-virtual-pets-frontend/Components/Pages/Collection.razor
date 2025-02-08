@@ -55,6 +55,7 @@
     private List<PetCardDataDTO> _petCardDataDTOs = new List<PetCardDataDTO>();
 
     public string token { get; set; }
+
     
     protected override async Task OnInitializedAsync()
     {
@@ -63,9 +64,8 @@
         if (UserId != null)
         {
             var getclient = new BackendClient<List<PetCardDataDTO>>($"api/pets/user/{UserId}");
-            _petCardDataDTOs = await getclient.GetRequest();    
+            _petCardDataDTOs = await getclient.GetRequest();
         }
-
     }
     
     public async Task DeleteFromCollection(Guid petId) {

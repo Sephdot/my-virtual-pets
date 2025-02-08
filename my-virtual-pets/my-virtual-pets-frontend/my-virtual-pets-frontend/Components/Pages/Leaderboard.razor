@@ -1,8 +1,10 @@
 @page "/leaderboard"
+@using System.Security.Claims
 @using my_virtual_pets_class_library.DTO
 @using my_virtual_pets_class_library.Enums
 @using my_virtual_pets_frontend.Components.Icons
 @using my_virtual_pets_frontend.Components.DisplayCards
+@inject AuthenticationStateProvider AuthStateProvider
 @rendermode InteractiveAuto
 
 
@@ -15,7 +17,8 @@
 }
 else
 {
-    
+    <CascadingValue Value="FavouriteList">
+
     <!----- Top Three  ---->
 
     <div class="container">
@@ -61,11 +64,15 @@ else
         {
             <div class="row">
                 <div class="runner-up col pixeltext">
+
                     <RunnersUpCard petdisplay="pet"></RunnersUpCard>
+
                 </div>
             </div> 
         }
+        
 </div>
+    </CascadingValue>
 
 }
 
@@ -74,10 +81,23 @@ else
     
     public List<PetCardDataDTO> pets = new List<PetCardDataDTO>();
     
+    public List<Guid> FavouriteList { get; set; } = new List<Guid>(); 
+    
     protected override async Task OnInitializedAsync()
     {
         var getclient = new BackendClient<List<PetCardDataDTO>>("api/pets/top10");
         pets = await getclient.GetRequest(); 
+        var user = (await AuthStateProvider.GetAuthenticationStateAsync()).User;
+        var UserId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (UserId != null)
+        {   
+            var getListClient = new BackendClient<List<Guid>>($"api/user/{UserId}/FavouritePetIds");
+            FavouriteList = await getListClient.GetRequest(); 
+            Console.WriteLine("FAOURITED LIST");
+            Console.WriteLine("FAOURITED LIST" + FavouriteList[0]);
+        }
+
+
     }
 
 }
