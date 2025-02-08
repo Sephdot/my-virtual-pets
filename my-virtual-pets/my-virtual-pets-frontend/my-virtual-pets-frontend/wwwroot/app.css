@@ -131,6 +131,15 @@ h1:focus {
     padding: 0;    
 }
 
+.nav-item > a:hover {
+    color: whitesmoke !important;
+    transition: color 0.3s ease-in-out;
+}
+
+.nav-item > a {
+    font-weight: bold;
+}
+
 .form-control,
 .form-select {
     border: 0.2rem dashed #141514;
