@@ -2,6 +2,7 @@
 @page "/home"
 @using my_virtual_pets_class_library.DTO
 @using my_virtual_pets_class_library.Enums
+@using my_virtual_pets_frontend.Components.Icons
 @using my_virtual_pets_frontend.Components.DisplayCards
 @rendermode InteractiveServer
 
@@ -10,49 +11,41 @@
 <div class="container">
     <h3 class="mt-5 pixeltext">build your pet collection now</h3>
 
-    <div style="width:600px">
-        <Carousel Autoplay="CarouselAutoPlay.StartOnPageLoad" ShowPreviousNextControls="true">
-            <CarouselItem Active="true">
-                <LeadershipCard petCard="petDummyData"></LeadershipCard>
-            </CarouselItem>
-            <CarouselItem>
-                <LeadershipCard petCard="petDummyData2"></LeadershipCard>
-            </CarouselItem>
-            <CarouselItem>
-                <LeadershipCard petCard="petDummyData"></LeadershipCard>
-            </CarouselItem>
-        </Carousel>
+
+    <div id="carousel" style="width:600px">
+        <h4 class="pixeltext">New to the Doghouse:</h4>
+        @if (_petCardDataDTOs == null || _petCardDataDTOs.Count == 0)
+        {
+            <Cat_Loader></Cat_Loader>
+        }
+        else
+        {
+            <Carousel Autoplay="CarouselAutoPlay.StartOnPageLoad" Interval="1000">
+                <CarouselItem Active="true">
+                    <LeadershipCard petCard="_petCardDataDTOs[0]"></LeadershipCard>
+                </CarouselItem>
+                @foreach (var card in _petCardDataDTOs.Skip(1))
+                {
+                    <CarouselItem>
+                        <LeadershipCard petCard="card"></LeadershipCard>
+                    </CarouselItem>
+                }
+            </Carousel>
+
+        }
+
     </div>
     
 </div>
 
 @code {
 
-    public PetCardDataDTO petDummyData = new PetCardDataDTO
-    {
-        PetId = Guid.NewGuid(),
-        PetName = "TestPet",
-        ImageUrl = "https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/36fc0d04-407e-4e5e-ba56-6ff5c5f1878b.png",
-        OwnerUsername = "TestOwner",
-        Score = 0,
-        Personality = Personality.BRAVE,
-        PetType = PetType.DOG,
-        Description = "Testdescription",
-        IsFavourited = false
-    };
-    
-    public PetCardDataDTO petDummyData2 = new PetCardDataDTO
-    {
-        PetId = Guid.NewGuid(),
-        PetName = "TestPet2",
-        ImageUrl = "https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/36fc0d04-407e-4e5e-ba56-6ff5c5f1878b.png",
-        OwnerUsername = "TestOwner",
-        Score = 0,
-        Personality = Personality.BRAVE,
-        PetType = PetType.DOG,
-        Description = "Testdescription",
-        IsFavourited = false
-    };
+    private List<PetCardDataDTO> _petCardDataDTOs = new List<PetCardDataDTO>();
 
+    protected override async Task OnInitializedAsync()
+    {
+        var getclient = new BackendClient<List<PetCardDataDTO>>($"api/pets/top10");
+        _petCardDataDTOs = await getclient.GetRequest();
+    }
 
 }

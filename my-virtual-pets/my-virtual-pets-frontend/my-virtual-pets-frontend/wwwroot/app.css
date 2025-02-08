@@ -208,7 +208,6 @@ h1:focus {
 .collectioncard {
     border-radius: 25px;
     margin: 40px;
-    border: 5px dashed #D18BE0;
     background-color: #fefedf;
     position: relative;
     padding: 10px;
@@ -222,4 +221,10 @@ h1:focus {
 
 .navItem .active span {
     color: whitesmoke;
+}
+
+.carousel {
+    background-color: #fefedf;
+    border: 5px dotted black;
+    border-radius: 25px;
 }
