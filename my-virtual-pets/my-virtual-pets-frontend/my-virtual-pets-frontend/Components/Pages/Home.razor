@@ -3,24 +3,35 @@
 @using my_virtual_pets_frontend.Components.Icons
 @using my_virtual_pets_frontend.Components.HomeComponents
 @inject AuthenticationStateProvider AuthState 
+@inject NavigationManager NavMan
 @rendermode InteractiveServer
 
 
 <PageTitle>Home | MyVirtualPets</PageTitle>
-<div class="fluid-container text-center"> 
+<div class="fluid-container text-center">
+    <!-- heading for home page --->
     <div class="row home_row">
-        <div class="col-sm-8">
+        <div class="col-10">
             <h1 class="fw-bold">Create & Collect Cute Pixel Pets!</h1>
         </div>
     </div>
+    
+    <!-- sales pitch --->
     <div class="row home_row">
-        <div class="col-sm-8">
+        <div class="col-10">
             <p class="para">
                 Short description of the website selling you on it, telling you
                 all about how much fun you're going to have on myvirtualpets
                 how much fun we can have together woohoo hoo ohooo filler filler
-                my virtual pets lots of fun great website good very 
+                my virtual pets lots of fun great website good very
             </p>
+        </div>
+    </div>
+    
+    <!-- call to action --->
+    <div class="row home_row">
+        <div class="col-10">
+            <button @onclick="HandleGetStarted" class="btn">Get Started!</button>
         </div>
     </div>
 
@@ -55,6 +66,11 @@
     {
         var getclient = new BackendClient<List<PetCardDataDTO>>($"api/pets/top10", AuthState);
         _petCardDataDTOs = await getclient.GetRequest();
+    }
+
+    private void HandleGetStarted()
+    {
+        NavMan.NavigateTo("/"); // where should we send them to? Add pet or login/register?
     }
 
 }
