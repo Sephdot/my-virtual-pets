@@ -111,14 +111,20 @@
             {
                 UsernameTaken = "Username is taken";
                 color = "red";
-                StateHasChanged();
             }
             else
             {
-                UsernameTaken = "Username is free";
-                color = "green";
-                StateHasChanged();
+                if (Username == "")
+                {
+                    UsernameTaken = "";
+                }
+                else
+                {
+                    UsernameTaken = "Username is free";
+                    color = "green";
+                }
             }
+            StateHasChanged();
         }
     }
     
