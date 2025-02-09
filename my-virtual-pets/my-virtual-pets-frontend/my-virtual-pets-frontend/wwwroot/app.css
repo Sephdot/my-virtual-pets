@@ -3,6 +3,7 @@
     --secondary-color: #D18BE0;
     --tertiary-color: #fefedf;
     --quaternary-color: #FDCFD7;
+    --almost-black: #141514;
 }
 
 @font-face {
@@ -76,7 +77,7 @@ h1:focus {
 
 
 .award {
-    color: #141514;
+    color: var(--almost-black);
     position: absolute;
     top: 0;
     left: 0;
@@ -96,7 +97,7 @@ h1:focus {
 
 .leadercard:hover {
     transform: scale(1.02);
-    box-shadow: 4px 4px 4px #141514;
+    box-shadow: 4px 4px 4px var(--almost-black);
 }
 
 .leaderimage {
@@ -106,8 +107,8 @@ h1:focus {
 }
 
 .leaderstats {
-    border: 1px dashed black;
-    box-shadow: 2px 2px 2px #141514;
+    border: 1px dashed var(--almost-black);
+    box-shadow: 2px 2px 2px var(--almost-black);
     border-radius: 25px;
     margin: 10px; 
     height: 230px;
@@ -174,7 +175,7 @@ h1:focus {
 
 .home_row:nth-of-type(odd) {
     background-color: var(--quaternary-color);
-    color: black;
+    color: var(--almost-black);
 }
 
 .home_row:nth-of-type(even) {
@@ -189,7 +190,7 @@ h1:focus {
 
 #cta-btn-container {
     align-content: center;
-    padding: 10px;
+    padding: 10px 0;
 }
 
 #cta-btn-container button {
@@ -241,7 +242,7 @@ h2.pixeltext {
 
 .form-control,
 .form-select {
-    border: 0.2rem dashed #141514;
+    border: 0.2rem dashed var(--almost-black);
 }
 
 .form-control:focus,
@@ -272,11 +273,11 @@ h2.pixeltext {
 }
 
 #popuptext {
-    border: 1px dashed black;
+    border: 1px dashed var(--almost-black);
 }
 
 #popupimage {
-    border: 1px dotted black;
+    border: 1px dotted var(--almost-black);
 }
 
 #formcenter {
@@ -286,7 +287,6 @@ h2.pixeltext {
     border-radius: 25px;
     background-color: var(--tertiary-color);
 }
-
 
 #formcenter a {
     font-style: italic;
@@ -314,7 +314,7 @@ h2.pixeltext {
 .collectioncard {
     border-radius: 25px;
     margin: 40px;
-    background-color: #fefedf;
+    background-color: var(--tertiary-color);
     border: 5px dashed var(--secondary-color);
     position: relative;
     padding: 10px;
@@ -326,7 +326,13 @@ h2.pixeltext {
 }
 
 .carousel {
-    background-color: #fefedf;
-    border: 5px dotted black;
+    background-color: var(--tertiary-color);
+    border: 5px dashed var(--almost-black);
     border-radius: 25px;
+}
+
+.carousel-col,
+.sales-col,
+.head-col {
+    padding: 0 24px;
 }

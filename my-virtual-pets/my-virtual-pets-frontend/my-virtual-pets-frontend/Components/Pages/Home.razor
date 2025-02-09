@@ -11,13 +11,13 @@
 <div class="fluid-container text-center">
     <!-- heading for home page --->
     <div class="row home_row">
-        <div class="col">
+        <div class="col head-col">
             <h1 class="fw-bold home_title">Create & Collect Cute Pixel Pets!</h1>
         </div>
     </div>
     
     <div class="row home_row">
-        <div class="col">
+        <div class="col sales-col">
             <!-- sales pitch --->
             <p class="para">
                 Short description of the website selling you on it, telling you
@@ -51,30 +51,27 @@
         </div>
     </div>
     
-    <!-- will add this back in but don't want to have api running all the time (bad laptop) --->
+    <!-- carousel --->
     <div class="row home_row">
         <div class="col-12">
             <h2 class="pixeltext">Recently Created</h2>
         </div>
-        <div style="width: 66%; height: 400px; outline: solid black 2px;">
-            insert carousel here
-        </div>
-        @*<div id="carousel" style="width:600px">
-            <h4 class="pixeltext">New to the Doghouse:</h4>
-            @if (_petCardDataDTOs == null)
-            {
+        @if (_petCardDataDTOs == null)
+        {
+            <div class="col carousel-col">
                 <Cat_Loader></Cat_Loader>
-            }
-            else
-            {
+            </div>
+        }
+        else
+        {
+            <div class="col-12 col-md-9 col-xl-7 carousel-col">
                 <HomeCarousel PetCardDataDTOs="@_petCardDataDTOs"></HomeCarousel>
-            }
-        </div>*@
+            </div>
+        }
     </div>
 </div>
 
 @code {
-
     private List<PetCardDataDTO>? _petCardDataDTOs;
 
     protected override async Task OnInitializedAsync()
