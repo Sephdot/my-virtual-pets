@@ -166,7 +166,8 @@ h1:focus {
 
 .home_row:nth-of-type(1) {
     background-color: var(--quaternary-color);
-    padding-top: 70px;
+    color: var(--primary-color);
+    /*padding-top: 70px;*/
 }
 
 .home_row:nth-of-type(2) {
