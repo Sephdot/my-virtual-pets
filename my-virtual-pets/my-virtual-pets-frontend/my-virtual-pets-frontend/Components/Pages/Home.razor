@@ -12,10 +12,9 @@
     <!-- heading for home page --->
     <div class="row home_row">
         <div class="col">
-            <h1 class="fw-bold">Create & Collect Cute Pixel Pets!</h1>
+            <h1 class="fw-bold home_title">Create & Collect Cute Pixel Pets!</h1>
         </div>
     </div>
-    
     
     <div class="row home_row">
         <div class="col">
@@ -34,29 +33,36 @@
         </div>
     </div>
     
+    <!-- "how to" -->
+    <div class="row home_row" id="how-to-container">
+        <div class="col-12 col-md-4">
+            <img src="images/add-pet-1.png" alt="" class="img-fluid"/>
+        </div>
+        <div class="col-12 col-md-4">
+            <img src="images/add-pet-1.png" alt="" class="img-fluid"/>
+        </div>
+        <div class="col-12 col-md-4">
+            <img src="images/add-pet-1.png" alt="" class="img-fluid"/>
+        </div>
+    </div>
     
-
-
-
-
-
-
-
-
-
-
-
-    @*<div id="carousel" style="width:600px">
-        <h4 class="pixeltext">New to the Doghouse:</h4>
-        @if (_petCardDataDTOs == null)
-        {
-            <Cat_Loader></Cat_Loader>
-        }
-        else
-        {
-            <HomeCarousel PetCardDataDTOs="@_petCardDataDTOs"></HomeCarousel>
-        }
-    </div>*@
+    <!-- will add this back in but don't want to have api running all the time (bad laptop) --->
+    <div class="row home_row">
+        <div style="width: 600px;  height: 400px; outline: solid black 2px;">
+            insert carousel here
+        </div>
+        @*<div id="carousel" style="width:600px">
+            <h4 class="pixeltext">New to the Doghouse:</h4>
+            @if (_petCardDataDTOs == null)
+            {
+                <Cat_Loader></Cat_Loader>
+            }
+            else
+            {
+                <HomeCarousel PetCardDataDTOs="@_petCardDataDTOs"></HomeCarousel>
+            }
+        </div>*@
+    </div>
 </div>
 
 @code {
