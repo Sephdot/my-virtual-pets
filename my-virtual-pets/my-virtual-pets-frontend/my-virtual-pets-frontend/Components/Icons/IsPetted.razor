@@ -4,22 +4,22 @@
 @inject AuthenticationStateProvider AuthStateProvider
 @inject NavigationManager Navigation
 
-
+<p><span class="badge bg-success">Score: @petCard.Score</span></p>
 <div @onclick="Pet">
-@if (IsPet)
-{
-    <Paw_svg></Paw_svg>
-}
-else
-{
-    <OutlinePaw_svg></OutlinePaw_svg>
-}
+    @if (IsPet)
+    {
+        <Paw_svg></Paw_svg>
+    }
+    else
+    {
+        <OutlinePaw_svg></OutlinePaw_svg>
+    }
 </div>
 
 @code {
     
     [Parameter]
-    public Guid PetId { get; set; }
+    public PetCardDataDTO petCard { get; set; }
     
     private string UserId;
     
@@ -34,7 +34,7 @@ else
         UserId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (UserId != null)
         {
-            if (FavouriteList.Contains(PetId))
+            if (FavouriteList.Contains(petCard.PetId))
             {
                 IsPet = true; 
             }
@@ -61,7 +61,9 @@ else
             Navigation.NavigateTo("/login");
         }
         var client = new BackendClient<Favourites>($"api/User/AddToFavourites", AuthStateProvider);
-        await client.PostRequest(new Favourites { GlobalUserId = Guid.Parse(UserId), PetId = PetId });
+        await client.PostRequest(new Favourites { GlobalUserId = Guid.Parse(UserId), PetId = petCard.PetId });
+        petCard.UpdateScore(true);
+        StateHasChanged();
     }
 
     public async Task UnPet()
@@ -70,8 +72,10 @@ else
         {
             Navigation.NavigateTo("/login");
         }
-        var client = new BackendClient<Favourites>($"api/User/{UserId}/RemoveFromFavourites/{PetId}", AuthStateProvider);
+        var client = new BackendClient<Favourites>($"api/User/{UserId}/RemoveFromFavourites/{petCard.PetId}", AuthStateProvider);
         await client.DeleteRequest();
+        petCard.UpdateScore(false);
+        StateHasChanged();
     }
     
     
