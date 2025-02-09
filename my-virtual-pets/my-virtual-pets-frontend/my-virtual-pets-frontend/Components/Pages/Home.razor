@@ -11,29 +11,30 @@
 <div class="fluid-container text-center">
     <!-- heading for home page --->
     <div class="row home_row">
-        <div class="col-10">
+        <div class="col">
             <h1 class="fw-bold">Create & Collect Cute Pixel Pets!</h1>
         </div>
     </div>
     
-    <!-- sales pitch --->
+    
     <div class="row home_row">
-        <div class="col-10">
+        <div class="col">
+            <!-- sales pitch --->
             <p class="para">
                 Short description of the website selling you on it, telling you
                 all about how much fun you're going to have on myvirtualpets
                 how much fun we can have together woohoo hoo ohooo filler filler
                 my virtual pets lots of fun great website good very
             </p>
+
+            <!-- call to action --->
+            <div id="cta-btn-container">
+                <button @onclick="HandleGetStarted" class="btn">Get Started!</button>
+            </div>
         </div>
     </div>
     
-    <!-- call to action --->
-    <div class="row home_row">
-        <div class="col-10">
-            <button @onclick="HandleGetStarted" class="btn">Get Started!</button>
-        </div>
-    </div>
+    
 
 
 

@@ -174,10 +174,18 @@ h1:focus {
     background-color: var(--tertiary-color);
 }
 
+#cta-btn-container {
+    align-content: center;
+    padding: 10px;
+}
+
 .home_row {
     display: flex;
     justify-content: center;
-    padding: 10px 0;
+}
+
+.home_row {
+    padding: 10px;
 }
 
 .para {
