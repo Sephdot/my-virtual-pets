@@ -33,7 +33,7 @@ namespace my_virtual_pets_api.Services
 
         public async Task<PetCardDataDTO> AddPet(AddPetDTO petData)
         {
-            Guid imageId = _imagesService.AddImage(petData.ImageUrl);
+            var imageId = await _imagesService.AddImage(petData.ImageUrl);
             int score = GenerateScore(petData);
             return await _petRepository.AddPet(petData, imageId, score);
         }

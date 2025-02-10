@@ -25,7 +25,6 @@ public class ImagesService : IImagesService
     public async Task<ImagesResponseDTO?> ProcessImageAsync(byte[] inputImage)
     {
         //Recognise image
-        //TO DO: Ask Callum about error handling in recognitionService
         var recognitionResult = await _recognitionService.CheckImageInput(inputImage);
 
         if (recognitionResult == null) throw new Exception("Something went wrong while recongnising the image.");
@@ -53,8 +52,8 @@ public class ImagesService : IImagesService
         else return null;
     }
 
-    public Guid AddImage(string uimageUrl)
+    public async Task<Guid> AddImage(string uimageUrl)
     {
-        return _imageRepository.AddImage(uimageUrl);
+        return await _imageRepository.AddImage(uimageUrl);
     }
 }
