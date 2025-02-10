@@ -336,3 +336,17 @@ h2.pixeltext {
 .head-col {
     padding: 0 24px;
 }
+
+#formcenter {
+    margin-left:auto;
+    margin-right:auto;
+    width:600px;
+    height:100%;"
+}
+
+
+@media only screen and (max-width: 400px) {
+    #formcenter {
+        max-width:300px; 
+    }
+}
