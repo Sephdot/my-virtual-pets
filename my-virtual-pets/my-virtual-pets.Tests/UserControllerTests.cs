@@ -11,6 +11,8 @@ namespace my_virtual_pets.Tests
     public class UserControllerTests
     {
         private Mock<IUserService> _userServiceMock;
+        private Mock<ITokenService> _tokenServiceMock;
+
         private Mock<IConfiguration> _configurationMock;
         private UserController _controller;
 
@@ -19,7 +21,8 @@ namespace my_virtual_pets.Tests
         {
             _userServiceMock = new Mock<IUserService>();
             _configurationMock = new Mock<IConfiguration>();
-            _controller = new UserController(_userServiceMock.Object, _configurationMock.Object);
+            _tokenServiceMock = new Mock<ITokenService>();
+            _controller = new UserController(_userServiceMock.Object, _configurationMock.Object, _tokenServiceMock.Object);
         }
 
         [Test]

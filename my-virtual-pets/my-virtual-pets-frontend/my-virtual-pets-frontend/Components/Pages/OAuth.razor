@@ -1,5 +1,6 @@
-@page "/oauth/{token}/{userid:guid}/{email}"
+@page "/oauth/{token}"
 @using System.Security.Claims
+@using my_virtual_pets_api.Entities
 @inject NavigationManager Navigation
 @inject AuthenticationStateProvider CustomAuth
 @inject CustomAuthenticationService AuthService
@@ -12,27 +13,30 @@
 
     [Parameter]
     public string token { get; set; }
-    
-    [Parameter]
-    public Guid userid { get; set; }
-    
-    [Parameter]
-    public string email { get; set; }
+
 
     protected override async Task OnInitializedAsync()
     {
 
-        var identity = new ClaimsIdentity(
-            [
-                new Claim(ClaimTypes.Name, email),
-                new Claim(ClaimTypes.Hash, token),
-                new Claim(ClaimTypes.NameIdentifier, userid.ToString())
-            ],
-            "Custom Authentication");
+        var webclient = new BackendClient<OAuthToken>($"api/user/tokenexchange/{token}", CustomAuth);
+        OAuthToken userToken = await webclient.GetRequest();
+
+        if (userToken != null)
+        {
+            var identity = new ClaimsIdentity(
+                [
+                    new Claim(ClaimTypes.Name, userToken.Email),
+                    new Claim(ClaimTypes.Hash, userToken.Token),
+                    new Claim(ClaimTypes.NameIdentifier, userToken.Auth0Id.ToString())
+                ],
+                "Custom Authentication");
                 
-        var newUser = new ClaimsPrincipal(identity);
-        AuthService.CurrentUser = newUser;
-        Navigation.NavigateTo("/");
+            var newUser = new ClaimsPrincipal(identity);
+            AuthService.CurrentUser = newUser;
+            Navigation.NavigateTo("/");
+        }
+        
+
     }
 
     

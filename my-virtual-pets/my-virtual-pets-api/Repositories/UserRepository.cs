@@ -216,7 +216,7 @@ namespace my_virtual_pets_api.Repositories
             if (user == null) throw new KeyNotFoundException("User does not exist");
             return user.Id; 
         }
-              
+
 
     }
 }

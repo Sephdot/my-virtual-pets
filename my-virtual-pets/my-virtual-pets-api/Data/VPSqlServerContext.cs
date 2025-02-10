@@ -17,8 +17,8 @@ namespace my_virtual_pets_api.Data
         public DbSet<Image> Images { get; set; }
 
         public DbSet<Favourite> Favorites { get; set; }
-
-
+        
+        
         public VPSqlServerContext(DbContextOptions<VPSqlServerContext> options) : base(options)
         {
         }
