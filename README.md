@@ -22,6 +22,20 @@ Value: `Server=<server_name>;Database=my_virtual_pets;User Id=sa;Password=<your_
 
 6. Go to launch settings and change the environment to 'Production'
 7. Run Program.cs 
+__________________________________
+
+## 📞 API Usage:
+
+This app makes use of the following APIs in order to fulfill some of its functionality.
+
+### Dragoneye
+https://dragoneye.ai/
+
+In order to run this app, valid API keys must be provided into the my-virtual-pets-api project's User Secrets. This can be done by navigating to the project's ` secrets.json ` file, and populating the following template.
+
+`` {  "dragoneyeApiKey": "<your dragoneye api key>", 
+  "BgRemoverApiKey": "<your bg remover api key>" } ``
+
 
 __________________________________
 
