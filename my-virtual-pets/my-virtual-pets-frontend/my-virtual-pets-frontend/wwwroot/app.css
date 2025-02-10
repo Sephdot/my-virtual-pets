@@ -69,6 +69,10 @@ h1:focus {
     padding: 20px 0;
 }
 
+.text-warning {
+    color: orange !important;
+}
+
 .page-title:nth-of-type(2) {
     font-size: 2rem;
 }
