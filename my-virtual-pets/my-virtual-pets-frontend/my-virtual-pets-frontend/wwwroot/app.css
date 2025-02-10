@@ -63,6 +63,16 @@ h1:focus {
     font-family: "Pixelify_Sans", serif;
 }
 
+.page-title {
+    font-weight: 800;
+    font-size: 3rem;
+    padding: 20px 0;
+}
+
+.page-title:nth-of-type(2) {
+    font-size: 2rem;
+}
+
 .valid.modified:not([type=checkbox]) {
     border-color: #26b050;
 }

@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>my-virtual-pets-frontend</RootNamespace>
     <AssemblyName>$(AssemblyName.Replace(' ', '_'))</AssemblyName>
+    <UserSecretsId>f19490b6-6a2c-45ca-a882-fccbf5818b49</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

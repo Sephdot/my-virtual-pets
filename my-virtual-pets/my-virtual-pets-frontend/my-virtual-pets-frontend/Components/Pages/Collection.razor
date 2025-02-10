@@ -15,12 +15,10 @@
     <NotAuthorized>
         <section class="container text-center">
             <div class="container">
-                <h1 class="fw-bold py-6">Your Collection</h1>
-                <p>Login to view your collection</p>
+                <h1 class="page-title">Your Collection</h1>
                 <CascadingValue Value="Refresh">
                 <LoginSignupFormSwitcher></LoginSignupFormSwitcher>
                 </CascadingValue>
-                <hr class="my-4"/>
             </div>
         </section>
     </NotAuthorized>
@@ -28,14 +26,13 @@
         @if (_petCardDataDTOs is null) 
         {
             <Cat_Loader></Cat_Loader>
-        } else if (_petCardDataDTOs.Count() >= 0)
+        } 
+        else if (_petCardDataDTOs.Count >= 0)
         {
             <section class="container text-center">
                 <div class="container">
-                    <h1 class="fw-bold py-6">@context.User.Identity?.Name's Collection</h1>
-                    <button @onclick="HandleAddPet" class="btn btn-light d-block mx-auto mt-4" >Add Pet</button>
-                    <hr class="my-4"/>
-                </div>
+                    <h1 class="page-title">@context.User.Identity?.Name's Collection</h1>
+                    <button @onclick="HandleAddPet" class="btn btn-light d-block mx-auto mt-4" >Add Pet</button></div>
             </section>
 
             <div class="container">

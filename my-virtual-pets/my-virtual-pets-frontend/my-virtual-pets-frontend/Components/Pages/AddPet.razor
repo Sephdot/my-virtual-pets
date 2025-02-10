@@ -14,18 +14,16 @@
     <NotAuthorized>
         <section class="container text-center">
             <div class="container">
-                <h1 class="fw-bold py-6">Add Pet</h1>
-                <p>Login to add a pet</p>
+                <h1 class="page-title text-center">Add Pet</h1>
                 <CascadingValue Value="Refresh">
                     <LoginSignupFormSwitcher></LoginSignupFormSwitcher>
                 </CascadingValue>
-                <hr class="my-4"/>
             </div>
         </section>
     </NotAuthorized>
     <Authorized>
         <div class="container">
-            <h1 class="text-center mb-5">Add a Pet!</h1>
+            <h1 class="page-title">Add Pet</h1>
             <div id="formcenter">
                 @if (!_isSuccessfulPetPost)
                 {
