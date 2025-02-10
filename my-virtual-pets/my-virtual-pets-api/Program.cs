@@ -1,19 +1,19 @@
-using System.Text;
 using ImageRecognition;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.IdentityModel.Tokens;
 using my_virtual_pets_api.Cloud;
 using my_virtual_pets_api.Data;
+using my_virtual_pets_api.HealthChecks;
 using my_virtual_pets_api.Repositories;
 using my_virtual_pets_api.Repositories.Interfaces;
 using my_virtual_pets_api.Services;
 using my_virtual_pets_api.Services.Interfaces;
 using PixelationTest;
+using System.Text;
 using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Microsoft.IdentityModel.Tokens;
-using my_virtual_pets_api.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,12 +27,12 @@ if (builder.Environment.IsDevelopment())
     builder.Services.AddHealthChecks().AddCheck("Db-check", new SqlConnectionHealthCheck(memoryDbConnectionString), HealthStatus.Unhealthy, new string[] { "orderingdb" });
     builder.Services.AddSwaggerGen();
     builder.Services.AddEndpointsApiExplorer();
-    
+
 }
 else if (builder.Environment.IsProduction())
 {
     var connectionString = Environment.GetEnvironmentVariable("ConnectionString__my_virtual_pets") + ";Pooling=true;";
-    builder.Services.AddHealthChecks().AddCheck("Db-check", new SqlServerHealthCheck(connectionString),HealthStatus.Unhealthy,new string[] { "orderingdb" });
+    builder.Services.AddHealthChecks().AddCheck("Db-check", new SqlServerHealthCheck(connectionString), HealthStatus.Unhealthy, new string[] { "orderingdb" });
     builder.Services.AddDbContext<IDbContext, VPSqlServerContext>(options => options.UseSqlServer(connectionString));
 }
 
@@ -43,9 +43,16 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IImagesService, ImagesService>();
 builder.Services.AddScoped<IStorageService, S3StorageService>();
+
 builder.Services.AddScoped<IRecognitionService, RecognitionService>();
+builder.Services.AddHttpClient<ImageRecognitionHealthCheck>();
+builder.Services.AddHealthChecks().AddCheck<ImageRecognitionHealthCheck>("image-recognition-check");
+
 builder.Services.AddScoped<IPixelateService, PixelateService>();
+
 builder.Services.AddScoped<IRemoveBackgroundService, RemoveBackgroundService>();
+builder.Services.AddHttpClient<RemoveBackgroundHealthCheck>();
+builder.Services.AddHealthChecks().AddCheck<RemoveBackgroundHealthCheck>("remove-background-check");
 
 builder.Services.AddScoped<IPetRepository, PetRepository>();
 builder.Services.AddScoped<IPetService, PetService>();
@@ -72,11 +79,11 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: "Frontend",
-        policy  =>
+        policy =>
         {
             policy.WithOrigins("https://localhost:7247", "http://localhost:5092");
         });
-    options.AddPolicy("AllowAll", 
+    options.AddPolicy("AllowAll",
         builder => builder
             .SetIsOriginAllowed(_ => true)
             .AllowAnyMethod()
