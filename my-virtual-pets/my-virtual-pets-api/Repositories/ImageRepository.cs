@@ -13,12 +13,11 @@ public class ImageRepository : IImageRepository
         _context = context;
     }
 
-    //TestComment
-    public Guid AddImage(string imageUrl)
+    public async Task<Guid> AddImage(string imageUrl)
     {
         Image image = new Image { ImageUrl = imageUrl };
         _context.Images.Add(image);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
         return image.Id;
     }
 }
