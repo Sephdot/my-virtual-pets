@@ -57,7 +57,7 @@ namespace my_virtual_pets_api.Controllers
             var email = authResult.Principal.Claims.First(x => x.Type == ClaimTypes.Email).Value;
             var fullname = authResult.Principal.Claims.First(x => x.Type == ClaimTypes.GivenName).Value;
 
-            var userId = _userService.CreateNewAuthUser(email, fullname, autho);
+            var userId = await _userService.CreateNewAuthUser(email, fullname, autho);
             
             var claims = new[]
             {

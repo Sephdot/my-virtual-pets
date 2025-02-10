@@ -25,7 +25,8 @@ public interface IUserRepository
 
     public bool IsFavourited(Guid GlobalUserId, Guid PetId);
     public Guid CreateNewGlobalUser(string email);
-    public Guid CreateNewAuthUser(string fullname, string authId, Guid globalUserId);
+    
+    public Task<Guid> CreateNewAuthUser(string fullname, string authId, Guid globalUserId);
 
-    public Guid GetUserIdByEmail(string email);
+    public Task<Guid> GetUserIdByEmail(string email);
 }

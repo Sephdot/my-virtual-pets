@@ -202,19 +202,21 @@ namespace my_virtual_pets_api.Repositories
         }
         
         
-        public Guid CreateNewAuthUser(string fullname, string authId, Guid globalUserId)
+        public async Task<Guid> CreateNewAuthUser(string fullname, string authId, Guid globalUserId)
         {
             AuthUser newAuthUser = new AuthUser() { FullName = fullname, Auth0Id = authId, GlobalUserId = globalUserId };
             _context.AuthUsers.Add(newAuthUser);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return newAuthUser.Id;
         }
+        
 
-        public Guid GetUserIdByEmail(string email)
+        public async Task<Guid> GetUserIdByEmail(string email)
         {
-            return _context.GlobalUsers.FirstOrDefault(u => u.Email == email).Id;
+            var user = await _context.GlobalUsers.SingleOrDefaultAsync(u => u.Email == email);
+            if (user == null) throw new KeyNotFoundException("User does not exist");
+            return user.Id; 
         }
-
 
     }
 }

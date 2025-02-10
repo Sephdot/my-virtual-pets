@@ -115,7 +115,7 @@ namespace my_virtual_pets_api.Services
         }
         
                 
-        public Guid CreateNewAuthUser(string email, string fullname, string authid)
+        public async Task<Guid> CreateNewAuthUser(string email, string fullname, string authid)
         {
             Guid globalUserId; 
             if (!_userRepository.ExistsByEmail(email))
@@ -124,7 +124,7 @@ namespace my_virtual_pets_api.Services
                 _userRepository.CreateNewAuthUser(fullname, authid, globalUserId);
             } else
             {
-                globalUserId = _userRepository.GetUserIdByEmail(email);
+                globalUserId = await _userRepository.GetUserIdByEmail(email);
             }
             return globalUserId;
         }
