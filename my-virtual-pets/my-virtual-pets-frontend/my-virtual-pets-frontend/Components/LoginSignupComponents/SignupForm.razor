@@ -10,13 +10,13 @@
     <DataAnnotationsValidator/>
 
     <div class="row">
-        <div class="col input form-group">
+        <div class="col-sm-12 col-md-6  input form-group">
             <label for="InputFirstName">First Name:</label>
             <InputText id="InputFirstName" class="form-control" @bind-Value="@userDetails.FirstName"/>
             <ValidationMessage For="@(() => userDetails.FirstName)"/>
         </div>
 
-        <div class="col input form-group">
+        <div class="col-sm-12 col-md-6 input form-group">
             <label for="InputLastName">Last Name:</label>
             <InputText id="InputLastName" class="form-control" @bind-Value="@userDetails.LastName"/>
             <ValidationMessage For="@(() => userDetails.LastName)"/>
@@ -27,13 +27,13 @@
     </div>
     
     <div class="row">
-    <div class="col input form-group">
+    <div class="col-sm-12 col-md-6 input form-group">
         <label for="InputEmail">Email:</label>
         <InputText id="InputEmail" class="form-control" @bind-Value="@userDetails.Email"/>
         <ValidationMessage For="@(() => userDetails.Email)"/>
     </div>
     
-    <div class="col input form-group">
+    <div class="col-sm-12 col-md-6 input form-group">
         <label for="InputUsername">Username:</label>
         <input type="text" id="InputUsername" class="form-control" @bind="Username" @bind:event="oninput"/>
         <ValidationMessage For="@(() => userDetails.Username)"/>
@@ -44,13 +44,13 @@
     </div>
 
     <div class="row">
-           <div class="col input form-group">
+           <div class="col-sm-12 col-md-6 input form-group">
             <label for="InputPassword">Password:</label>
             <InputText id="InputPassword" type="password" class="form-control" @bind-Value="@userDetails.Password"/>
             <ValidationMessage For="@(() => userDetails.Password)"/>
             </div>
 
-            <div class="col input form-group">
+            <div class="col-sm-12 col-md-6 input form-group">
                 <label for="InputComparePassword">Confirm Password:</label>
                 <InputText id="InputComparePassword" type="password" class="form-control" @bind-Value="@userDetails.ComparePassword"/>
                 <ValidationMessage For="@(() => userDetails.ComparePassword)"/>
