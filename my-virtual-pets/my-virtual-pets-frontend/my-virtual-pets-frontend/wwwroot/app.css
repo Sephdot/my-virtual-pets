@@ -318,23 +318,32 @@ h2.pixeltext {
     background-color: var(--tertiary-color);
 }
 
-#formcenter a {
-    font-style: italic;
-    font-size: 10px;
-    color: slategrey;
+#formcenter > .link-container {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+#formcenter > .link-container > a {
     text-decoration: underline;
+    cursor: pointer;
+    font-style: normal;
+    color: var(--secondary-color);
+}
+
+#formcenter > .link-container > a:hover {
+    font-style: italic;
 }
 
 .input {
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 1.25em;
 }
 
 .delete {
     cursor: pointer;
     position: absolute; 
     right: 10px; 
-    top: 0px;
+    top: 0;
 }
 
 #trash:hover {

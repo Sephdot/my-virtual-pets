@@ -1,52 +1,62 @@
+@using System.Diagnostics
 @using System.Net
+@using System.Security.Claims
 @using my_virtual_pets_class_library.DTO
 @inject NavigationManager NavMan 
-@inject AuthenticationStateProvider AuthState
+@inject AuthenticationStateProvider CustomAuth
+@inject CustomAuthenticationService AuthService
+
 @rendermode InteractiveServer
 
 <div class="container">
-<EditForm FormName="Login" Model="@userDetails" OnInvalidSubmit="HandleInvalidSubmit" OnValidSubmit="HandleValidSubmit">
-    <DataAnnotationsValidator/>
+    @if (_redirecting)
+    {
+        <h3>Success! Redirecting you to add your first pet: @_redirectSecondsRemaining</h3>
+    }
+    else
+    {
+        <EditForm FormName="Login" Model="@userDetails" OnInvalidSubmit="HandleInvalidSubmit" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator/>
 
-    <div class="row">
-        <div class="col input form-group">
-            <label for="InputFirstName">First Name:</label>
-            <InputText id="InputFirstName" class="form-control" @bind-Value="@userDetails.FirstName"/>
-            <ValidationMessage For="@(() => userDetails.FirstName)"/>
+        <div class="row">
+            <div class="col input form-group">
+                <label for="InputFirstName">First Name:</label>
+                <InputText id="InputFirstName" class="form-control" @bind-Value="@userDetails.FirstName"/>
+                <ValidationMessage For="@(() => userDetails.FirstName)"/>
+            </div>
+
+            <div class="col input form-group">
+                <label for="InputLastName">Last Name:</label>
+                <InputText id="InputLastName" class="form-control" @bind-Value="@userDetails.LastName"/>
+                <ValidationMessage For="@(() => userDetails.LastName)"/>
+            </div>
         </div>
 
-        <div class="col input form-group">
-            <label for="InputLastName">Last Name:</label>
-            <InputText id="InputLastName" class="form-control" @bind-Value="@userDetails.LastName"/>
-            <ValidationMessage For="@(() => userDetails.LastName)"/>
-        </div>
-    </div>
-
-    <div style="height:8px">
-    </div>
-    
-    <div class="row">
-    <div class="col input form-group">
-        <label for="InputEmail">Email:</label>
-        <InputText id="InputEmail" class="form-control" @bind-Value="@userDetails.Email"/>
-        <ValidationMessage For="@(() => userDetails.Email)"/>
-    </div>
-    
-    <div class="col input form-group">
-        <label for="InputUsername">Username:</label>
-        <input type="text" id="InputUsername" class="form-control" @bind="Username" @bind:event="oninput"/>
-        <ValidationMessage For="@(() => userDetails.Username)"/>
         <div style="height:8px">
-            <p style="color: @color">@UsernameTaken</p>
         </div>
-    </div>
-    </div>
 
-    <div class="row">
-           <div class="col input form-group">
-            <label for="InputPassword">Password:</label>
-            <InputText id="InputPassword" type="password" class="form-control" @bind-Value="@userDetails.Password"/>
-            <ValidationMessage For="@(() => userDetails.Password)"/>
+        <div class="row">
+            <div class="col input form-group">
+                <label for="InputEmail">Email:</label>
+                <InputText id="InputEmail" class="form-control" @bind-Value="@userDetails.Email"/>
+                <ValidationMessage For="@(() => userDetails.Email)"/>
+            </div>
+
+            <div class="col input form-group">
+                <label for="InputUsername">Username:</label>
+                <input type="text" id="InputUsername" class="form-control" @bind="Username" @bind:event="oninput"/>
+                <ValidationMessage For="@(() => userDetails.Username)"/>
+                <div style="height:8px">
+                    <p style="color: @color">@UsernameTaken</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col input form-group">
+                <label for="InputPassword">Password:</label>
+                <InputText id="InputPassword" type="password" class="form-control" @bind-Value="@userDetails.Password"/>
+                <ValidationMessage For="@(() => userDetails.Password)"/>
             </div>
 
             <div class="col input form-group">
@@ -55,25 +65,28 @@
                 <ValidationMessage For="@(() => userDetails.ComparePassword)"/>
             </div>
 
-        <div style="height:8px">
+            <div style="height:8px">
+            </div>
+
         </div>
-            
-    </div>
 
-    <div class="row">
-        <p style="font-size:10px">By submitting this form you are agreeing to our service and privacy policy</p>
-    </div>
-    
-    <h6 style="color:red">@Feedback</h6>
-    
-    <button id="input registerbutton" class="btn btn-light d-block mx-auto mt-4" type="submit">Enter the doghouse</button>
+        <div class="row">
+            <p>By submitting this form you are agreeing to our service and privacy policy</p>
+        </div>
 
-</EditForm>
+        <h6 class="text-danger">@Feedback</h6>
+
+        <button id="input registerbutton" class="btn btn-light d-block mx-auto mt-4" type="submit">Enter the doghouse</button>
+
+    </EditForm>
+    }
+    
 </div>
 
 @code {
+    [Parameter] public EventCallback<bool> OnSignUpProcessing { get; set; }
     
-    public NewUserDTO userDetails { get; set; } 
+    public NewUserDTO userDetails { get; set; }
     
     private string username = "";
 
@@ -93,6 +106,9 @@
     public string UsernameTaken { get; set; }
     
     public string color { get; set; } = "green";
+
+    private bool _redirecting;
+    private int _redirectSecondsRemaining = 3;
      
     protected override void OnInitialized()
     {
@@ -102,7 +118,7 @@
 
     public async Task CheckUsernameAsync()
     {
-        var webclient = new BackendClient<BoolReturn>($"api/User/CheckUsername/{Username}", AuthState);
+        var webclient = new BackendClient<BoolReturn>($"api/User/CheckUsername/{Username}", CustomAuth);
         BoolReturn UsernameCheck = await webclient.GetRequest();
         if (UsernameCheck != null)
         {
@@ -134,17 +150,67 @@
 
     public async Task HandleValidSubmit()
     {
-        var webclient = new BackendClient<NewUserDTO>("api/user/register", AuthState);
+        var webclient = new BackendClient<NewUserDTO>("api/user/register", CustomAuth);
         var response = await webclient.PostRequest(userDetails);
         if (response.StatusCode == HttpStatusCode.Created)
         {
-            userDetails = new NewUserDTO();
-            Username = "";
-            NavMan.Refresh(true);
-        } else if (response.StatusCode == HttpStatusCode.BadRequest)
+            UserLoginDTO newLoginDetails = new()
+            {
+                Username = userDetails.Username,
+                Password = userDetails.Password
+            };
+            await OnSignUpProcessing.InvokeAsync();
+            await AutoLogIn(newLoginDetails);
+            await RedirectToAddPet();
+        } 
+        else if (response.StatusCode == HttpStatusCode.BadRequest)
         {
             Feedback =  await response.Content.ReadAsStringAsync();  
         }
     }
 
+    private async Task AutoLogIn(UserLoginDTO newLoginDetails)
+    {
+        HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, "https://localhost:7091/api/user/login");
+        requestMessage.Content = JsonContent.Create(newLoginDetails);
+        var client = new HttpClient();
+        var response = await client.SendAsync(requestMessage);    
+        
+        if (response.StatusCode == HttpStatusCode.OK)
+        {
+            var tokenResponse = await response.Content.ReadFromJsonAsync<TokenResponse>();
+            if (tokenResponse != null)
+            {
+                var identity = new ClaimsIdentity(
+                    [
+                        new Claim(ClaimTypes.Name, newLoginDetails.Username),
+                        new Claim(ClaimTypes.Hash, tokenResponse.Token),
+                        new Claim(ClaimTypes.NameIdentifier, tokenResponse.UserId)
+                    ],
+                    "Custom Authentication");
+                
+                AuthService.CurrentUser = new ClaimsPrincipal(identity);
+            }
+        } 
+        else if (response.StatusCode == HttpStatusCode.BadRequest)
+        {
+            Feedback = await response.Content.ReadAsStringAsync();   
+            Console.WriteLine(Feedback);
+        }
+    }
+
+    private async Task RedirectToAddPet()
+    {
+        _redirecting = true;
+        StateHasChanged();
+
+        int initial = _redirectSecondsRemaining;
+        for (int i = 0; i < initial; i++)
+        {
+            await Task.Delay(1000);
+            _redirectSecondsRemaining--;
+            StateHasChanged();
+        }
+        NavMan.NavigateTo("/add-pet");
+    }
 }
