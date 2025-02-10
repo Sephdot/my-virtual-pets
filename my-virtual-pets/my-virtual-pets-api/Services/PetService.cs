@@ -1,10 +1,8 @@
-﻿using Microsoft.Extensions.Hosting;
-using my_virtual_pets_api.Entities;
+﻿using my_virtual_pets_api.Entities;
 using my_virtual_pets_api.Repositories.Interfaces;
 using my_virtual_pets_api.Services.Interfaces;
 using my_virtual_pets_class_library.DTO;
 using my_virtual_pets_class_library.Enums;
-using System.Diagnostics;
 
 namespace my_virtual_pets_api.Services
 {
@@ -19,28 +17,28 @@ namespace my_virtual_pets_api.Services
             _petRepository = petRepository;
             _imagesService = imagesService;
         }
-        public List<Pet> GetPets()
+        public async Task<List<Pet>> GetPets()
         {
-            return _petRepository.GetPets();
+            return await _petRepository.GetPets();
         }
-        public List<PetCardDataDTO> GetPetsByUser(Guid userId)
+        public async Task<List<PetCardDataDTO>> GetPetsByUser(Guid userId)
         {
-            return _petRepository.GetAllPetsByUserID(userId);
-        }
-
-        public PetCardDataDTO GetPetById(Guid petId)
-        {
-            return _petRepository.GetPetById(petId);
+            return await _petRepository.GetAllPetsByUserID(userId);
         }
 
-        public PetCardDataDTO AddPet(AddPetDTO petData)
+        public async Task<PetCardDataDTO?> GetPetById(Guid petId)
+        {
+            return await _petRepository.GetPetById(petId);
+        }
+
+        public async Task<PetCardDataDTO> AddPet(AddPetDTO petData)
         {
             Guid imageId = _imagesService.AddImage(petData.ImageUrl);
             int score = GenerateScore(petData);
-            return _petRepository.AddPet(petData, imageId, score);
+            return await _petRepository.AddPet(petData, imageId, score);
         }
 
-        public int GenerateScore(AddPetDTO pet)
+        private int GenerateScore(AddPetDTO pet)
         {
             Random rnd = new Random();
             int roll1 = rnd.Next(90);
@@ -52,16 +50,16 @@ namespace my_virtual_pets_api.Services
             {
                 case Personality.BOLD:
                 case Personality.BRAVE:
-                    baseScore *= 1.1f;
-                    break;
+                baseScore *= 1.1f;
+                break;
                 case Personality.TIMID:
                 case Personality.QUIET:
-                    baseScore *= 0.95f;
-                    break;
+                baseScore *= 0.95f;
+                break;
                 case Personality.NAUGHTY:
                 case Personality.HASTY:
-                    baseScore *= 0.9f;
-                    break;
+                baseScore *= 0.9f;
+                break;
             }
 
             if (String.IsNullOrEmpty(pet.Description)) baseScore *= 0.8f;
@@ -69,29 +67,29 @@ namespace my_virtual_pets_api.Services
             return ((int)baseScore);
 
         }
-        public void IncreaseScore(Guid petId)
+        public async Task IncreaseScore(Guid petId)
         {
-            _petRepository.IncreaseScore(petId);
+            await _petRepository.IncreaseScore(petId);
         }
         public void DecreaseScore(Guid petId)
         {
             _petRepository.DecreaseScore(petId);
         }
 
-        public List<PetCardDataDTO> GetTop10Pets()
+        public async Task<List<PetCardDataDTO>?> GetTop10Pets()
         {
-            return _petRepository.GetTop10Pets();
+            return await _petRepository.GetTop10Pets();
         }
 
-        public List<PetCardDataDTO> GetRecentPets()
+        public async Task<List<PetCardDataDTO>?> GetRecentPets()
         {
-            return _petRepository.GetRecentPets();
+            return await _petRepository.GetRecentPets();
         }
 
-        public bool DeletePet(Guid petId)
+        public async Task<bool> DeletePet(Guid petId)
         {
-            return _petRepository.DeletePet(petId);
+            return await _petRepository.DeletePet(petId);
         }
-        
+
     }
 }
