@@ -22,13 +22,12 @@
         <DataAnnotationsValidator/>
         <div class="form-group">
             <div>
-                Top Tips For Best Results:
+                Top Tips:
                 <ul>
                     <li>JPG or PNG image type</li>
                     <li>One pet per picture</li>
                     <li>Plain background, coloured differently to your pet</li>
                     <li>Upload a square image</li>
-                    <li>Make sure your pet is either a cat, dog, rabbit, bird or fish</li>
                 </ul>
             </div>
             <InputFile
@@ -137,11 +136,9 @@
 
             if (postResponse.StatusCode == HttpStatusCode.OK)
             {
-            
                 Stream responseStream = await postResponse.Content.ReadAsStreamAsync();
                 ImagesResponseDTO imagesResponseDto = await JsonSerializer.DeserializeAsync<ImagesResponseDTO>(responseStream) 
                                                       ?? throw new Exception("Something went wrong!");
-            
                 PetDetails.PetType = imagesResponseDto.PetType;
                 PetDetails.ImageUrl = imagesResponseDto.ImageUrl;
             
@@ -149,8 +146,12 @@
             }
             else
             {
-                _feedbackMessage = "Try again, that image wasn't accepted.";
-                _feedbackMessage = "text-danger";
+                Console.WriteLine($"HELLO FROM FRONTEND: {postResponse.StatusCode} {await postResponse.Content.ReadAsStringAsync()}");
+
+                _feedbackMessage = postResponse.StatusCode == HttpStatusCode.BadRequest
+                    ? "Too many pets in that pic, try a different shot!"
+                    : "Try again, that image wasn't accepted.";
+                _feedbackCssStyle = "text-danger";
             }
             
             Console.WriteLine($"Response body: {await postResponse.Content.ReadAsStringAsync()}; Status code: {postResponse.StatusCode}");

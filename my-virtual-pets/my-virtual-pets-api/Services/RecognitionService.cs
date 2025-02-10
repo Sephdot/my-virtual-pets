@@ -40,7 +40,12 @@ namespace ImageRecognition
             var deserializedResult = await Deserialize(result);
             if (deserializedResult != null)
             {
-                if (CheckIfAnimal(deserializedResult)) return deserializedResult;
+                Console.WriteLine("deserialized image isn't null");
+                if (CheckIfAnimal(deserializedResult))
+                {
+                    Console.WriteLine("deserialized image is an animal");
+                    return deserializedResult;
+                }
             }
             return null;
         }
@@ -72,6 +77,7 @@ namespace ImageRecognition
                 content.Add(new StringContent($"dragoneye/animals"), "model_name");
                 request.Content = content;
                 var response = await client.SendAsync(request);
+                // Console.WriteLine(await response.Content.ReadAsStringAsync());
                 response.EnsureSuccessStatusCode();
                 var result = await response.Content.ReadAsStringAsync();
                 return result;
@@ -97,44 +103,40 @@ namespace ImageRecognition
 
         public async Task<IPredicted?> Deserialize(string predictionJson)
         {
-            try
+            byte[] byteArray = Encoding.UTF8.GetBytes(predictionJson);
+            MemoryStream stream = new MemoryStream(byteArray);
+            Root predictionObj = await JsonSerializer.DeserializeAsync<Root>(stream);
+            Console.WriteLine(predictionObj.predictions);
+            if (predictionObj.predictions.Count > 1)
             {
-                byte[] byteArray = Encoding.UTF8.GetBytes(predictionJson);
-                MemoryStream stream = new MemoryStream(byteArray);
-                Root predictionObj = await JsonSerializer.DeserializeAsync<Root>(stream);
-                Console.WriteLine(predictionObj.predictions);
-                if (predictionObj.predictions.Count > 1)
-                {
-                    throw new Exception("Image contains more than one subject.");
-                }
-                IPredicted jsonData = predictionObj.predictions[0].category;
-                while (jsonData.children.Count > 0)
-                {
-                    jsonData = jsonData.children[0];
-                }
-                Random random = new Random();
-                jsonData.rarity = random.Next(0, 100);
-                Console.WriteLine(jsonData.GetType());
-                Console.WriteLine(jsonData.name);
-                Console.WriteLine(jsonData.rarity);
-                return jsonData;
+                throw new ArgumentException("Image contains more than one subject."); // only argumentexception don't change it
             }
-            catch (Exception ex)
+            IPredicted jsonData = predictionObj.predictions[0].category;
+            Console.WriteLine(jsonData.children.Count);
+            while (jsonData.children.Count > 0)
             {
-                return null;
+                Console.WriteLine(jsonData.children[0].name);
+                jsonData = jsonData.children[0];
             }
+            Random random = new Random();
+            jsonData.rarity = random.Next(0, 100);
+            Console.WriteLine(jsonData.GetType());
+            Console.WriteLine(jsonData.name);
+            Console.WriteLine(jsonData.rarity);
+            return jsonData;
         }
 
         public bool CheckIfAnimal(IPredicted animal)
         {
-            // List<string> validAnimals = new List<string>{  "cat", "dog", "fish", "rabbit", "horse" }
             PetType[] petTypes = Enum.GetValues(typeof(PetType)).Cast<PetType>().ToArray();
             List<string> validAnimals = new List<string>();
+            Console.WriteLine("------------Accepted Pet Types------------");
             for (int i = 0; i < petTypes.Length; i++)
-            { 
-                validAnimals.Add(petTypes[i].ToString().ToLower());
-                Console.WriteLine(validAnimals[i]);
+            {
+                validAnimals.Add(petTypes[i].ToString().ToLower().Replace('_', ' '));
+                Console.Write($"[{i}: {validAnimals[i]}], ");
             }
+            Console.WriteLine("\n------------------------------------------");
             try
             {
                 var result = validAnimals.Contains(animal.name);

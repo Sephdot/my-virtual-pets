@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using Microsoft.IdentityModel.Tokens;
 using my_virtual_pets_api.Services.Interfaces;
 using my_virtual_pets_class_library.DTO;
@@ -212,20 +213,20 @@ namespace my_virtual_pets_api.Controllers
 
         [Authorize]
         [HttpPut("update")]
-        public IActionResult UpdateUser([FromBody] UpdateUserDTO updateduser)
+        public IActionResult UpdateUser([FromBody] UpdateUserDTO updateduser, string currentPassword)
         {
             try
             {
-                _userService.UpdateUser(updateduser);
+                _userService.UpdateUser(updateduser, currentPassword);
                 return Ok("User updated successfully.");
             }
-            catch (KeyNotFoundException knfEx)
+            catch (KeyNotFoundException keyNFEx)
             {
-                return NotFound(knfEx.Message);
+                return NotFound(keyNFEx.Message);
             }
-            catch (InvalidOperationException invOpEx)
+            catch (InvalidOperationException invalidOpEx)
             {
-                return BadRequest(invOpEx.Message);
+                return BadRequest(invalidOpEx.Message);
             }
             catch (Exception ex)
             {

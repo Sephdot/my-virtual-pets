@@ -71,6 +71,10 @@ namespace my_virtual_pets_api.Services
         {
             await _petRepository.IncreaseScore(petId);
         }
+        public void DecreaseScore(Guid petId)
+        {
+            _petRepository.DecreaseScore(petId);
+        }
 
         public async Task<List<PetCardDataDTO>?> GetTop10Pets()
         {

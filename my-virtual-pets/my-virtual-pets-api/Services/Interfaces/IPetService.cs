@@ -13,5 +13,7 @@ namespace my_virtual_pets_api.Services.Interfaces
         Task<List<PetCardDataDTO>?> GetTop10Pets();
         Task<List<PetCardDataDTO>?> GetRecentPets();
         Task IncreaseScore(Guid petId);
+        //Make this async
+        public void DecreaseScore(Guid petId);
     }
 }

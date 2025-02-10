@@ -159,13 +159,21 @@ namespace my_virtual_pets_api.Repositories
         }
 
         
-        public bool UpdateUser(UpdateUserDTO updatedUser)
+        public bool UpdateUser(UpdateUserDTO updatedUser, string currentPassword)
         {
             var globalUser = _context.GlobalUsers.FirstOrDefault(u => u.Id == updatedUser.UserId);
             if (globalUser == null)
             {
                 throw new KeyNotFoundException(" user not found.");
             }
+
+            var localUser = _context.LocalUsers.FirstOrDefault(lu => lu.GlobalUserId == updatedUser.UserId);
+
+            if (localUser == null || !BCrypt.Net.BCrypt.Verify(currentPassword, localUser.Password))
+            {
+                throw new UnauthorizedAccessException("Current password is incorrect.");
+            }
+
 
             if (!string.IsNullOrWhiteSpace(updatedUser.NewUsername))
             {
@@ -178,7 +186,6 @@ namespace my_virtual_pets_api.Repositories
 
             if (!string.IsNullOrWhiteSpace(updatedUser.NewPassword))
             {
-                var localUser = _context.LocalUsers.FirstOrDefault(lu => lu.GlobalUserId == updatedUser.UserId);
                 if (localUser == null)
                 {
                     throw new KeyNotFoundException("user record not found.");

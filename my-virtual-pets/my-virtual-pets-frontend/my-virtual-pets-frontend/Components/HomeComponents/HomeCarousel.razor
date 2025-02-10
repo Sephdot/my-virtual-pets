@@ -1,5 +1,7 @@
 @using my_virtual_pets_class_library.DTO
 @using my_virtual_pets_frontend.Components.DisplayCards
+@rendermode InteractiveServer
+
 <Carousel Autoplay="CarouselAutoPlay.StartOnPageLoad" Interval="1000">
     <CarouselItem Active="true">
         <LeadershipCard petCard="PetCardDataDTOs[0]"></LeadershipCard>

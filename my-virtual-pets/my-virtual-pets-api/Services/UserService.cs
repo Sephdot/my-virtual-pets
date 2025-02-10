@@ -76,12 +76,17 @@ namespace my_virtual_pets_api.Services
 
         public bool RemoveFromFavourites(Guid GlobalUserId, Guid PetId)
         {
-            return _userRepository.RemoveFromFavourites(GlobalUserId, PetId);
+            var request = _userRepository.RemoveFromFavourites(GlobalUserId, PetId);
+            if (request)
+            {
+                _petService.DecreaseScore(PetId);
+            }
+            return request;
         }
 
-        public bool UpdateUser(UpdateUserDTO updateDto)
+        public bool UpdateUser(UpdateUserDTO updatedUser, string currentPassword)
         {
-            return _userRepository.UpdateUser(updateDto);
+            return _userRepository.UpdateUser(updatedUser, currentPassword);
         }
 
         public bool IsFavourited(Guid GlobalUserId, Guid PetId)

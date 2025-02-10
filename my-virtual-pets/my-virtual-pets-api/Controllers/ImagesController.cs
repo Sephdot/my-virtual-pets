@@ -19,7 +19,7 @@ public class ImagesController : ControllerBase
         _pixelate = pixelate;
     }
 
-    [Authorize]
+    // [Authorize]
     [HttpPost]
     public async Task<IActionResult> PostImage(byte[] inputImage)
     {
@@ -28,6 +28,10 @@ public class ImagesController : ControllerBase
             ImagesResponseDTO? result = await _imagesService.ProcessImageAsync(inputImage);
             if (result == null) return BadRequest("Invalid pet type.");
             return Ok(result);
+        }
+        catch (ArgumentException ex)
+        {
+            return StatusCode(400, ex.Message); // this will trigger when there are too many animals in a photo, please dont change
         }
         catch (Exception ex)
         {
