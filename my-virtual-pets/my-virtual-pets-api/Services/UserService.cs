@@ -37,21 +37,7 @@ namespace my_virtual_pets_api.Services
             Guid globalUserId = _userRepository.CreateNewGlobalUser(newUserDto);
             _userRepository.CreateNewLocalUser(newUserDto, globalUserId);
         }
-        
-        public Guid CreateNewAuthUser(string email, string fullname, string authid)
-        {
-            Guid globalUserId; 
-            if (!_userRepository.ExistsByEmail(email))
-            {
-                globalUserId = _userRepository.CreateNewGlobalUser(email);
-                _userRepository.CreateNewAuthUser(fullname, authid, globalUserId);
-            } else
-            {
-                globalUserId = _userRepository.GetUserIdByEmail(email);
-            }
-            return globalUserId;
-        }
-        
+
 
         public bool DoesPasswordMatch(UserLoginDTO userLoginDto)
         {
@@ -127,5 +113,22 @@ namespace my_virtual_pets_api.Services
                 return false;
             }
         }
+        
+                
+        public Guid CreateNewAuthUser(string email, string fullname, string authid)
+        {
+            Guid globalUserId; 
+            if (!_userRepository.ExistsByEmail(email))
+            {
+                globalUserId = _userRepository.CreateNewGlobalUser(email);
+                _userRepository.CreateNewAuthUser(fullname, authid, globalUserId);
+            } else
+            {
+                globalUserId = _userRepository.GetUserIdByEmail(email);
+            }
+            return globalUserId;
+        }
+
+        
     }
 }

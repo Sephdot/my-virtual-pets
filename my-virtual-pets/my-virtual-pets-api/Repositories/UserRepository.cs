@@ -60,19 +60,6 @@ namespace my_virtual_pets_api.Repositories
             return newLocalUser.Id;
         }
 
-        public Guid CreateNewAuthUser(string fullname, string authId, Guid globalUserId)
-        {
-            AuthUser newAuthUser = new AuthUser() { FullName = fullname, Auth0Id = authId, GlobalUserId = globalUserId };
-            _context.AuthUsers.Add(newAuthUser);
-            _context.SaveChanges();
-            return newAuthUser.Id;
-        }
-
-        public Guid GetUserIdByEmail(string email)
-        {
-            return _context.GlobalUsers.FirstOrDefault(u => u.Email == email).Id;
-        }
-        
         public string GetPassword(string username)
         {
             var userGuid = _context.GlobalUsers.FirstOrDefault(u => u.Username == username).Id;
@@ -213,6 +200,21 @@ namespace my_virtual_pets_api.Repositories
             _context.SaveChanges();
             return true;
         }
+        
+        
+        public Guid CreateNewAuthUser(string fullname, string authId, Guid globalUserId)
+        {
+            AuthUser newAuthUser = new AuthUser() { FullName = fullname, Auth0Id = authId, GlobalUserId = globalUserId };
+            _context.AuthUsers.Add(newAuthUser);
+            _context.SaveChanges();
+            return newAuthUser.Id;
+        }
+
+        public Guid GetUserIdByEmail(string email)
+        {
+            return _context.GlobalUsers.FirstOrDefault(u => u.Email == email).Id;
+        }
+
 
     }
 }
