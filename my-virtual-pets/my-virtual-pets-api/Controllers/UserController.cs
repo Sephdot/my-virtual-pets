@@ -26,13 +26,13 @@ namespace my_virtual_pets_api.Controllers
 
 
         [HttpPost("register")]
-        public IActionResult NewLocalUser(NewUserDTO newUserDto)
+        public async Task<IActionResult> NewLocalUser(NewUserDTO newUserDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            if (_userService.ExistsByEmail(newUserDto.Email)) return BadRequest("Email already registered");
-            if (_userService.ExistsByUsername(newUserDto.Username)) return BadRequest("Username already taken");
+            if (await _userService.ExistsByEmail(newUserDto.Email)) return BadRequest("Email already registered");
+            if (await _userService.ExistsByUsername(newUserDto.Username)) return BadRequest("Username already taken");
 
-            _userService.CreateNewLocalUser(newUserDto);
+            await _userService.CreateNewLocalUser(newUserDto);
 
             return Created("/register", "New local user created");
         }
@@ -41,10 +41,10 @@ namespace my_virtual_pets_api.Controllers
         public async Task<IActionResult> LoginAsync(UserLoginDTO userLoginDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            if (!_userService.ExistsByUsername(userLoginDto.Username)) return BadRequest("This username does not exist");
-            if (!_userService.DoesPasswordMatch(userLoginDto)) return BadRequest("Password is incorrect");
+            if (!await _userService.ExistsByUsername(userLoginDto.Username)) return BadRequest("This username does not exist");
+            if (!await _userService.DoesPasswordMatch(userLoginDto)) return BadRequest("Password is incorrect");
 
-            Guid userId = _userService.GetUserIdByUsername(userLoginDto.Username);
+            Guid userId = await _userService.GetUserIdByUsername(userLoginDto.Username);
 
             var claims = new[]
             {
@@ -74,9 +74,9 @@ namespace my_virtual_pets_api.Controllers
         
         [Authorize]
         [HttpGet("{userId}")]
-        public IActionResult GetUserDetailsByUserId(Guid userId)
+        public async Task<IActionResult> GetUserDetailsByUserId(Guid userId)
         {
-            var userDisplayDTO = _userService.GetUserDetailsByUserId(userId);
+            var userDisplayDTO = await _userService.GetUserDetailsByUserId(userId);
 
             try
             {
@@ -95,11 +95,11 @@ namespace my_virtual_pets_api.Controllers
         [Authorize]
         [HttpPost]
         [Route("AddToFavourites")]
-        public IActionResult AddPetToFavourites(Favourites favourites)
+        public async Task<IActionResult> AddPetToFavourites(Favourites favourites)
         {
             try
             {
-                bool isSuccess = _userService.AddToFavourites(favourites.GlobalUserId, favourites.PetId);
+                bool isSuccess = await _userService.AddToFavourites(favourites.GlobalUserId, favourites.PetId);
                 if (isSuccess) return NoContent();
                 else return Conflict("Pet is already favourited");
             }
@@ -116,11 +116,11 @@ namespace my_virtual_pets_api.Controllers
         [Authorize]
         [HttpGet]
         [Route("{GlobalUserId}/FavouritePetIds")]
-        public IActionResult GetFavouritePetIds(Guid GlobalUserId)
+        public async Task<IActionResult> GetFavouritePetIds(Guid GlobalUserId)
         {
             try
             {
-                var favouritePetIds = _userService.GetFavouritePetId(GlobalUserId);
+                var favouritePetIds = await _userService.GetFavouritePetId(GlobalUserId);
                 return Ok(favouritePetIds);
             }
             catch (KeyNotFoundException ex)
@@ -136,11 +136,11 @@ namespace my_virtual_pets_api.Controllers
         [Authorize]
         [HttpGet]
         [Route("{GlobalUserId}/FavouritePets")]
-        public IActionResult GetFavouritePets(Guid GlobalUserId)
+        public async Task<IActionResult> GetFavouritePets(Guid GlobalUserId)
         {
             try
             {
-                var favouritePets = _userService.GetFavouritePets(GlobalUserId);
+                var favouritePets = await _userService.GetFavouritePets(GlobalUserId);
                 return Ok(favouritePets);
             }
             catch (KeyNotFoundException ex)
@@ -156,11 +156,11 @@ namespace my_virtual_pets_api.Controllers
         [Authorize]
         [HttpDelete]
         [Route("{GlobalUserId}/RemoveFromFavourites/{PetId}")]
-        public IActionResult RemoveFromFavourite(Guid GlobalUserId, Guid PetId)
+        public async Task<IActionResult> RemoveFromFavourite(Guid GlobalUserId, Guid PetId)
         {
             try
             {
-                bool isSuccess = _userService.RemoveFromFavourites(GlobalUserId, PetId);
+                bool isSuccess = await _userService.RemoveFromFavourites(GlobalUserId, PetId);
                 if (isSuccess) return NoContent();
                 else return Conflict("Pet is already unfavourited");
 
@@ -177,12 +177,12 @@ namespace my_virtual_pets_api.Controllers
 
         [HttpGet]
         [Route("CheckUsername/{username}")]
-        public IActionResult CheckUsername(string username)
+        public async Task<IActionResult> CheckUsername(string username)
         {
             Console.WriteLine(username);
             try
             {
-                bool exists = _userService.ExistsByUsername(username);
+                bool exists = await _userService.ExistsByUsername(username);
                 Console.WriteLine(exists);
                 return (Ok( new BoolReturn(){ IsTrue = exists} ));
             }
@@ -194,11 +194,11 @@ namespace my_virtual_pets_api.Controllers
 
         [HttpGet]
         [Route("CheckEmail/{email}")]
-        public IActionResult CheckEmail(string email)
+        public async Task<IActionResult> CheckEmail(string email)
         {
             try
             {
-                bool exists = _userService.ExistsByEmail(email);
+                bool exists = await _userService.ExistsByEmail(email);
                 return (Ok( new BoolReturn(){ IsTrue = exists} ));
             }
             catch (FormatException ex)
@@ -213,16 +213,16 @@ namespace my_virtual_pets_api.Controllers
 
         [Authorize]
         [HttpPut("update")]
-        public IActionResult UpdateUser([FromBody] UpdateUserDTO updateduser, string currentPassword)
+        public async Task<IActionResult> UpdateUser([FromBody] UpdateUserDTO updateduser, string currentPassword)
         {
             try
             {
-                _userService.UpdateUser(updateduser, currentPassword);
+                await _userService.UpdateUser(updateduser, currentPassword);
                 return Ok("User updated successfully.");
             }
-            catch (KeyNotFoundException keyNFEx)
+            catch (KeyNotFoundException knfEx)
             {
-                return NotFound(keyNFEx.Message);
+                return NotFound(knfEx.Message);
             }
             catch (InvalidOperationException invalidOpEx)
             {
