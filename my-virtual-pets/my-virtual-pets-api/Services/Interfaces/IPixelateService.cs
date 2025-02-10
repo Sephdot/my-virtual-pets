@@ -2,6 +2,6 @@
 {
     public interface IPixelateService
     {
-        public byte[] PixelateImage(byte[] image, int blockSize, bool usePalette = false);
+        public byte[] PixelateImage(byte[] image, int blockSize, bool isShiny);
     }
 }

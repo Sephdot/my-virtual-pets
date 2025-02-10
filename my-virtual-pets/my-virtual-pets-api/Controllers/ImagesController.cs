@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using my_virtual_pets_api.Services.Interfaces;
 using my_virtual_pets_class_library.Enums;
 
@@ -19,8 +18,8 @@ public class ImagesController : ControllerBase
         _pixelate = pixelate;
     }
 
-
-    [Authorize(AuthenticationSchemes = "loginjwt")]
+    //This attribute is causing issues apparently?
+    //[Authorize(AuthenticationSchemes = "loginjwt")]
     [HttpPost]
     public async Task<IActionResult> PostImage(byte[] inputImage)
     {
