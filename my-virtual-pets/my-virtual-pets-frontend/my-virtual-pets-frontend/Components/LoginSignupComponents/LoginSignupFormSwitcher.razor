@@ -9,7 +9,7 @@
     {
           <SignupForm OnSignUpProcessing="HandleRedirectToAddPet"></SignupForm>
     }
-    <div class="link-container mt-4">
+    <div class="@(IsRedirectingToAddPet ? "" : "link-container mt-4")">
         <a @onclick="ToggleForm">
             @(IsRedirectingToAddPet
                 ? ""

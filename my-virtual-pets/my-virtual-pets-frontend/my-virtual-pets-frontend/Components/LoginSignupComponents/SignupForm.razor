@@ -11,7 +11,9 @@
 <div class="container">
     @if (_redirecting)
     {
-        <h3>Success! Redirecting you to add your first pet: @_redirectSecondsRemaining</h3>
+        <div class="">
+            <h3 class="d-flex justify-content-center align-items-center mb-0 text-center">Success! Redirecting you to add your first pet: @_redirectSecondsRemaining</h3>
+        </div>
     }
     else
     {
@@ -207,7 +209,7 @@
         int initial = _redirectSecondsRemaining;
         for (int i = 0; i < initial; i++)
         {
-            await Task.Delay(1000);
+            await Task.Delay(100000);
             _redirectSecondsRemaining--;
             StateHasChanged();
         }
