@@ -18,6 +18,7 @@ namespace my_virtual_pets_api.Data
         public DbSet<Favourite> Favorites { get; set; }
 
         int SaveChanges();
+
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
     }

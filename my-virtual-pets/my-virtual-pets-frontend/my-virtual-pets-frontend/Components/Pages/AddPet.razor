@@ -2,15 +2,27 @@
 @using my_virtual_pets_class_library.DTO
 @using my_virtual_pets_frontend.Components.AddPetComponents
 @using my_virtual_pets_class_library.Enums
+@using my_virtual_pets_frontend.Components.LoginSignupComponents
 @inject NavigationManager Navigation;
 @inject AuthenticationStateProvider AuthStateProvider;
-
 @rendermode InteractiveServer
 
 @page "/add-pet"
 
-<PageTitle>Add a Pet | MyVirtualPets</PageTitle>
+<PageTitle>Add Pet | MyVirtualPets</PageTitle>
 <AuthorizeView>
+    <NotAuthorized>
+        <section class="container text-center">
+            <div class="container">
+                <h1 class="fw-bold py-6">Add Pet</h1>
+                <p>Login to add a pet</p>
+                <CascadingValue Value="Refresh">
+                    <LoginSignupFormSwitcher></LoginSignupFormSwitcher>
+                </CascadingValue>
+                <hr class="my-4"/>
+            </div>
+        </section>
+    </NotAuthorized>
     <Authorized>
         <div class="container">
             <h1 class="text-center mb-5">Add a Pet!</h1>
@@ -51,17 +63,15 @@
             </div>
         </div>
     </Authorized>
-    <NotAuthorized>
-        @{
-            Navigation.NavigateTo("/login");
-        }
-    </NotAuthorized>
 </AuthorizeView>
 
 
 
+
 @code {
-    [CascadingParameter] public required AddPetDTO PetDetails { get; set; }
+    [CascadingParameter] public required AddPetDTO? PetDetails { get; set; }
+    
+    public bool Refresh { get; set; } = true;
 
     private bool _isSuccessfulUpload;
     private bool _isSuccessfulPetPost;
@@ -71,21 +81,20 @@
     {
         var user = (await AuthStateProvider.GetAuthenticationStateAsync()).User;
         string? userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        if (userId == null)
+
+        if (userId != null)
         {
-            Navigation.NavigateTo("/login");
-            return; // exit early if userId somehow is null here
+            PetDetails = new()
+            {
+                PetName = "",
+                Description = "",
+                ImageUrl = "",
+                OwnerId = new Guid(userId),
+                Personality = Enum.GetValues(typeof(Personality)).Cast<Personality>().ToList()[0],
+                PetType = PetType.OTHER
+            };
         }
         
-        PetDetails = new()
-        {
-            PetName = "",
-            Description = "",
-            ImageUrl = "",
-            OwnerId = new Guid(userId),
-            Personality = Enum.GetValues(typeof(Personality)).Cast<Personality>().ToList()[0],
-            PetType = PetType.OTHER
-        };
         _isSuccessfulUpload = false;
         _isSuccessfulPetPost = false;
         _displayPetPreview = false;

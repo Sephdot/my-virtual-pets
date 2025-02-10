@@ -28,7 +28,7 @@ namespace my_virtual_pets.Tests
 
         //GetAllPetsByUserId
         [Test]
-        public void GetAllPetsByUserID_ReturnsOkResult_WithListOfPets()
+        public async Task GetAllPetsByUserID_ReturnsOkResult_WithListOfPets()
         {
             // Arrange
             var userId = Guid.NewGuid();
@@ -50,10 +50,10 @@ namespace my_virtual_pets.Tests
 
 
             _petServiceMock.Setup(s => s.GetPetsByUser(userId))
-                          .Returns(petDtos);
+                          .ReturnsAsync(petDtos);
 
             // Act
-            var result = _controller.GetAllPetsByUserID(userId);
+            var result = await _controller.GetAllPetsByUserID(userId);
 
             // Assert 
             result.Should().BeOfType<OkObjectResult>()
@@ -63,13 +63,13 @@ namespace my_virtual_pets.Tests
         }
 
         [Test]
-        public void GetAllPetsByUserID_ReturnsBadRequest_WhenInvaldUserId()
+        public async Task GetAllPetsByUserID_ReturnsBadRequest_WhenInvaldUserId()
         {
             // Arrange
             var emptyUserId = Guid.Empty;
 
             // Act
-            var result = _controller.GetAllPetsByUserID(emptyUserId);
+            var result = await _controller.GetAllPetsByUserID(emptyUserId);
 
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>()
@@ -78,7 +78,7 @@ namespace my_virtual_pets.Tests
 
         //GetPetById
         [Test]
-        public void GetPetById_ReturnsOkResult_WithPet()
+        public async Task GetPetById_ReturnsOkResult_WithPet()
         {
             // Arrange
             var petId = Guid.NewGuid();
@@ -96,10 +96,10 @@ namespace my_virtual_pets.Tests
             };
 
             _petServiceMock.Setup(s => s.GetPetById(petId))
-                          .Returns(petDto);
+                          .ReturnsAsync(petDto);
 
             // Act
-            var result = _controller.GetPetById(petId);
+            var result = await _controller.GetPetById(petId);
 
             // Assert 
             result.Should().BeOfType<OkObjectResult>()
@@ -109,27 +109,27 @@ namespace my_virtual_pets.Tests
         }
 
         [Test]
-        public void GetPetById_ReturnsNotFound_WhenPetDoesNotExist()
+        public async Task GetPetById_ReturnsNotFound_WhenPetDoesNotExist()
         {
             // Arrange
             var petId = Guid.NewGuid();
-            _petServiceMock.Setup(s => s.GetPetById(petId)).Returns((PetCardDataDTO?)null);
+            _petServiceMock.Setup(s => s.GetPetById(petId)).ReturnsAsync((PetCardDataDTO?)null);
 
             // Act
-            var result =  _controller.GetPetById(petId);
+            var result = await _controller.GetPetById(petId);
 
             // Assert
             result.Should().BeOfType<NotFoundObjectResult>();
         }
 
         [Test]
-        public void GetPetById_ReturnsBadRequest_InvalidId()
+        public async Task GetPetById_ReturnsBadRequest_InvalidId()
         {
             // Arrange
             var invalidId = Guid.Empty;
 
             // Act
-            var result = _controller.GetPetById(invalidId);
+            var result = await _controller.GetPetById(invalidId);
 
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>()
@@ -138,7 +138,7 @@ namespace my_virtual_pets.Tests
 
         //GetTop10Pets
         [Test]
-        public void GetTop10Pets_ReturnsOkResult_WithListOfPets()
+        public async Task GetTop10Pets_ReturnsOkResult_WithListOfPets()
         {
             // Arrange
             var top10Pets = new List<PetCardDataDTO>
@@ -169,12 +169,12 @@ namespace my_virtual_pets.Tests
                 }
             };
 
-            _petServiceMock.Setup(s => s.GetTop10Pets()).Returns(top10Pets);
+            _petServiceMock.Setup(s => s.GetTop10Pets()).ReturnsAsync(top10Pets);
 
             // Act
-            var result = _controller.GetTop10Pets();
+            var result = await _controller.GetTop10Pets();
             var okResult = result.Result as OkObjectResult;
-            
+
             //Assert
             okResult.Should().NotBeNull();
             okResult.StatusCode.Should().Be(200);

@@ -1,4 +1,4 @@
-@rendermode InteractiveAuto
+@rendermode InteractiveServer
 
 <nav class="navbar navbar-expand-md p-2">
     <div class="container-fluid">
@@ -15,13 +15,18 @@
                     </NavLink>
                 </li>
                 <li class="nav-item">
-                    <NavLink class="nav-link" href="/leaderboard" Match=@NavLinkMatch.All>
-                        <span class="oi oi-plus" aria-hidden="true"></span> Leaderboard
+                    <NavLink class="nav-link" href="/add-pet" Match=@NavLinkMatch.All>
+                        <span class="oi oi-plus" aria-hidden="true"></span> Add Pet
                     </NavLink>
                 </li>
                 <li class="nav-item">
                     <NavLink class="nav-link" href="/collection" Match=@NavLinkMatch.All>
                         <span class="oi oi-plus" aria-hidden="true"></span> Collection
+                    </NavLink>
+                </li>
+                <li class="nav-item">
+                    <NavLink class="nav-link" href="/leaderboard" Match=@NavLinkMatch.All>
+                        <span class="oi oi-plus" aria-hidden="true"></span> Leaderboard
                     </NavLink>
                 </li>
                 

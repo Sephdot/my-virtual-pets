@@ -1,17 +1,19 @@
 @using my_virtual_pets_class_library.DTO
 @using my_virtual_pets_class_library.Enums
 @using my_virtual_pets_frontend.Components.Icons;
-@rendermode InteractiveAuto
+@rendermode InteractiveServer
 
 <div class="usercard">
     <div class="container">
         <div class="card">
-            <h1 class="card-title">Hello, @(UserDisplayDto.Username)!</h1>
-            <div class="card-content">
+            <div class="card-title text-center gap-3 m-3">
+                <h3 class="fw-bold">Hello, @(UserDisplayDto.Username)!</h3>
+            </div>
+            <div class="card-body text-center">
                 <p>Name (not visible to others): @UserDisplayDto.FirstName @UserDisplayDto.LastName</p>
                 <p>Email: @UserDisplayDto.Email</p>
                 <p>Pets Owned: @UserDisplayDto.PetCount</p>
-                <p>The type of pet you've favourited the most: @FavePetType</p>
+                @* <p>The type of pet you've favourited the most: @FavePetType</p> *@
             </div>
         </div>
     </div>
@@ -22,56 +24,56 @@
     public required UserDisplayDTO UserDisplayDto { get; set; }
     
     [Parameter]
-    public required List<PetCardDataDTO> UserFavePets { get; set; }
+    // public required List<PetCardDataDTO> UserFavePets { get; set; }
 
     public required string FavePetType { get; set; }
 
     protected override void OnInitialized()
     {
-        FavePetType = GetFavouritePetType();
+        // FavePetType = GetFavouritePetType();
     }
 
-    private string GetFavouritePetType()
-    {
-        if (UserFavePets.Count == 0)
-        {
-            return "No pets favourited yet...";
-        }
-        if (UserFavePets.Count == 1)
-        {
-            return UserFavePets[0].PetType.ToString();
-        }
-        
-        Dictionary<PetType, int> scores = Enum
-            .GetValues(typeof(PetType))
-            .Cast<PetType>()
-            .SkipLast(1) // ignore "OTHER"
-            .ToDictionary(petType => petType, pt => 0);
-        
-        foreach (PetCardDataDTO favePet in UserFavePets)
-        {
-            scores[favePet.PetType]++;
-        }
-        
-        var topScore = scores.OrderBy(kvp => kvp.Key).First().Value;
-        List<string> topPets = scores
-            .Where(kvp => kvp.Value >= topScore)
-            .Select(kvp => kvp.Key.ToString())
-            .ToList();
-
-        switch (topPets.Count)
-        {
-            case 1: return topPets[0].ToLower();
-            case 2: return $"{topPets[0]} and {topPets[1]}";
-            default:
-            {
-                string result = "";
-                for (int i = 0; i < topPets.Count - 1; i++)
-                {
-                    result += $"{topPets[i]}, ";
-                }
-                return result + $"and {topPets[^1]}";
-            }
-        }
-    }
+    // private string GetFavouritePetType()
+    // {
+    //     if (UserFavePets.Count == 0)
+    //     {
+    //         return "No pets favourited yet...";
+    //     }
+    //     if (UserFavePets.Count == 1)
+    //     {
+    //         return UserFavePets[0].PetType.ToString();
+    //     }
+    //     
+    //     Dictionary<PetType, int> scores = Enum
+    //         .GetValues(typeof(PetType))
+    //         .Cast<PetType>()
+    //         .SkipLast(1) // ignore "OTHER"
+    //         .ToDictionary(petType => petType, pt => 0);
+    //     
+    //     foreach (PetCardDataDTO favePet in UserFavePets)
+    //     {
+    //         scores[favePet.PetType]++;
+    //     }
+    //     
+    //     var topScore = scores.OrderBy(kvp => kvp.Key).First().Value;
+    //     List<string> topPets = scores
+    //         .Where(kvp => kvp.Value >= topScore)
+    //         .Select(kvp => kvp.Key.ToString())
+    //         .ToList();
+    //
+    //     switch (topPets.Count)
+    //     {
+    //         case 1: return topPets[0].ToLower();
+    //         case 2: return $"{topPets[0]} and {topPets[1]}";
+    //         default:
+    //         {
+    //             string result = "";
+    //             for (int i = 0; i < topPets.Count - 1; i++)
+    //             {
+    //                 result += $"{topPets[i]}, ";
+    //             }
+    //             return result + $"and {topPets[^1]}";
+    //         }
+    //     }
+    // }
 }

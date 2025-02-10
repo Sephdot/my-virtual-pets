@@ -76,7 +76,13 @@ namespace my_virtual_pets_api.Services
 
         public async Task<bool> RemoveFromFavourites(Guid GlobalUserId, Guid PetId)
         {
-            return await _userRepository.RemoveFromFavourites(GlobalUserId, PetId);
+
+            var request = await _userRepository.RemoveFromFavourites(GlobalUserId, PetId);
+            if (request)
+            {
+                _petService.DecreaseScore(PetId);
+            }
+            return request;
         }
 
         public async Task<bool> UpdateUser(UpdateUserDTO updatedUser, string currentPassword)

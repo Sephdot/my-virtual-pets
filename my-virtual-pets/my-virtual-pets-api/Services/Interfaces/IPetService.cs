@@ -5,16 +5,14 @@ namespace my_virtual_pets_api.Services.Interfaces
 {
     public interface IPetService
     {
-        List<PetCardDataDTO> GetPetsByUser(Guid userId);
-        public PetCardDataDTO GetPetById(Guid petId);
-        public PetCardDataDTO AddPet(AddPetDTO addPetDTO);
-
-        public bool DeletePet(Guid petId);
-        public List<Pet> GetPets();
-
-        public List<PetCardDataDTO> GetTop10Pets();
-        public List<PetCardDataDTO> GetRecentPets();
-        public int GenerateScore(AddPetDTO pet);
-        public void IncreaseScore(Guid petId);
+        Task<List<PetCardDataDTO>> GetPetsByUser(Guid userId);
+        Task<PetCardDataDTO?> GetPetById(Guid petId);
+        Task<PetCardDataDTO> AddPet(AddPetDTO addPetDTO);
+        Task<bool> DeletePet(Guid petId);
+        Task<List<Pet>> GetPets();
+        Task<List<PetCardDataDTO>?> GetTop10Pets();
+        Task<List<PetCardDataDTO>?> GetRecentPets();
+        Task IncreaseScore(Guid petId);
+        Task DecreaseScore(Guid petId);
     }
 }
