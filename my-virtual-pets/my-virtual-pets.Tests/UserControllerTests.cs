@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Moq;
@@ -77,7 +72,7 @@ namespace my_virtual_pets.Tests
             _userServiceMock.Setup(s => s.UpdateUser(updatedUser, currentPassword)).ReturnsAsync(true);
 
             // Act
-            var result = _controller.UpdateUser(updatedUser, currentPassword);
+            var result = await _controller.UpdateUser(updatedUser, currentPassword);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>().Which.Value.Should().Be("User updated successfully.");
@@ -96,7 +91,7 @@ namespace my_virtual_pets.Tests
             var result = await _controller.UpdateUser(updatedUser, currentPassword);
 
             // Assert
-            result.Should().BeOfType<BadRequestObjectResult>() .Which.Value.Should().Be("Username is already in use."); 
+            result.Should().BeOfType<BadRequestObjectResult>().Which.Value.Should().Be("Username is already in use.");
         }
     }
 }
