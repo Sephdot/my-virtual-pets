@@ -3,6 +3,7 @@
 @using my_virtual_pets_class_library.DTO
 @inject AuthenticationStateProvider AuthStateProvider
 @inject NavigationManager Navigation
+@rendermode InteractiveServer
 
 <p><span class="badge bg-success">Score: @petCard.Score</span></p>
 <div @onclick="Pet">
