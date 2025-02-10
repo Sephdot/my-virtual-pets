@@ -1,4 +1,8 @@
+@using System.Security.Claims
+@inject CustomAuthenticationService AuthService
+@inject NavigationManager NavMan 
 @rendermode InteractiveServer
+
 
 <nav class="navbar navbar-expand-md p-2">
     <div class="container-fluid">
@@ -31,22 +35,30 @@
                 </li>
                 
                 <AuthorizeView>
-                <Authorized>
-                <li class="nav-item">
-                    <NavLink class="nav-link" href="/my-account" Match=@NavLinkMatch.All>
-                        <span class="oi oi-plus" aria-hidden="true"></span> My Account
-                    </NavLink>
-                </li>
-                </Authorized>
-                <NotAuthorized>
+                    <Authorized>
+                        <li class="nav-item">
+                            <NavLink class="nav-link" href="/my-account" Match=@NavLinkMatch.All>
+                                <span class="oi oi-plus" aria-hidden="true"></span> My Account
+                            </NavLink>
+                        </li>
 
-                <li class="nav-item">
-                    <NavLink class="nav-link" href="/login" Match=@NavLinkMatch.All>
-                        <span class="oi oi-plus" aria-hidden="true"></span> Log In
-                    </NavLink>
-                </li>
-                </NotAuthorized>
+                        <button @onclick="Logout"  class="btn btn-light">Log out</button>
+
+
+                    </Authorized>
+                    <NotAuthorized>
+
+                        <li class="nav-item">
+                            <NavLink class="nav-link" href="/login" Match=@NavLinkMatch.All>
+                                <span class="oi oi-plus" aria-hidden="true"></span> Log In
+                            </NavLink>
+                        </li>
+                    </NotAuthorized>
                 </AuthorizeView>
+                
+                
+                
+                
             </ul>
         </div>
     </div>
@@ -61,4 +73,12 @@
     {
         collapseNavMenu = !collapseNavMenu;
     }
+
+    public void Logout()
+    {
+        var newUser = new ClaimsPrincipal();
+        AuthService.CurrentUser = newUser;
+        NavMan.NavigateTo("/");
+    }
+    
 }
