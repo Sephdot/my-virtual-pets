@@ -17,17 +17,27 @@
     <Authorized>
         <div class="container">
             <h1 class="d-flex align-text-center">My Account</h1>
-            @if (_userInfo == null || _favePets == null)
+            @if (_exceptionHappened)
             {
-                <h3>Loading your info...!</h3>
-                <Cat_Loader></Cat_Loader>
+                <h3>Something went wrong!</h3>
+                <p>Click on a link in the navbar or try refreshing to get back on track.</p>
             }
             else
             {
-                <UserDisplay 
-                    UserDisplayDto = "@_userInfo"
-                    UserFavePets = "@_favePets"
-                    />
+                @* @if (_userInfo == null || _favePets == null) *@
+                @if (_userInfo == null)
+                {
+                    <h3>Loading your info...!</h3>
+                    <Cat_Loader></Cat_Loader>
+                }
+                else
+                {
+                    <UserDisplay UserDisplayDto = "@_userInfo"/>
+                    @* <UserDisplay  *@
+                    @*     UserDisplayDto = "@_userInfo" *@
+                    @*     UserFavePets = "@_favePets" *@
+                    @* /> *@
+                }
             }
         </div>
     </Authorized>
@@ -35,131 +45,8 @@
 
 @code {
     private UserDisplayDTO? _userInfo;
-    /*private List<PetCardDataDTO>? _favePets = new()
-    {
-        new PetCardDataDTO
-        {
-            PetId = Guid.NewGuid(),
-            PetName = "Whiskers",
-            ImageUrl = "https://example.com/whiskers.jpg",
-            OwnerUsername = "catlover123",
-            Score = 1200,
-            Personality = Personality.JOLLY,
-            PetType = PetType.CAT,
-            Description = "A playful and affectionate tabby cat.",
-            IsFavourited = true
-        },
-        new PetCardDataDTO
-        {
-            PetId = Guid.NewGuid(),
-            PetName = "Rex",
-            ImageUrl = "https://example.com/rex.jpg",
-            OwnerUsername = "dogtrainer89",
-            Score = 1500,
-            Personality = Personality.BRAVE,
-            PetType = PetType.DOG,
-            Description = "A loyal and courageous German Shepherd.",
-            IsFavourited = true
-        },
-        new PetCardDataDTO
-        {
-            PetId = Guid.NewGuid(),
-            PetName = "Floppy",
-            ImageUrl = "https://example.com/floppy.jpg",
-            OwnerUsername = "rabbitfanatic",
-            Score = 900,
-            Personality = Personality.CALM,
-            PetType = PetType.RABBIT,
-            Description = "A gentle and quiet bunny with soft fur.",
-            IsFavourited = true
-        },
-        new PetCardDataDTO
-        {
-            PetId = Guid.NewGuid(),
-            PetName = "Chirpy",
-            ImageUrl = "https://example.com/chirpy.jpg",
-            OwnerUsername = "birder007",
-            Score = 1100,
-            Personality = Personality.SASSY,
-            PetType = PetType.BIRD,
-            Description = "A talkative parrot with a lot of attitude.",
-            IsFavourited = true
-        },
-        new PetCardDataDTO
-        {
-            PetId = Guid.NewGuid(),
-            PetName = "Bubbles",
-            ImageUrl = "https://example.com/bubbles.jpg",
-            OwnerUsername = "aqua_world",
-            Score = 1300,
-            Personality = Personality.QUIET,
-            PetType = PetType.FISH,
-            Description = "A mesmerizing betta fish with vibrant colors.",
-            IsFavourited = true
-        },
-        new PetCardDataDTO
-        {
-            PetId = Guid.NewGuid(),
-            PetName = "Shadow",
-            ImageUrl = "https://example.com/shadow.jpg",
-            OwnerUsername = "mysterycat",
-            Score = 1250,
-            Personality = Personality.TIMID,
-            PetType = PetType.CAT,
-            Description = "A mysterious black cat who loves hiding in shadows.",
-            IsFavourited = true
-        },
-        new PetCardDataDTO
-        {
-            PetId = Guid.NewGuid(),
-            PetName = "Bolt",
-            ImageUrl = "https://example.com/bolt.jpg",
-            OwnerUsername = "fastpup",
-            Score = 1600,
-            Personality = Personality.HASTY,
-            PetType = PetType.DOG,
-            Description = "A speedy greyhound always ready to run.",
-            IsFavourited = true
-        },
-        new PetCardDataDTO
-        {
-            PetId = Guid.NewGuid(),
-            PetName = "Cocoa",
-            ImageUrl = "https://example.com/cocoa.jpg",
-            OwnerUsername = "bunlover",
-            Score = 950,
-            Personality = Personality.CAREFUL,
-            PetType = PetType.RABBIT,
-            Description = "A cautious yet loving brown bunny.",
-            IsFavourited = true
-        },
-        new PetCardDataDTO
-        {
-            PetId = Guid.NewGuid(),
-            PetName = "Sunny",
-            ImageUrl = "https://example.com/sunny.jpg",
-            OwnerUsername = "parrotfriend",
-            Score = 1150,
-            Personality = Personality.JOLLY,
-            PetType = PetType.BIRD,
-            Description = "A bright yellow canary that sings beautifully.",
-            IsFavourited = true
-        },
-        new PetCardDataDTO
-        {
-            PetId = Guid.NewGuid(),
-            PetName = "Neptune",
-            ImageUrl = "https://example.com/neptune.jpg",
-            OwnerUsername = "oceanlover",
-            Score = 1350,
-            Personality = Personality.SERIOUS,
-            PetType = PetType.FISH,
-            Description = "A majestic koi fish with a regal presence.",
-            IsFavourited = true
-        }
-    }; // seed data for testing*/
-
-    private List<PetCardDataDTO>? _favePets { get; set; }
+    // private List<PetCardDataDTO>? _favePets;
+    private bool _exceptionHappened;
 
     protected override async Task OnInitializedAsync()
     {
@@ -169,11 +56,31 @@
         if (userId == null)
         {
             Navigation.NavigateTo("/login");
+            Console.WriteLine("UserId was null trying to access my account");
             return;
         }
+
+
+        try
+        {
+            await GetUserInfo();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Exception when awaiting GetUserInfo(): {ex.Message}");
+            _exceptionHappened = true;
+        }
+        // try
+        // {
+        //     await GetFavePets();
+        // }
+        // catch (Exception ex)
+        // {
+        //     Console.WriteLine($"Exception when awaiting GetFavePets(): {ex.Message}");
+        //     _exceptionHappened = true;
+        // }
         
-        await GetUserInfo();
-        await GetFavePets();
+        
         async Task GetUserInfo()
         {
             var userClient = new BackendClient<UserDisplayDTO>($"api/User/{userId}", AuthStateProvider);
@@ -182,11 +89,11 @@
             Console.WriteLine(_userInfo.Username);
         }
         
-        async Task GetFavePets()
-        {
-            var favePetClient = new BackendClient<List<PetCardDataDTO>>($"api/User/{userId}/FavouritePets", AuthStateProvider);
-            _favePets = await favePetClient.GetRequest();
-            Console.WriteLine(_favePets.Count);
-        }
+        // async Task GetFavePets()
+        // {
+        //     var favePetClient = new BackendClient<List<PetCardDataDTO>>($"api/User/{userId}/FavouritePets", AuthStateProvider);
+        //     _favePets = await favePetClient.GetRequest();
+        //     Console.WriteLine(_favePets.Count);
+        // }
     }
 }
