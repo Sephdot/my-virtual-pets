@@ -22,7 +22,7 @@ public interface IUserRepository
     public bool RemoveFromFavourites(Guid GlobalUserId, Guid PetId);
 
 
-    public bool UpdateUser(UpdateUserDTO updatedUser);
+    public bool UpdateUser(UpdateUserDTO updatedUser, string currentPassword);
 
     public bool IsFavourited(Guid GlobalUserId, Guid PetId);
 
