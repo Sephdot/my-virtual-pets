@@ -166,9 +166,22 @@ h1:focus {
     z-index: 1000;
 }
 
+@media (min-width: 1006px){
+    .navbar li {
+        margin: 0 0.75em;
+    }
+}
+
+@media (min-width: 992px) {
+    .navbar li {
+        margin: 0 0.6em;
+    }
+}
+
 .navbar-brand {
     font-size: 2rem;
     padding: 0;
+    margin-right: 1.5rem;
 }
 
 .nav-item > a,
