@@ -132,13 +132,13 @@ namespace my_virtual_pets_api.Repositories
         }
 
 
-        public void DecreaseScore(Guid petId)
+        public async Task DecreaseScore(Guid petId)
         {
-            var pet = _context.Pets
-                .SingleOrDefault(p => p.Id == petId);
+            var pet = await _context.Pets
+                .SingleOrDefaultAsync(p => p.Id == petId);
+            if (pet == null) throw new KeyNotFoundException("Invalid pet Id");
             pet.Score -= 1;
-            _context.SaveChanges();
-
+            await _context.SaveChangesAsync();
         }
     }
 }
