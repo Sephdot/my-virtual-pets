@@ -34,7 +34,7 @@ namespace my_virtual_pets_api.Services
         public async Task CreateNewLocalUser(NewUserDTO newUserDto)
         {
             newUserDto.Password = BCrypt.Net.BCrypt.EnhancedHashPassword(newUserDto.Password);
-            Guid globalUserId =await _userRepository.CreateNewGlobalUser(newUserDto);
+            Guid globalUserId = await _userRepository.CreateNewGlobalUser(newUserDto);
             await _userRepository.CreateNewLocalUser(newUserDto, globalUserId);
         }
 
@@ -59,7 +59,7 @@ namespace my_virtual_pets_api.Services
             var request = await _userRepository.AddToFavourites(GlobalUserId, PetId);
             if (request)
             {
-                _petService.IncreaseScore(PetId);
+                await _petService.IncreaseScore(PetId);
             }
             return request;
         }
@@ -80,7 +80,7 @@ namespace my_virtual_pets_api.Services
             var request = await _userRepository.RemoveFromFavourites(GlobalUserId, PetId);
             if (request)
             {
-                _petService.DecreaseScore(PetId);
+                await _petService.DecreaseScore(PetId);
             }
             return request;
         }
@@ -92,7 +92,7 @@ namespace my_virtual_pets_api.Services
 
         public async Task<bool> IsFavourited(Guid GlobalUserId, Guid PetId)
         {
-            return  await _userRepository.IsFavourited(GlobalUserId, PetId);
+            return await _userRepository.IsFavourited(GlobalUserId, PetId);
 
         }
 
