@@ -15,31 +15,31 @@ namespace my_virtual_pets_api.Repositories
             _context = context;
         }
 
-        public Guid GetUserIdByUsername(string username)
+        public async Task<Guid> GetUserIdByUsername(string username)
         {
-            Guid userId = _context.GlobalUsers.FirstOrDefault(u => u.Username == username).Id;
-            if (userId == Guid.Empty)
+            var userId =await _context.GlobalUsers.FirstOrDefaultAsync(u => u.Username == username);
+            if (userId == null)
             {
                 return Guid.Empty; 
             }
-            return userId;
+            return userId.Id;
         }
 
-        public bool ExistsByUsername(string username)
+        public async Task<bool> ExistsByUsername(string username)
         {
-            return _context.GlobalUsers.Any(u => u.Username == username);
+            return await _context.GlobalUsers.AnyAsync(u => u.Username == username);
         }
 
-        public bool ExistsByEmail(string email)
+        public async Task<bool> ExistsByEmail(string email)
         {
-            return _context.GlobalUsers.Any(u => u.Email == email);
+            return await _context.GlobalUsers.AnyAsync(u => u.Email == email);
         }
 
-        public Guid CreateNewGlobalUser(NewUserDTO newUserDto)
+        public async Task<Guid> CreateNewGlobalUser(NewUserDTO newUserDto)
         {
             GlobalUser newGlobalUser = new GlobalUser(newUserDto);
             _context.GlobalUsers.Add(newGlobalUser);
-            _context.SaveChanges();
+           await _context.SaveChangesAsync();
             return newGlobalUser.Id;
         }
         
@@ -52,39 +52,40 @@ namespace my_virtual_pets_api.Repositories
         }
         
 
-        public Guid CreateNewLocalUser(NewUserDTO newUserDto, Guid globalUserId)
+        public async Task<Guid> CreateNewLocalUser(NewUserDTO newUserDto, Guid globalUserId)
         {
             LocalUser newLocalUser = new LocalUser(newUserDto, globalUserId);
             _context.LocalUsers.Add(newLocalUser);
-            _context.SaveChanges();
+           await _context.SaveChangesAsync();
             return newLocalUser.Id;
         }
 
-        public string GetPassword(string username)
+
+        public async Task<string> GetPassword(string username)
         {
-            var userGuid = _context.GlobalUsers.FirstOrDefault(u => u.Username == username).Id;
-            var userPassword = _context.LocalUsers.FirstOrDefault(u => u.GlobalUserId == userGuid).Password;
-            return userPassword;
+            var userGuid = await _context.GlobalUsers.FirstOrDefaultAsync(u => u.Username == username);
+            var userPassword = await _context.LocalUsers.FirstOrDefaultAsync(u => u.GlobalUserId == userGuid.Id);
+            return userPassword.Password;
         }
 
-        public UserDisplayDTO GetUserDetailsByUserId(Guid userId)
+        public async Task<UserDisplayDTO> GetUserDetailsByUserId(Guid userId)
         {
-            var user = _context.GlobalUsers
+            var user = await _context.GlobalUsers
                 .Where(u => u.Id == userId)
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
 
-            var localUser = _context.LocalUsers
+            var localUser = await _context.LocalUsers
                 .Where(lu => lu.GlobalUserId == userId)
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
 
             if (user == null || localUser == null)
             {
                 return null;
             }
 
-            var petCount = _context.Pets
+            var petCount = await _context.Pets
                 .Where(p => p.GlobalUserId == userId)
-                .Count();
+                .CountAsync();
 
             var userDisplayDTO = new UserDisplayDTO
             {
@@ -98,47 +99,47 @@ namespace my_virtual_pets_api.Repositories
             return userDisplayDTO;
         }
 
-        public bool AddToFavourites(Guid GlobalUserId, Guid PetId)
+        public async Task<bool> AddToFavourites(Guid GlobalUserId, Guid PetId)
         {
             //TO DO: better error handling
-            var user = _context.GlobalUsers.SingleOrDefault(g => g.Id == GlobalUserId);
+            var user = await _context.GlobalUsers.SingleOrDefaultAsync(g => g.Id == GlobalUserId);
             if (user == null) throw new KeyNotFoundException("GlobalUser does not exist");
 
-            var pet = _context.Pets.SingleOrDefault(p => p.Id == PetId);
+            var pet = await _context.Pets.SingleOrDefaultAsync(p => p.Id == PetId);
             if (pet == null) throw new KeyNotFoundException("Pet not exist");
 
-            var existingFavourite = _context.Favorites.SingleOrDefault(f => f.GlobalUserId == GlobalUserId && f.PetId == PetId);
+            var existingFavourite = await _context.Favorites.SingleOrDefaultAsync(f => f.GlobalUserId == GlobalUserId && f.PetId == PetId);
             if (existingFavourite != null) return false;
 
             var favourite = new Favourite { GlobalUserId = GlobalUserId, PetId = PetId };
             _context.Favorites.Add(favourite);
-            _context.SaveChanges();
+           await _context.SaveChangesAsync();
             return true;
         }
 
-        public bool IsFavourited(Guid GlobalUserId, Guid PetId)
+        public async Task<bool> IsFavourited(Guid GlobalUserId, Guid PetId)
         {
-            var user = _context.GlobalUsers.Include(g => g.Favourites).SingleOrDefault(g => g.Id == GlobalUserId);
+            var user = await _context.GlobalUsers.Include(g => g.Favourites).SingleOrDefaultAsync(g => g.Id == GlobalUserId);
             if (user == null) throw new KeyNotFoundException("GlobalUser does not exist");
             return user.Favourites.Any(f => f.PetId == PetId);
         }
 
         
         
-        public List<Guid> GetFavoritePetIds(Guid GlobalUserId)
+        public async Task<List<Guid>> GetFavoritePetIds(Guid GlobalUserId)
         {
-            var user = _context.GlobalUsers.Include(g => g.Favourites).SingleOrDefault(g => g.Id == GlobalUserId);
+            var user = await _context.GlobalUsers.Include(g => g.Favourites).SingleOrDefaultAsync(g => g.Id == GlobalUserId);
             if (user == null) throw new KeyNotFoundException("GlobalUser does not exist");
             var favouritePetIds = user.Favourites.Select(f => f.PetId).ToList();
             return favouritePetIds;
         }
 
-        public List<PetCardDataDTO> GetFavoritePetCards(Guid GlobalUserId)
+        public async Task<List<PetCardDataDTO>> GetFavoritePetCards(Guid GlobalUserId)
         {
-            var user = _context.GlobalUsers.Include(g => g.Favourites)
+            var user = await _context.GlobalUsers.Include(g => g.Favourites)
                                             .ThenInclude(f => f.Pet)
                                             .ThenInclude(p => p.Image)
-                                            .SingleOrDefault(g => g.Id == GlobalUserId);
+                                            .SingleOrDefaultAsync(g => g.Id == GlobalUserId);
             if (user == null) throw new KeyNotFoundException("GlobalUser does not exist");
             var favouritePets = user.Favourites.Select(f => f.Pet).ToList();
             if (favouritePets.Count == 0) return [];
@@ -146,61 +147,59 @@ namespace my_virtual_pets_api.Repositories
 
         }
 
-        public bool RemoveFromFavourites(Guid GlobalUserId, Guid PetId)
+        public async Task<bool> RemoveFromFavourites(Guid GlobalUserId, Guid PetId)
         {
             var user = _context.GlobalUsers.Include(g => g.Favourites);
             if (user == null) throw new KeyNotFoundException("GlobalUser does not exist");
 
-            var pet = _context.Pets.SingleOrDefault(p => p.Id == PetId);
+            var pet = await _context.Pets.SingleOrDefaultAsync(p => p.Id == PetId);
             if (pet == null) throw new KeyNotFoundException("Pet does not exist");
 
-            var existingFavourite = _context.Favorites.SingleOrDefault(f => f.GlobalUserId == GlobalUserId && f.PetId == PetId);
+            var existingFavourite = await _context.Favorites.SingleOrDefaultAsync(f => f.GlobalUserId == GlobalUserId && f.PetId == PetId);
             if (existingFavourite == null) return false;
 
             _context.Favorites.Remove(existingFavourite);
-            _context.SaveChanges();
+           await _context.SaveChangesAsync();
             return true;
         }
 
         
-        public bool UpdateUser(UpdateUserDTO updatedUser, string currentPassword)
-        {
-            var globalUser = _context.GlobalUsers.FirstOrDefault(u => u.Id == updatedUser.UserId);
-            if (globalUser == null)
+            public async Task<bool> UpdateUser(UpdateUserDTO updatedUser, string currentPassword)
             {
-                throw new KeyNotFoundException(" user not found.");
-            }
-
-            var localUser = _context.LocalUsers.FirstOrDefault(lu => lu.GlobalUserId == updatedUser.UserId);
-
-            if (localUser == null || !BCrypt.Net.BCrypt.Verify(currentPassword, localUser.Password))
-            {
-                throw new UnauthorizedAccessException("Current password is incorrect.");
-            }
-
-
-            if (!string.IsNullOrWhiteSpace(updatedUser.NewUsername))
-            {
-                if (_context.GlobalUsers.Any(u => u.Username == updatedUser.NewUsername && u.Id != updatedUser.UserId))
+                var globalUser = await _context.GlobalUsers.FirstOrDefaultAsync(u => u.Id == updatedUser.UserId);
+                if (globalUser == null)
                 {
-                    throw new InvalidOperationException("Username is already in use.");
+                    throw new KeyNotFoundException(" user not found.");
                 }
-                globalUser.Username = updatedUser.NewUsername;
-            }
 
-            if (!string.IsNullOrWhiteSpace(updatedUser.NewPassword))
-            {
-                if (localUser == null)
+                var localUser = await _context.LocalUsers.FirstOrDefaultAsync(lu => lu.GlobalUserId == updatedUser.UserId);
+
+                if (localUser == null || !BCrypt.Net.BCrypt.Verify(currentPassword, localUser.Password))
                 {
-                    throw new KeyNotFoundException("user record not found.");
+                    throw new UnauthorizedAccessException("Current password is incorrect.");
                 }
-                localUser.Password = BCrypt.Net.BCrypt.EnhancedHashPassword(updatedUser.NewPassword);
+
+
+                if (!string.IsNullOrWhiteSpace(updatedUser.NewUsername))
+                {
+                    if (_context.GlobalUsers.Any(u => u.Username == updatedUser.NewUsername && u.Id != updatedUser.UserId))
+                    {
+                        throw new InvalidOperationException("Username is already in use.");
+                    }
+                    globalUser.Username = updatedUser.NewUsername;
+                }
+
+                if (!string.IsNullOrWhiteSpace(updatedUser.NewPassword))
+                {
+                    if (localUser == null)
+                    {
+                        throw new KeyNotFoundException("user record not found.");
+                    }
+                    localUser.Password = BCrypt.Net.BCrypt.EnhancedHashPassword(updatedUser.NewPassword);
+                }  await _context.SaveChangesAsync();
+                return true;
             }
 
-            _context.SaveChanges();
-            return true;
-        }
-        
         
         public async Task<Guid> CreateNewAuthUser(string fullname, string authId, Guid globalUserId)
         {
@@ -217,6 +216,7 @@ namespace my_virtual_pets_api.Repositories
             if (user == null) throw new KeyNotFoundException("User does not exist");
             return user.Id; 
         }
+              
 
     }
 }

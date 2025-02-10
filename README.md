@@ -1,5 +1,14 @@
 # my-virtual-pets  ૮･ﻌ･ა
+## 🐱 About:
 
+<b>My Virtual Pets</b> is a fun web app that allows users to upload and collect 'virtual pets'.
+
+Virtual Pets are created by users uploading a photo, name, description, and personality for their pet. This information is then used to generate a pixel-style image of the pet, as well as assigning the pet a randomly-generated score based on their inputs. A user's complete collection of Virtual Pets can be viewed on the Collection page.
+
+A Virtual Pet's score can be further influenced by other users, who can 'pet' other Virtual Pets. A 'petted' Virtual Pet is added to the user's list of favourite Virtual Pets, and that Virtual Pet's score is increased for each 'pet' it receives.
+
+The app also contains a Leaderboards page, where users can view the top 10 highest-scoring Virtual Pets.
+__________________________________
 ## 📋 Database set-up: 
 
 Running in Development Mode: 
@@ -22,6 +31,22 @@ Value: `Server=<server_name>;Database=my_virtual_pets;User Id=sa;Password=<your_
 
 6. Go to launch settings and change the environment to 'Production'
 7. Run Program.cs 
+__________________________________
+
+## 📞 API Usage:
+
+This app makes use of the following APIs in order to fulfill some of its functionality.
+
+### Dragoneye
+https://dragoneye.ai/
+### Picsart Remove Background
+https://picsart.io/remove-background/
+
+In order to run this app, valid API keys must be provided into the ` my-virtual-pets-api ` project's User Secrets. This can be done by navigating to the project's ` secrets.json ` file, and populating the following template.
+
+`` {  "dragoneyeApiKey": "<your dragoneye api key>", 
+  "BgRemoverApiKey": "<your bg remover api key>" } ``
+
 
 __________________________________
 

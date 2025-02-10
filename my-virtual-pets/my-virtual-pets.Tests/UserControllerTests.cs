@@ -28,7 +28,7 @@ namespace my_virtual_pets.Tests
         }
 
         [Test]
-        public void GetUserDetailsByUserId_ReturnsOkResult_WithUserDisplayDTO()
+        public async Task GetUserDetailsByUserId_ReturnsOkResult_WithUserDisplayDTO()
         {
             // Arrange
             var userId = Guid.NewGuid();
@@ -41,10 +41,10 @@ namespace my_virtual_pets.Tests
                 PetCount = 3
             };
 
-            _userServiceMock.Setup(s => s.GetUserDetailsByUserId(userId)).Returns(userDisplayDto);
+            _userServiceMock.Setup(s => s.GetUserDetailsByUserId(userId)).ReturnsAsync(userDisplayDto);
 
             // Act
-            var result = _controller.GetUserDetailsByUserId(userId);
+            var result = await _controller.GetUserDetailsByUserId(userId);
 
             // Assert
             var okResult = result as OkObjectResult;
@@ -54,46 +54,46 @@ namespace my_virtual_pets.Tests
         }
 
         [Test]
-        public void GetUserDetails_ReturnsNotFound_WhenUserDoesNotExist()
+        public async Task GetUserDetails_ReturnsNotFound_WhenUserDoesNotExist()
         {
             // Arrange
             var userId = Guid.NewGuid();
-            _userServiceMock.Setup(s => s.GetUserDetailsByUserId(userId)).Returns((UserDisplayDTO)null);
+            _userServiceMock.Setup(s => s.GetUserDetailsByUserId(userId)).ReturnsAsync((UserDisplayDTO)null);
 
             // Act
-            var result = _controller.GetUserDetailsByUserId(userId);
+            var result = await _controller.GetUserDetailsByUserId(userId);
 
             // Assert
             result.Should().BeOfType<NotFoundObjectResult>();
         }
 
         [Test]
-        public void UpdateUser_ShouldReturnOk_WhenValidData()
+        public async Task UpdateUser_ShouldReturnOk_WhenValidData()
         {
             // Arrange
             var updatedUser = new UpdateUserDTO { UserId = Guid.NewGuid(), NewUsername = "newUsername", NewPassword = "newPassword" };
+            string currentPassword = "password";
 
-
-            _userServiceMock.Setup(s => s.UpdateUser(updatedUser)).Returns(true);
+            _userServiceMock.Setup(s => s.UpdateUser(updatedUser, currentPassword)).ReturnsAsync(true);
 
             // Act
-            var result = _controller.UpdateUser(updatedUser);
+            var result = _controller.UpdateUser(updatedUser, currentPassword);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>().Which.Value.Should().Be("User updated successfully.");
         }
 
         [Test]
-        public void UpdateUser_ShouldReturnBadRequest_WhenUsernameConflict()
+        public async Task UpdateUser_ShouldReturnBadRequest_WhenUsernameConflict()
         {
             // Arrange
             var updatedUser = new UpdateUserDTO { UserId = Guid.NewGuid(), NewUsername = "newUsername", NewPassword = "newPassword" };
+            string currentPassword = "password";
 
-
-            _userServiceMock.Setup(s => s.UpdateUser(updatedUser)).Throws(new InvalidOperationException("Username is already in use."));
+            _userServiceMock.Setup(s => s.UpdateUser(updatedUser, currentPassword)).ThrowsAsync(new InvalidOperationException("Username is already in use."));
 
             // Act
-            var result = _controller.UpdateUser(updatedUser);
+            var result = await _controller.UpdateUser(updatedUser, currentPassword);
 
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>() .Which.Value.Should().Be("Username is already in use."); 

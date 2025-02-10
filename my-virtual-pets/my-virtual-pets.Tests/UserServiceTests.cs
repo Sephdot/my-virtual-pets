@@ -27,7 +27,7 @@ namespace my_virtual_pets.Tests
         }
 
         [Test]
-        public void GetUserDetailsByUserId_ReturnsUserDisplayDTO_WhenUserExists()
+        public async Task GetUserDetailsByUserId_ReturnsUserDisplayDTO_WhenUserExists()
         {
             // Arrange
             var userId = Guid.NewGuid();
@@ -40,46 +40,50 @@ namespace my_virtual_pets.Tests
                 PetCount = 3
             };
 
-                _userRepositoryMock.Setup(r => r.GetUserDetailsByUserId(userId)).Returns(userDisplayDto);
+            _userRepositoryMock.Setup(r => r.GetUserDetailsByUserId(userId)).ReturnsAsync(userDisplayDto);
 
-                // Act
-                var result = _userService.GetUserDetailsByUserId(userId);
+            // Act
+            var result = await _userService.GetUserDetailsByUserId(userId);
 
-                // Assert
-                result.Should().BeEquivalentTo(userDisplayDto);
-            }
+            // Assert
+            result.Should().BeEquivalentTo(userDisplayDto);
+        }
 
-            [Test]
-            public void UpdateUser_ShouldReturnTrue_WhenValidData()
-            {
-                // Arrange
-                var updatedUser = new UpdateUserDTO { UserId = Guid.NewGuid(), NewUsername = "newUsername", NewPassword = "newPassword" };
-
-
-
-                _userRepositoryMock.Setup(r => r.UpdateUser(updatedUser)).Returns(true);
-
-                // Act
-                var result = _userService.UpdateUser(updatedUser);
-
-                // Assert
-                result.Should().BeTrue();  
-            }
-
-            [Test]
-            public void UpdateUser_ShouldThrowInvalidOperationException_WhenUsernameConflict()
-            {
+        [Test]
+        public async Task UpdateUser_ShouldReturnTrue_WhenValidData()
+        {
             // Arrange
             var updatedUser = new UpdateUserDTO { UserId = Guid.NewGuid(), NewUsername = "newUsername", NewPassword = "newPassword" };
+            string currentPassword = "password";
 
 
-            _userRepositoryMock.Setup(r => r.UpdateUser(updatedUser)).Throws(new InvalidOperationException("Username is already in use."));
+            _userRepositoryMock.Setup(r => r.UpdateUser(updatedUser, currentPassword)).ReturnsAsync(true);
 
-                // Act and Assert
-                Action act = () => _userService.UpdateUser(updatedUser);
-                act.Should().Throw<InvalidOperationException>()
-                    .WithMessage("Username is already in use.");
-            }
+            // Act
+            var result = await _userService.UpdateUser(updatedUser, currentPassword);
+
+            // Assert
+            result.Should().BeTrue();
+        }
+
+        [Test]
+        public async Task UpdateUser_ShouldThrowInvalidOperationException_WhenUsernameConflict()
+        {
+            // Arrange
+            var updatedUser = new UpdateUserDTO { UserId = Guid.NewGuid(), NewUsername = "newUsername", NewPassword = "newPassword" };
+            string currentPassword = "password";
+
+
+            _userRepositoryMock.Setup(r => r.UpdateUser(updatedUser, currentPassword)).ThrowsAsync(new InvalidOperationException("Username is already in use."));
+
+            //Act
+            Func<Task> act = async () => await _userService.UpdateUser(updatedUser, currentPassword);
+
+            //Assert
+            await act.Should().ThrowAsync<InvalidOperationException>()
+                .WithMessage("Username is already in use.");
 
         }
+
     }
+}
