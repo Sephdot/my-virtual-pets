@@ -1,12 +1,16 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using Microsoft.IdentityModel.Tokens;
 using my_virtual_pets_api.Services.Interfaces;
 using my_virtual_pets_class_library.DTO;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
+using Google.Apis.Auth.AspNetCore3;
+using Microsoft.Data.SqlClient;
 
 namespace my_virtual_pets_api.Controllers
 {
@@ -23,6 +27,74 @@ namespace my_virtual_pets_api.Controllers
             _configuration = configuration;
             _userService = userService;
         }
+        
+        [HttpGet("/login-google")]
+        public async Task LogInGoogle()
+        {
+            Console.WriteLine("THIS IS THE LOGIN GOOGLE");
+            var properties = new AuthenticationProperties
+            {
+                RedirectUri = "https://localhost:7091/google-callback"
+                
+            };
+            await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme, properties);
+        }
+        
+        
+        [HttpGet("/google-callback")]
+        public async Task<IActionResult> GoogleCallback()
+        {
+            Console.WriteLine("THIS IS THE SIGNED-IN GOOGLE");
+            var authResult = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            if (!authResult.Succeeded)
+            {
+                Console.WriteLine("Authentication failed");
+                Console.WriteLine(authResult.Failure?.Message);
+                return BadRequest("Authentication failed");
+            }
+
+            Guid userId = new Guid(); 
+
+            var claims = new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
+                new Claim(ClaimTypes.Name, "THIS IS A TEST"),
+                new Claim(ClaimTypes.Role, "User"),
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Secret"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                issuer: _configuration["Jwt:Issuer"],
+                audience: _configuration["Jwt:Audience"],
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(30),
+                signingCredentials: creds
+            );
+            
+            // return Ok(new
+            // {
+            //
+            //     token = new JwtSecurityTokenHandler().WriteToken(token),
+            //     userid = userId
+            // });
+            //
+            
+            // create a new auth user if one does not exist? 
+            
+            // return a jwt token to the frontend - and log them in there 
+            
+            
+            // If authentication succeeds, sign in the user
+            // var claimsPrincipal = authResult.Principal;
+            // await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
+            
+            // with tokens, userid, email?? 
+            
+            return Redirect("http://localhost:5092/test2");
+        }
+        
 
 
         [HttpPost("register")]
