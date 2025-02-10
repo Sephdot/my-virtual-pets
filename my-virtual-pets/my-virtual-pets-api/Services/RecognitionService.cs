@@ -127,7 +127,6 @@ namespace ImageRecognition
 
         public bool CheckIfAnimal(IPredicted animal)
         {
-            // List<string> validAnimals = new List<string>{  "cat", "dog", "fish", "rabbit", "horse" }
             PetType[] petTypes = Enum.GetValues(typeof(PetType)).Cast<PetType>().ToArray();
             List<string> validAnimals = new List<string>();
             for (int i = 0; i < petTypes.Length; i++)
