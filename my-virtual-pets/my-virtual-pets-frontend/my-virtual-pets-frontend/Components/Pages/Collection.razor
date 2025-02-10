@@ -7,7 +7,7 @@
 @using my_virtual_pets_frontend.Components.LoginSignupComponents
 @inject AuthenticationStateProvider AuthStateProvider
 @inject NavigationManager Navigation
-@rendermode InteractiveAuto
+@rendermode InteractiveServer
 
 <PageTitle>Collection | MyVirtualPets</PageTitle>
 
@@ -18,7 +18,7 @@
                 <h1 class="fw-bold py-6">Your Collection</h1>
                 <p>Login to view your collection</p>
                 <CascadingValue Value="Refresh">
-                <FormSwitcher></FormSwitcher>
+                <LoginSignupFormSwitcher></LoginSignupFormSwitcher>
                 </CascadingValue>
                 <hr class="my-4"/>
             </div>

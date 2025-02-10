@@ -2,7 +2,7 @@
 @using my_virtual_pets_class_library.DTO
 @inject NavigationManager NavMan 
 @inject AuthenticationStateProvider AuthState
-@rendermode InteractiveAuto
+@rendermode InteractiveServer
 
 <div class="container">
 <EditForm FormName="Login" Model="@userDetails" OnInvalidSubmit="HandleInvalidSubmit" OnValidSubmit="HandleValidSubmit">
@@ -111,14 +111,20 @@
             {
                 UsernameTaken = "Username is taken";
                 color = "red";
-                StateHasChanged();
             }
             else
             {
-                UsernameTaken = "Username is free";
-                color = "green";
-                StateHasChanged();
+                if (Username == "")
+                {
+                    UsernameTaken = "";
+                }
+                else
+                {
+                    UsernameTaken = "Username is free";
+                    color = "green";
+                }
             }
+            StateHasChanged();
         }
     }
     

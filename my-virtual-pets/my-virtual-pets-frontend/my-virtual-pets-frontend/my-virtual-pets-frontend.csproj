@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="wwwroot\js\CookieSetter.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\CookieGetter.js" />
   </ItemGroup>
 
 </Project>

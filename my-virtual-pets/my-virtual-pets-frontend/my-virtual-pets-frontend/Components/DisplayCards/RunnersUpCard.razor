@@ -1,6 +1,6 @@
 @using my_virtual_pets_class_library.DTO
-@using my_virtual_pets_frontend.Components.Icons
-@rendermode InteractiveAuto
+@using my_virtual_pets_frontend.Components.IsPetted
+@rendermode InteractiveServer
 
 
 <div class="container">
@@ -12,7 +12,7 @@
                 Personality: @petdisplay.Personality
             </div>
             <div class="col-sm-6 col-md-6 col-lg-3 col-xl-3">
-                <IsPetted PetId="petdisplay.PetId"></IsPetted>
+                <IsPetted petCard="petdisplay"></IsPetted>
             </div>
             <div class="col-sm-6 col-md-6 col-lg-3 col-xl-3">
                 <div id="popupmain">

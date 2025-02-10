@@ -1,6 +1,6 @@
 @using my_virtual_pets_class_library.DTO
-@using my_virtual_pets_frontend.Components.Icons;
-@rendermode InteractiveAuto
+@using my_virtual_pets_frontend.Components.IsPetted;
+@rendermode InteractiveServer
 
 <div class="leadercard">
     <div class="container">
@@ -27,10 +27,9 @@
             <div class="col-sm-12 col-md-6 col-lg-4 col-xl-6">
                 <div class="leaderstats pixeltext"  style="display:flex;justify-content:left">
                     <p>Name: @petCard.PetName</p>
-                    <p><span class="badge bg-success">Score: @petCard.Score</span></p>
                     <p>Owner: @petCard.OwnerUsername</p>
                     <p>Personality: @petCard.Personality</p>
-                    <IsPetted PetId="petCard.PetId"></IsPetted>
+                    <IsPetted petCard="petCard"></IsPetted>
                 </div>
             </div>
         </div>
@@ -44,7 +43,5 @@
     
     [Parameter] 
     public int index { get; set; }
-
-    
     
 }

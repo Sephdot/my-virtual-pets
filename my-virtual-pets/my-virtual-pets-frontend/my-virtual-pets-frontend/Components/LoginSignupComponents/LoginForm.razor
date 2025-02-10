@@ -75,10 +75,12 @@
                         new Claim(ClaimTypes.NameIdentifier, userid)
                     ],
                     "Custom Authentication");
-
+                
                 var newUser = new ClaimsPrincipal(identity);
-
                 AuthService.CurrentUser = newUser;
+                
+                // ((CustomAuthenticationStateProvider) CustomAuth).AuthenticateUser(loginDetails.Username, token, userid);
+                //
                 if (Refresh)
                 {
                     Navigation.Refresh(true);

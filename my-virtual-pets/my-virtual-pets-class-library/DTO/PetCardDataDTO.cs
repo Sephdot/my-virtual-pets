@@ -41,4 +41,11 @@ public class PetCardDataDTO
     [JsonPropertyName("isfavourited")]
     [Required]
     public required bool IsFavourited { get; set; }
+
+    public void UpdateScore(bool isAdded)
+    {
+        Score = isAdded ? Score + 1 : Score - 1; 
+    }
+    
+    
 }

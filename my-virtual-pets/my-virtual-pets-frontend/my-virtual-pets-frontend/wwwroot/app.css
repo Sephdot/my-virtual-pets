@@ -2,7 +2,8 @@
     --primary-color: #81568a;
     --secondary-color: #D18BE0;
     --tertiary-color: #fefedf;
-    --body-color: #FDCFD7;
+    --quaternary-color: #FDCFD7;
+    --almost-black: #141514;
 }
 
 @font-face {
@@ -30,14 +31,14 @@
 main {
     flex-grow: 1;
     overflow-y: auto;
-    padding: 50px 0;
+    padding: 50px 0 0 0;
 }
 
 body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    background: var(--body-color);
+    background: var(--quaternary-color);
     font-family: "Roboto_Mono", serif;
 }
 
@@ -76,7 +77,7 @@ h1:focus {
 
 
 .award {
-    color: #141514;
+    color: var(--almost-black);
     position: absolute;
     top: 0;
     left: 0;
@@ -96,7 +97,7 @@ h1:focus {
 
 .leadercard:hover {
     transform: scale(1.02);
-    box-shadow: 4px 4px 4px #141514;
+    box-shadow: 4px 4px 4px var(--almost-black);
 }
 
 .leaderimage {
@@ -106,8 +107,8 @@ h1:focus {
 }
 
 .leaderstats {
-    border: 1px dashed black;
-    box-shadow: 2px 2px 2px #141514;
+    border: 1px dashed var(--almost-black);
+    box-shadow: 2px 2px 2px var(--almost-black);
     border-radius: 25px;
     margin: 10px; 
     height: 230px;
@@ -137,6 +138,7 @@ h1:focus {
 .navbar,
 .footer {
     background-color: var(--primary-color);
+    color: var(--tertiary-color);
 }
 
 .footer > p {
@@ -164,6 +166,60 @@ h1:focus {
     transition: font-weight 0.15s, color 0.15s, transform 0.15s;
 }
 
+.home_row {
+    display: flex;
+    justify-content: center;
+    font-weight: 500;
+    padding: 30px 10px;
+}
+
+.home_row:nth-of-type(odd) {
+    background-color: var(--quaternary-color);
+    color: var(--almost-black);
+}
+
+.home_row:nth-of-type(even) {
+    background-color: var(--tertiary-color);
+    color: var(--primary-color);
+}
+
+.home_title {
+    font-size: 4rem;
+    margin-bottom: 2rem;
+}
+
+#cta-btn-container {
+    align-content: center;
+    padding: 10px 0;
+}
+
+#cta-btn-container button {
+    font-weight: bold;
+    width: 33%;
+}
+
+.img-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.col .img-container {
+    width: 100%;
+    height: auto;
+}
+
+h2.pixeltext {
+    font-weight: bold;
+    margin-bottom: 2rem;
+}
+
+.para {
+    max-width: 60ch;
+    word-wrap: break-word;
+    margin: auto;
+}
+
 .navbar-brand:hover,
 .nav-item > a:hover {
     color: var(--secondary-color);
@@ -179,7 +235,6 @@ h1:focus {
     transform: scale(1.1);
 }
 
-/* change this to look better! */
 .navbar .active {
     color: var(--tertiary-color) !important;
     font-weight: 800;
@@ -187,7 +242,7 @@ h1:focus {
 
 .form-control,
 .form-select {
-    border: 0.2rem dashed #141514;
+    border: 0.2rem dashed var(--almost-black);
 }
 
 .form-control:focus,
@@ -218,11 +273,11 @@ h1:focus {
 }
 
 #popuptext {
-    border: 1px dashed black;
+    border: 1px dashed var(--almost-black);
 }
 
 #popupimage {
-    border: 1px dotted black;
+    border: 1px dotted var(--almost-black);
 }
 
 #formcenter {
@@ -232,7 +287,6 @@ h1:focus {
     border-radius: 25px;
     background-color: var(--tertiary-color);
 }
-
 
 #formcenter a {
     font-style: italic;
@@ -260,7 +314,7 @@ h1:focus {
 .collectioncard {
     border-radius: 25px;
     margin: 40px;
-    background-color: #fefedf;
+    background-color: var(--tertiary-color);
     border: 5px dashed var(--secondary-color);
     position: relative;
     padding: 10px;
@@ -272,7 +326,13 @@ h1:focus {
 }
 
 .carousel {
-    background-color: #fefedf;
-    border: 5px dotted black;
+    background-color: var(--tertiary-color);
+    border: 5px dashed var(--almost-black);
     border-radius: 25px;
+}
+
+.carousel-col,
+.sales-col,
+.head-col {
+    padding: 0 24px;
 }

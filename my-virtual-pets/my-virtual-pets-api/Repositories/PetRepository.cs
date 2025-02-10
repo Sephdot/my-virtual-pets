@@ -174,6 +174,14 @@ namespace my_virtual_pets_api.Repositories
                 
         }
 
+        public void DecreaseScore(Guid petId)
+        {
+            var pet = _context.Pets
+                .SingleOrDefault(p => p.Id == petId);
+            pet.Score -= 1;
+            _context.SaveChanges();
+
+        }
 
     }
 }
