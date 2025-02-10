@@ -6,10 +6,12 @@
 <div class="container">
         <div class="row">
             <div class="col-sm-6 col-md-6 col-lg-3 col-xl-3">
-                Name: @petdisplay.PetName
+                <p>Name: @petdisplay.PetName</p>
+                <p>Owner: @petdisplay.OwnerUsername </p>
             </div>
             <div class="col-sm-6 col-md-6 col-lg-3 col-xl-3">
-                Personality: @petdisplay.Personality
+                <p>Personality: @petdisplay.Personality </p>
+                <p>Type: @petdisplay.PetType </p>
             </div>
             <div class="col-sm-6 col-md-6 col-lg-3 col-xl-3">
                 <IsPetted petCard="petdisplay"></IsPetted>
@@ -18,7 +20,7 @@
                 <div id="popupmain">
                     <PopupCard @ref="popupRef" petCard="petdisplay"/>
                 </div>
-                <button @onclick="PopupCall" style="margin-left:auto;margin-right:auto;">View</button>
+                <button @onclick="PopupCall" style="margin-left:auto;margin-right:auto;height:60px;width:60px">View</button>
             </div>
         </div>
 </div>
