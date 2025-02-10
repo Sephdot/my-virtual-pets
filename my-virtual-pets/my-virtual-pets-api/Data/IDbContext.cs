@@ -21,7 +21,5 @@ namespace my_virtual_pets_api.Data
         
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
-        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
-
     }
 }
