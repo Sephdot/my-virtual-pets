@@ -159,43 +159,43 @@ namespace my_virtual_pets_api.Repositories
         }
 
         
-        public async Task<bool> UpdateUser(UpdateUserDTO updatedUser, string currentPassword)
-        {
-            var globalUser = await _context.GlobalUsers.FirstOrDefaultAsync(u => u.Id == updatedUser.UserId);
-            if (globalUser == null)
+            public async Task<bool> UpdateUser(UpdateUserDTO updatedUser, string currentPassword)
             {
-                throw new KeyNotFoundException(" user not found.");
-            }
-
-            var localUser = await _context.LocalUsers.FirstOrDefaultAsync(lu => lu.GlobalUserId == updatedUser.UserId);
-
-            if (localUser == null || !BCrypt.Net.BCrypt.Verify(currentPassword, localUser.Password))
-            {
-                throw new UnauthorizedAccessException("Current password is incorrect.");
-            }
-
-
-            if (!string.IsNullOrWhiteSpace(updatedUser.NewUsername))
-            {
-                if (_context.GlobalUsers.Any(u => u.Username == updatedUser.NewUsername && u.Id != updatedUser.UserId))
+                var globalUser = await _context.GlobalUsers.FirstOrDefaultAsync(u => u.Id == updatedUser.UserId);
+                if (globalUser == null)
                 {
-                    throw new InvalidOperationException("Username is already in use.");
+                    throw new KeyNotFoundException(" user not found.");
                 }
-                globalUser.Username = updatedUser.NewUsername;
-            }
 
-            if (!string.IsNullOrWhiteSpace(updatedUser.NewPassword))
-            {
-                if (localUser == null)
+                var localUser = await _context.LocalUsers.FirstOrDefaultAsync(lu => lu.GlobalUserId == updatedUser.UserId);
+
+                if (localUser == null || !BCrypt.Net.BCrypt.Verify(currentPassword, localUser.Password))
                 {
-                    throw new KeyNotFoundException("user record not found.");
+                    throw new UnauthorizedAccessException("Current password is incorrect.");
                 }
-                localUser.Password = BCrypt.Net.BCrypt.EnhancedHashPassword(updatedUser.NewPassword);
-            }
 
-            await _context.SaveChangesAsync();
-            return true;
-        }
+
+                if (!string.IsNullOrWhiteSpace(updatedUser.NewUsername))
+                {
+                    if (_context.GlobalUsers.Any(u => u.Username == updatedUser.NewUsername && u.Id != updatedUser.UserId))
+                    {
+                        throw new InvalidOperationException("Username is already in use.");
+                    }
+                    globalUser.Username = updatedUser.NewUsername;
+                }
+
+                if (!string.IsNullOrWhiteSpace(updatedUser.NewPassword))
+                {
+                    if (localUser == null)
+                    {
+                        throw new KeyNotFoundException("user record not found.");
+                    }
+                    localUser.Password = BCrypt.Net.BCrypt.EnhancedHashPassword(updatedUser.NewPassword);
+                }
+
+                await _context.SaveChangesAsync();
+                return true;
+            }
 
     }
 }
