@@ -2,7 +2,7 @@
 @using my_virtual_pets_class_library.DTO
 @inject NavigationManager NavMan 
 @inject AuthenticationStateProvider AuthState
-@rendermode InteractiveAuto
+@rendermode InteractiveServer
 
 <div class="container">
 <EditForm FormName="Login" Model="@userDetails" OnInvalidSubmit="HandleInvalidSubmit" OnValidSubmit="HandleValidSubmit">
