@@ -34,7 +34,7 @@ if (builder.Environment.IsDevelopment())
 }
 else if (builder.Environment.IsProduction())
 {
-    var connectionString = Environment.GetEnvironmentVariable("ConnectionString__my_virtual_pets") + ";Pooling=true;";
+    var connectionString = Environment.GetEnvironmentVariable("ConnectionString__my_virtual_pets");
     builder.Services.AddHealthChecks().AddCheck("Db-check", new SqlServerHealthCheck(connectionString),HealthStatus.Unhealthy,new string[] { "orderingdb" });
     builder.Services.AddDbContext<IDbContext, VPSqlServerContext>(options => options.UseSqlServer(connectionString));
 }
@@ -54,6 +54,7 @@ builder.Services.AddScoped<IPetRepository, PetRepository>();
 builder.Services.AddScoped<IPetService, PetService>();
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
 
+
 builder.Services
     .AddAuthentication(options =>
     {
@@ -68,8 +69,8 @@ builder.Services
          )
     .AddGoogle(options =>
         {
-            options.ClientId = "";
-            options.ClientSecret = "";
+            options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+            options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
             options.CallbackPath = "/signin-google";
             options.Scope.Add("email");
             options.Scope.Add("profile");
@@ -84,7 +85,7 @@ options.TokenValidationParameters = new TokenValidationParameters
              ValidateIssuerSigningKey = true,
              ValidIssuer = "my-virtual-pets.com",
              ValidAudience = "my-virtual-pets.com",
-             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("b3f7e9d8f6a4b9c2d1a6c8e0e0f9b1a3")) // test token remove later
+             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Authentication:jwt:SecretKey"]))
          };
      });
 

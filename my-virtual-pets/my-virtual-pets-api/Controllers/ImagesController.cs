@@ -19,7 +19,7 @@ public class ImagesController : ControllerBase
         _pixelate = pixelate;
     }
 
-    [Authorize]
+    [Authorize(AuthenticationSchemes = "loginjwt")]
     [HttpPost]
     public async Task<IActionResult> PostImage(byte[] inputImage)
     {

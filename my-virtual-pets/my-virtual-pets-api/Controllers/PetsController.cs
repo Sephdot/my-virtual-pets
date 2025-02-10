@@ -35,7 +35,7 @@ namespace my_virtual_pets_api.Controllers
             }
         }
 
-        [Authorize]
+        [Authorize(AuthenticationSchemes = "loginjwt")]
         [HttpGet("user/{userId}")]
         public IActionResult GetAllPetsByUserID(Guid userId)
         {
@@ -55,7 +55,7 @@ namespace my_virtual_pets_api.Controllers
             }
         }
 
-        [Authorize]
+        [Authorize(AuthenticationSchemes = "loginjwt")]
         [HttpGet("{petId}")]
         public IActionResult GetPetById(Guid petId)
         {

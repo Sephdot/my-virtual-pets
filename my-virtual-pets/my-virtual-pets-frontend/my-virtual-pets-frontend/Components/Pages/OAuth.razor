@@ -1,0 +1,39 @@
+@page "/oauth/{token}/{userid:guid}/{email}"
+@using System.Security.Claims
+@inject NavigationManager Navigation
+@inject AuthenticationStateProvider CustomAuth
+@inject CustomAuthenticationService AuthService
+@rendermode InteractiveServer
+
+
+<p>You are being logged in...</p>
+
+@code {
+
+    [Parameter]
+    public string token { get; set; }
+    
+    [Parameter]
+    public Guid userid { get; set; }
+    
+    [Parameter]
+    public string email { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        var identity = new ClaimsIdentity(
+            [
+                new Claim(ClaimTypes.Name, email),
+                new Claim(ClaimTypes.Hash, token),
+                new Claim(ClaimTypes.NameIdentifier, userid.ToString())
+            ],
+            "Custom Authentication");
+                
+        var newUser = new ClaimsPrincipal(identity);
+        AuthService.CurrentUser = newUser;
+        Navigation.NavigateTo("/");
+    }
+
+    
+}

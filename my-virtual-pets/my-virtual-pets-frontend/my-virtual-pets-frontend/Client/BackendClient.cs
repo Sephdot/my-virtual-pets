@@ -31,7 +31,6 @@ public class BackendClient<T>
         public async Task<T> GetRequest()
         {
             var token = await GetToken();   
-            Console.WriteLine("token" + token);
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
             try
             {

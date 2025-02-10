@@ -66,7 +66,7 @@ namespace my_virtual_pets_api.Controllers
                 new Claim(ClaimTypes.Role, "User"),
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Secret"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Authentication:Jwt:SecretKey"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
@@ -77,7 +77,7 @@ namespace my_virtual_pets_api.Controllers
                 signingCredentials: creds
             );
             
-            return Redirect($"http://localhost:5092/test2?token={token}&userId={userId}&email={email}");
+            return Redirect($"http://localhost:5092/oauth/{new JwtSecurityTokenHandler().WriteToken(token)}/{userId}/{email}");
         }
         
 
@@ -110,7 +110,7 @@ namespace my_virtual_pets_api.Controllers
                 new Claim(ClaimTypes.Role, "User"),
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Secret"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Authentication:Jwt:SecretKey"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
@@ -129,7 +129,7 @@ namespace my_virtual_pets_api.Controllers
             });
         }
         
-        [Authorize("loginjwt")]
+        [Authorize(AuthenticationSchemes = "loginjwt")]
         [HttpGet("{userId}")]
         public IActionResult GetUserDetailsByUserId(Guid userId)
         {
@@ -149,7 +149,7 @@ namespace my_virtual_pets_api.Controllers
             }
         }
 
-        [Authorize]
+        [Authorize(AuthenticationSchemes = "loginjwt")]
         [HttpPost]
         [Route("AddToFavourites")]
         public IActionResult AddPetToFavourites(Favourites favourites)
@@ -170,7 +170,7 @@ namespace my_virtual_pets_api.Controllers
             }
         }
         
-        [Authorize]
+        [Authorize(AuthenticationSchemes = "loginjwt")]
         [HttpGet]
         [Route("{GlobalUserId}/FavouritePetIds")]
         public IActionResult GetFavouritePetIds(Guid GlobalUserId)
@@ -190,7 +190,7 @@ namespace my_virtual_pets_api.Controllers
             }
         }
 
-        [Authorize]
+        [Authorize(AuthenticationSchemes = "loginjwt")]
         [HttpGet]
         [Route("{GlobalUserId}/FavouritePets")]
         public IActionResult GetFavouritePets(Guid GlobalUserId)
@@ -210,7 +210,7 @@ namespace my_virtual_pets_api.Controllers
             }
         }
 
-        [Authorize]
+        [Authorize(AuthenticationSchemes = "loginjwt")]
         [HttpDelete]
         [Route("{GlobalUserId}/RemoveFromFavourites/{PetId}")]
         public IActionResult RemoveFromFavourite(Guid GlobalUserId, Guid PetId)
@@ -268,7 +268,7 @@ namespace my_virtual_pets_api.Controllers
             }
         }
 
-        [Authorize]
+        [Authorize(AuthenticationSchemes = "loginjwt")]
         [HttpPut("update")]
         public IActionResult UpdateUser([FromBody] UpdateUserDTO updateduser, string currentPassword)
         {
