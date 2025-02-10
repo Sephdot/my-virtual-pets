@@ -20,6 +20,7 @@ public interface IUserService
     public bool IsFavourited(Guid GlobalUserId, Guid PetId);
 
     public bool UpdateUser(UpdateUserDTO updatedUser, string currentPassword);
+    public Guid CreateNewAuthUser(string email, string fullname, string authid);
 
 
 }

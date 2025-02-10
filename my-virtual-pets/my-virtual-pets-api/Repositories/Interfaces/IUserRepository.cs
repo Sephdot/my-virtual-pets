@@ -6,7 +6,6 @@ public interface IUserRepository
 {
     public bool ExistsByUsername(string username);
     public Guid CreateNewLocalUser(NewUserDTO newUserDto, Guid globalUserId);
-    public Guid CreateNewAuthUser(NewUserDTO newUserDto, Guid globalUserId);
     public string GetPassword(string username);
     public Guid CreateNewGlobalUser(NewUserDTO newUserDto);
     public bool ExistsByEmail(string email);
@@ -25,5 +24,8 @@ public interface IUserRepository
     public bool UpdateUser(UpdateUserDTO updatedUser, string currentPassword);
 
     public bool IsFavourited(Guid GlobalUserId, Guid PetId);
+    public Guid CreateNewGlobalUser(string email);
+    public Guid CreateNewAuthUser(string fullname, string authId, Guid globalUserId);
 
+    public Guid GetUserIdByEmail(string email);
 }

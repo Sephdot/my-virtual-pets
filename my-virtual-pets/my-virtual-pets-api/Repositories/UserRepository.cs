@@ -42,6 +42,15 @@ namespace my_virtual_pets_api.Repositories
             _context.SaveChanges();
             return newGlobalUser.Id;
         }
+        
+        public Guid CreateNewGlobalUser(string email)
+        {
+            GlobalUser newGlobalUser = new GlobalUser(email);
+            _context.GlobalUsers.Add(newGlobalUser);
+            _context.SaveChanges();
+            return newGlobalUser.Id;
+        }
+        
 
         public Guid CreateNewLocalUser(NewUserDTO newUserDto, Guid globalUserId)
         {
@@ -51,11 +60,19 @@ namespace my_virtual_pets_api.Repositories
             return newLocalUser.Id;
         }
 
-        public Guid CreateNewAuthUser(NewUserDTO newUserDto, Guid globalUserId)
+        public Guid CreateNewAuthUser(string fullname, string authId, Guid globalUserId)
         {
-            throw new NotImplementedException();
+            AuthUser newAuthUser = new AuthUser() { FullName = fullname, Auth0Id = authId, GlobalUserId = globalUserId };
+            _context.AuthUsers.Add(newAuthUser);
+            _context.SaveChanges();
+            return newAuthUser.Id;
         }
 
+        public Guid GetUserIdByEmail(string email)
+        {
+            return _context.GlobalUsers.FirstOrDefault(u => u.Email == email).Id;
+        }
+        
         public string GetPassword(string username)
         {
             var userGuid = _context.GlobalUsers.FirstOrDefault(u => u.Username == username).Id;

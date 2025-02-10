@@ -15,5 +15,11 @@ namespace my_virtual_pets_api.Entities
 
         public required string FullName { get; set; }
 
+        public AuthUser()
+        {
+            
+        }
+
+        
     }
 }

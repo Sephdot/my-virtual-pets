@@ -52,13 +52,17 @@ namespace my_virtual_pets_api.Controllers
                 Console.WriteLine(authResult.Failure?.Message);
                 return BadRequest("Authentication failed");
             }
+            
+            var autho = authResult.Principal.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            var email = authResult.Principal.Claims.First(x => x.Type == ClaimTypes.Email).Value;
+            var fullname = authResult.Principal.Claims.First(x => x.Type == ClaimTypes.GivenName).Value;
 
-            Guid userId = new Guid(); 
-
+            var userId = _userService.CreateNewAuthUser(email, fullname, autho);
+            
             var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
-                new Claim(ClaimTypes.Name, "THIS IS A TEST"),
+                new Claim(ClaimTypes.Name, email),
                 new Claim(ClaimTypes.Role, "User"),
             };
 
@@ -73,26 +77,7 @@ namespace my_virtual_pets_api.Controllers
                 signingCredentials: creds
             );
             
-            // return Ok(new
-            // {
-            //
-            //     token = new JwtSecurityTokenHandler().WriteToken(token),
-            //     userid = userId
-            // });
-            //
-            
-            // create a new auth user if one does not exist? 
-            
-            // return a jwt token to the frontend - and log them in there 
-            
-            
-            // If authentication succeeds, sign in the user
-            // var claimsPrincipal = authResult.Principal;
-            // await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
-            
-            // with tokens, userid, email?? 
-            
-            return Redirect("http://localhost:5092/test2");
+            return Redirect($"http://localhost:5092/test2?token={token}&userId={userId}&email={email}");
         }
         
 
