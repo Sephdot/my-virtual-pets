@@ -20,7 +20,6 @@ public class ImagesController : ControllerBase
     }
 
 
-    [Authorize(AuthenticationSchemes = "loginjwt")]
     [HttpPost]
     public async Task<IActionResult> PostImage(byte[] inputImage)
     {

@@ -83,8 +83,8 @@ builder.Services
          )
     .AddGoogle(options =>
         {
-            options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
-            options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+            options.ClientId = builder.Configuration["Authentication:Google:ClientId"] ?? throw new Exception("Google Client ID could not be found.");;
+            options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"] ?? throw new Exception("Google Client Secret could not be found.");;
             options.CallbackPath = "/signin-google";
             options.Scope.Add("email");
             options.Scope.Add("profile");
