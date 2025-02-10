@@ -21,6 +21,4 @@ public interface IUserService
 
     public Task<Guid> CreateNewAuthUser(string email, string fullname, string authid);
     public Task<bool> UpdateUser(UpdateUserDTO updatedUser, string currentPassword);
-
-
 }

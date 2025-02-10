@@ -9,8 +9,8 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
-using Google.Apis.Auth.AspNetCore3;
-using Microsoft.Data.SqlClient;
+using my_virtual_pets_api.Entities;
+
 
 namespace my_virtual_pets_api.Controllers
 {
@@ -20,18 +20,20 @@ namespace my_virtual_pets_api.Controllers
     {
         private readonly IUserService _userService;
 
+        private readonly ITokenService _tokenService;
+        
         private readonly IConfiguration _configuration;
 
-        public UserController(IUserService userService, IConfiguration configuration)
+        public UserController(IUserService userService, IConfiguration configuration, ITokenService tokenService)
         {
             _configuration = configuration;
             _userService = userService;
+            _tokenService = tokenService;
         }
         
         [HttpGet("/login-google")]
         public async Task LogInGoogle()
         {
-            Console.WriteLine("THIS IS THE LOGIN GOOGLE");
             var properties = new AuthenticationProperties
             {
                 RedirectUri = "https://localhost:7091/google-callback"
@@ -44,12 +46,9 @@ namespace my_virtual_pets_api.Controllers
         [HttpGet("/google-callback")]
         public async Task<IActionResult> GoogleCallback()
         {
-            Console.WriteLine("THIS IS THE SIGNED-IN GOOGLE");
             var authResult = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             if (!authResult.Succeeded)
             {
-                Console.WriteLine("Authentication failed");
-                Console.WriteLine(authResult.Failure?.Message);
                 return BadRequest("Authentication failed");
             }
             
@@ -76,10 +75,23 @@ namespace my_virtual_pets_api.Controllers
                 expires: DateTime.Now.AddMinutes(30),
                 signingCredentials: creds
             );
-            
-            return Redirect($"http://localhost:5092/oauth/{new JwtSecurityTokenHandler().WriteToken(token)}/{userId}/{email}");
+
+            OAuthToken newToken = new OAuthToken()
+                { Auth0Id = userId, Token = new JwtSecurityTokenHandler().WriteToken(token), Email = email };
+
+            var cacheKey = Guid.NewGuid(); 
+            _tokenService.StoreToken(cacheKey, newToken);
+
+            return Redirect($"http://localhost:5092/oauth/{cacheKey}");
         }
-        
+
+        [HttpGet("tokenexchange/{cacheKey}")]
+        public async Task<IActionResult> TokenExchange(Guid cacheKey)
+        {
+            OAuthToken returnToken = _tokenService.GetToken(cacheKey);
+            if (returnToken == null) return BadRequest("No token found");
+            return Ok(returnToken);
+        }
 
 
         [HttpPost("register")]

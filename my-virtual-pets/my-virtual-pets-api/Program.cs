@@ -65,6 +65,8 @@ builder.Services.AddHealthChecks().AddCheck<RemoveBackgroundHealthCheck>("remove
 builder.Services.AddScoped<IPetRepository, PetRepository>();
 builder.Services.AddScoped<IPetService, PetService>();
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddMemoryCache();
 
 
 builder.Services

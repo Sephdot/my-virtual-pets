@@ -14,7 +14,7 @@ namespace my_virtual_pets_api.Entities
         public required string Auth0Id { get; set; }
 
         public required string FullName { get; set; }
-
+        
         public AuthUser()
         {
             

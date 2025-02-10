@@ -31,4 +31,5 @@ public interface IUserRepository
     public Task<bool> IsFavourited(Guid GlobalUserId, Guid PetId);
 
     public Task<Guid> GetUserIdByEmail(string email);
+    
 }

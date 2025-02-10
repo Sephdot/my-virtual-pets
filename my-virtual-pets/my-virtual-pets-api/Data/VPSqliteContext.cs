@@ -17,7 +17,7 @@ namespace my_virtual_pets_api.Data
         public DbSet<Image> Images { get; set; }
 
         public DbSet<Favourite> Favorites { get; set; }
-
+        
         public VPSqliteContext(DbContextOptions<VPSqliteContext> options) : base(options)
         {
             Database.EnsureCreated();
@@ -35,6 +35,7 @@ namespace my_virtual_pets_api.Data
             modelBuilder.Entity<AuthUser>().Property(e => e.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<Pet>().Property(e => e.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<Image>().Property(e => e.Id).ValueGeneratedOnAdd();
+
 
             modelBuilder.Entity<Favourite>()
                         .HasKey(f => new { f.GlobalUserId, f.PetId });
