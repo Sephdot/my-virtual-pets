@@ -144,7 +144,7 @@ namespace my_virtual_pets_api.Controllers
             });
         }
         
-        [Authorize]
+        [Authorize("loginjwt")]
         [HttpGet("{userId}")]
         public IActionResult GetUserDetailsByUserId(Guid userId)
         {
