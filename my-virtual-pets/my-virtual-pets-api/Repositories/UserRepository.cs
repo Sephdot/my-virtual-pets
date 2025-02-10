@@ -43,11 +43,11 @@ namespace my_virtual_pets_api.Repositories
             return newGlobalUser.Id;
         }
         
-        public Guid CreateNewGlobalUser(string email)
+        public async Task<Guid> CreateNewGlobalUser(string email)
         {
             GlobalUser newGlobalUser = new GlobalUser(email);
             _context.GlobalUsers.Add(newGlobalUser);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return newGlobalUser.Id;
         }
         
@@ -56,7 +56,7 @@ namespace my_virtual_pets_api.Repositories
         {
             LocalUser newLocalUser = new LocalUser(newUserDto, globalUserId);
             _context.LocalUsers.Add(newLocalUser);
-           await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return newLocalUser.Id;
         }
 

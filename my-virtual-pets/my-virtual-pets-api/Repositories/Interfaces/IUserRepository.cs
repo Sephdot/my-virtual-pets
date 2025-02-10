@@ -7,7 +7,6 @@ public interface IUserRepository
 
     public Task<bool> ExistsByUsername(string username);
     public Task<Guid> CreateNewLocalUser(NewUserDTO newUserDto, Guid globalUserId);
-    public Task<Guid> CreateNewAuthUser(NewUserDTO newUserDto, Guid globalUserId);
     public Task<string> GetPassword(string username);
     public Task<Guid> CreateNewGlobalUser(NewUserDTO newUserDto);
     public Task<bool> ExistsByEmail(string email);
@@ -26,7 +25,7 @@ public interface IUserRepository
     public Task<bool> UpdateUser(UpdateUserDTO updatedUser, string currentPassword);
 
 
-    public Guid CreateNewGlobalUser(string email);
+    public Task<Guid> CreateNewGlobalUser(string email);
     
     public Task<Guid> CreateNewAuthUser(string fullname, string authId, Guid globalUserId);
     public Task<bool> IsFavourited(Guid GlobalUserId, Guid PetId);
