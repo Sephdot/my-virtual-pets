@@ -7,7 +7,7 @@ namespace PixelationTest
     {
         private List<SKColor> palette = [];
 
-        public byte[] PixelateImage(byte[] input, int blockCount, bool usePalette)
+        public byte[] PixelateImage(byte[] input, int blockCount, bool isShiny)
         {
             SKBitmap image;
             using (var stream = new SKMemoryStream(input))
@@ -16,18 +16,22 @@ namespace PixelationTest
             }
             int blockSize = Math.Min(image.Width, image.Height) / blockCount;
 
-            //palette.Add(Color.FromArgb(241, 228, 232));
-            //palette.Add(Color.FromArgb(226, 220, 222));
-            //palette.Add(Color.FromArgb(206, 177, 190));
-            //palette.Add(Color.FromArgb(185, 115, 117));
-            //palette.Add(Color.FromArgb(45, 45, 52));
-
-            palette.Add(new SKColor(221, 213, 208));
-            palette.Add(new SKColor(207, 192, 189));
-            palette.Add(new SKColor(184, 184, 170));
-            palette.Add(new SKColor(127, 145, 131));
-            palette.Add(new SKColor(88, 111, 107));
-            palette.Add(new SKColor(40, 51, 49));
+            if (isShiny)
+            {
+                palette.Add(new SKColor(223, 200, 200));
+                palette.Add(new SKColor(180, 126, 152));
+                palette.Add(new SKColor(123, 50, 104));
+                palette.Add(new SKColor(58, 29, 53));
+                palette.Add(new SKColor(5, 4, 4));
+            }
+            else
+            {
+                palette.Add(new SKColor(186, 178, 166));
+                palette.Add(new SKColor(129, 114, 106));
+                palette.Add(new SKColor(96, 75, 67));
+                palette.Add(new SKColor(32, 23, 20));
+                palette.Add(new SKColor(17, 9, 9));
+            }
 
             SKBitmap result = new SKBitmap(image.Width, image.Height);
 
@@ -40,10 +44,7 @@ namespace PixelationTest
                     (SKColor averageColor, byte averageAlpha) = GetAverageColour(image, x, y, blockSize);
 
                     //Apply palette
-                    if (usePalette && palette.Count > 0)
-                    {
-                        averageColor = FindClosestPaletteColor(averageColor);
-                    }
+                    averageColor = FindClosestPaletteColor(averageColor);
 
                     //Hard cutoff for alpha
                     byte finalAlpha = averageAlpha >= 128 ? (byte)255 : (byte)0;
