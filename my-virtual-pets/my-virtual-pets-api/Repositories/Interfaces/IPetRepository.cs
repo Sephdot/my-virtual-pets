@@ -5,22 +5,18 @@ namespace my_virtual_pets_api.Repositories.Interfaces
 {
     public interface IPetRepository
     {
-        List<PetCardDataDTO> GetAllPetsByUserID(Guid userId);
+        Task<List<PetCardDataDTO>> GetAllPetsByUserID(Guid userId);
 
-        public PetCardDataDTO GetPetById(Guid petId);
+        Task<PetCardDataDTO?> GetPetById(Guid petId);
 
-        public PetCardDataDTO AddPet(AddPetDTO petData, Guid imageId, int score);
+        Task<PetCardDataDTO> AddPet(AddPetDTO petData, Guid imageId, int score);
 
-        public bool DeletePet(Guid petId);
-      
-        public List<Pet> GetPets();
+        Task<bool> DeletePet(Guid petId);
 
-        public List<PetCardDataDTO> GetTop10Pets();
-        public List<PetCardDataDTO> GetRecentPets();
-        public void IncreaseScore(Guid petId);
+        Task<List<Pet>> GetPets();
 
-
-
-
+        Task<List<PetCardDataDTO>?> GetTop10Pets();
+        Task<List<PetCardDataDTO>?> GetRecentPets();
+        Task IncreaseScore(Guid petId);
     }
 }
