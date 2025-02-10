@@ -38,6 +38,7 @@ namespace my_virtual_pets_api.Services
             await _userRepository.CreateNewLocalUser(newUserDto, globalUserId);
         }
 
+
         public async Task<bool> DoesPasswordMatch(UserLoginDTO userLoginDto)
         {
             string hashedPassword = await _userRepository.GetPassword(userLoginDto.Username);
@@ -113,5 +114,22 @@ namespace my_virtual_pets_api.Services
                 return false;
             }
         }
+        
+                
+        public async Task<Guid> CreateNewAuthUser(string email, string fullname, string authid)
+        {
+            Guid globalUserId; 
+            if (!_userRepository.ExistsByEmail(email))
+            {
+                globalUserId = _userRepository.CreateNewGlobalUser(email);
+                _userRepository.CreateNewAuthUser(fullname, authid, globalUserId);
+            } else
+            {
+                globalUserId = await _userRepository.GetUserIdByEmail(email);
+            }
+            return globalUserId;
+        }
+
+        
     }
 }

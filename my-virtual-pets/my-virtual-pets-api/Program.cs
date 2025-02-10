@@ -14,6 +14,14 @@ using my_virtual_pets_api.Services.Interfaces;
 using PixelationTest;
 using System.Text;
 using System.Text.Json.Serialization;
+using Google.Apis.Auth.AspNetCore3;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.IdentityModel.Tokens;
+using my_virtual_pets_api.HealthChecks;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,8 +39,8 @@ if (builder.Environment.IsDevelopment())
 }
 else if (builder.Environment.IsProduction())
 {
-    var connectionString = Environment.GetEnvironmentVariable("ConnectionString__my_virtual_pets") + ";Pooling=true;";
-    builder.Services.AddHealthChecks().AddCheck("Db-check", new SqlServerHealthCheck(connectionString), HealthStatus.Unhealthy, new string[] { "orderingdb" });
+    var connectionString = Environment.GetEnvironmentVariable("ConnectionString__my_virtual_pets");
+    builder.Services.AddHealthChecks().AddCheck("Db-check", new SqlServerHealthCheck(connectionString),HealthStatus.Unhealthy,new string[] { "orderingdb" });
     builder.Services.AddDbContext<IDbContext, VPSqlServerContext>(options => options.UseSqlServer(connectionString));
 }
 
@@ -58,21 +66,41 @@ builder.Services.AddScoped<IPetRepository, PetRepository>();
 builder.Services.AddScoped<IPetService, PetService>();
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
+
+builder.Services
+    .AddAuthentication(options =>
     {
-        options.TokenValidationParameters = new TokenValidationParameters
+        options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+        options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    })
+    .AddCookie(options =>
+    {
+        options.Cookie.SameSite = SameSiteMode.None;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    }
+         )
+    .AddGoogle(options =>
         {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = "my-virtual-pets.com",
-            ValidAudience = "my-virtual-pets.com",
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("b3f7e9d8f6a4b9c2d1a6c8e0e0f9b1a3")) // test token remove later
-        };
-    });
-// need to configure Google OAuth here 
+            options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+            options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+            options.CallbackPath = "/signin-google";
+            options.Scope.Add("email");
+            options.Scope.Add("profile");
+        }
+    )
+    .AddJwtBearer("loginjwt", options =>
+  {
+options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true, ValidateAudience = true,
+             ValidateLifetime = true,
+             ValidateIssuerSigningKey = true,
+             ValidIssuer = "my-virtual-pets.com",
+             ValidAudience = "my-virtual-pets.com",
+             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Authentication:jwt:SecretKey"]))
+         };
+     });
+
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 

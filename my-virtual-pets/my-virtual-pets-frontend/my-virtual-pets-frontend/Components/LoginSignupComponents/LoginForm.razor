@@ -28,7 +28,10 @@
     <h6 style="color:red">@Feedback</h6>
     
     <button id="loginbutton" class="btn btn-light d-block mx-auto mt-4" type="submit">Enter the doghouse</button>
-    
+
+    <button @onclick="LoginWithGoogle" class="btn btn-light d-block mx-auto mt-4">Log in with Google</button>
+
+
 </EditForm>
 
 
@@ -55,7 +58,6 @@
     public async Task HandleValidSubmit()
     {
         HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, "https://localhost:7091/api/user/login");
-        // requestMessage.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
         requestMessage.Content = JsonContent.Create(loginDetails);
         var client = new HttpClient();
         var response = await client.SendAsync(requestMessage);    
@@ -93,6 +95,11 @@
             Feedback = await response.Content.ReadAsStringAsync();   
         }
 
+    }
+    
+    public void LoginWithGoogle()
+    {
+        Navigation.NavigateTo("https://localhost:7091/login-google", forceLoad: true);
     }
 
 }

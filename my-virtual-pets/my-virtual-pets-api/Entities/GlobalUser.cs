@@ -44,5 +44,13 @@ namespace my_virtual_pets_api.Entities
             DateJoined = DateTime.UtcNow;
         }
 
+        public GlobalUser(string email)
+        {
+            Username = email;
+            Email = email;
+            GDPRPermissions = true; 
+            DateJoined = DateTime.UtcNow;
+        }
+        
     }
 }

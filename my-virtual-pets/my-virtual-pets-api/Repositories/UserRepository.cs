@@ -42,6 +42,15 @@ namespace my_virtual_pets_api.Repositories
            await _context.SaveChangesAsync();
             return newGlobalUser.Id;
         }
+        
+        public Guid CreateNewGlobalUser(string email)
+        {
+            GlobalUser newGlobalUser = new GlobalUser(email);
+            _context.GlobalUsers.Add(newGlobalUser);
+            _context.SaveChanges();
+            return newGlobalUser.Id;
+        }
+        
 
         public async Task<Guid> CreateNewLocalUser(NewUserDTO newUserDto, Guid globalUserId)
         {
@@ -51,10 +60,6 @@ namespace my_virtual_pets_api.Repositories
             return newLocalUser.Id;
         }
 
-        public async Task<Guid> CreateNewAuthUser(NewUserDTO newUserDto, Guid globalUserId)
-        {
-            throw new NotImplementedException();
-        }
 
         public async Task<string> GetPassword(string username)
         {
@@ -191,11 +196,27 @@ namespace my_virtual_pets_api.Repositories
                         throw new KeyNotFoundException("user record not found.");
                     }
                     localUser.Password = BCrypt.Net.BCrypt.EnhancedHashPassword(updatedUser.NewPassword);
-                }
-
-                await _context.SaveChangesAsync();
+                }  await _context.SaveChangesAsync();
                 return true;
             }
+
+        
+        public async Task<Guid> CreateNewAuthUser(string fullname, string authId, Guid globalUserId)
+        {
+            AuthUser newAuthUser = new AuthUser() { FullName = fullname, Auth0Id = authId, GlobalUserId = globalUserId };
+            _context.AuthUsers.Add(newAuthUser);
+            await _context.SaveChangesAsync();
+            return newAuthUser.Id;
+        }
+        
+
+        public async Task<Guid> GetUserIdByEmail(string email)
+        {
+            var user = await _context.GlobalUsers.SingleOrDefaultAsync(u => u.Email == email);
+            if (user == null) throw new KeyNotFoundException("User does not exist");
+            return user.Id; 
+        }
+              
 
     }
 }

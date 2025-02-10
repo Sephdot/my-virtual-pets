@@ -32,7 +32,7 @@ namespace my_virtual_pets_api.Controllers
             }
         }
 
-        [Authorize]
+        [Authorize(AuthenticationSchemes = "loginjwt")]
         [HttpGet("user/{userId}")]
         public async Task<IActionResult> GetAllPetsByUserID(Guid userId)
         {
@@ -52,7 +52,7 @@ namespace my_virtual_pets_api.Controllers
             }
         }
 
-        [Authorize]
+        [Authorize(AuthenticationSchemes = "loginjwt")]
         [HttpGet("{petId}")]
         public async Task<IActionResult> GetPetById(Guid petId)
         {

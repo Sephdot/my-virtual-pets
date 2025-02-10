@@ -19,6 +19,7 @@ public interface IUserService
     public Task<bool> RemoveFromFavourites(Guid GlobalUserId, Guid PetId);
     public Task<bool> IsFavourited(Guid GlobalUserId, Guid PetId);
 
+    public Task<Guid> CreateNewAuthUser(string email, string fullname, string authid);
     public Task<bool> UpdateUser(UpdateUserDTO updatedUser, string currentPassword);
 
 
