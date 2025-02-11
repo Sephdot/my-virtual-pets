@@ -3,12 +3,12 @@
 @inject IHostEnvironment HostEnvironment
 @rendermode InteractiveServer
 
-<PageTitle>Error</PageTitle>
+<PageTitle>Error | MyVirtualPets</PageTitle>
 @if (HostEnvironment.IsProduction())
 {
     <div class="user-facing-error-container">
         <div class="user-facing-error-content">
-            <h1>Oops!</h1>
+            <h1 class="page-title">Oops!</h1>
             <p>Looks like a cat stepped on your keyboard... <br/>Click one of the links in the navigation bar to go home!</p>
         </div>
     </div>

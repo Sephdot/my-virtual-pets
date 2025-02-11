@@ -11,12 +11,12 @@
 <AuthorizeView>
     <NotAuthorized>
         @{
-            Navigation.NavigateTo("/login");
+            Navigation.NavigateTo("/log-in");
         }
     </NotAuthorized>
     <Authorized>
         <div class="container">
-            <h1 class="d-flex align-text-center">My Account</h1>
+            <h1 class="page-title text-center">My Account</h1>
             @if (_exceptionHappened)
             {
                 <h3>Something went wrong!</h3>
@@ -55,7 +55,7 @@
 
         if (userId == null)
         {
-            Navigation.NavigateTo("/login");
+            Navigation.NavigateTo("/log-in");
             Console.WriteLine("UserId was null trying to access my account");
             return;
         }

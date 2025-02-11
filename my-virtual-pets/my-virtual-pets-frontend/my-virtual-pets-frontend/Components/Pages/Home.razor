@@ -1,4 +1,5 @@
 ﻿@page "/"
+@page "/home"
 @using my_virtual_pets_class_library.DTO
 @using my_virtual_pets_frontend.Components.Icons
 @using my_virtual_pets_frontend.Components.HomeComponents
@@ -82,7 +83,6 @@
 
     private void HandleGetStarted()
     {
-        NavMan.NavigateTo("/"); // where should we send them to? Add pet or login/register?
+        NavMan.NavigateTo("/add-pet"); // where should we send them to? Add pet or login/register?
     }
-
 }

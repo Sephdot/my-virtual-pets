@@ -1,5 +1,5 @@
 @rendermode InteractiveServer
-
+<h1 class="page-title text-center">@(IsUser ? "Log In" : "Sign Up")</h1>
 <div id="formcenter" class="robottext" style="margin-left:auto;margin-right:auto;width:600px;height:100%;">
     @if (IsUser)
     {
@@ -7,19 +7,30 @@
     }
     else
     {
-            <SignupForm></SignupForm>
+          <SignupForm OnSignUpProcessing="HandleRedirectToAddPet"></SignupForm>
     }
-    <a style="cursor: pointer; font-size: 12px; margin-top: 20px;" @onclick="ToggleForm">@(IsUser ?  SwitchText[0] : SwitchText[1])</a>
+    <div class="@(IsRedirectingToAddPet ? "" : "link-container mt-4")">
+        <a @onclick="ToggleForm">
+            @(IsRedirectingToAddPet
+                ? ""
+                : IsUser
+                    ? "New? Sign up now!"
+                    : "Been here before? Log in now!")
+        </a>
+    </div>
 </div>
 
 @code{
-    public static string[] SwitchText = ["New here? Register now! →", "Been here before? Login! →"];
-
-    public bool IsUser { get; set; } = true; 
+    public bool IsUser { get; set; } = true;
+    private bool IsRedirectingToAddPet { get; set; } = false;
     
     public void ToggleForm()
     {
         IsUser = !IsUser;
     }
-    
+
+    public void HandleRedirectToAddPet()
+    {
+        IsRedirectingToAddPet = true;
+    }
 }

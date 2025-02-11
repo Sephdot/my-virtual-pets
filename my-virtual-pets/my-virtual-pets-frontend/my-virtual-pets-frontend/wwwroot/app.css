@@ -63,6 +63,20 @@ h1:focus {
     font-family: "Pixelify_Sans", serif;
 }
 
+.page-title {
+    font-weight: 800;
+    font-size: 3rem;
+    padding: 20px 0;
+}
+
+.text-warning {
+    color: orange !important;
+}
+
+.page-title:nth-of-type(2) {
+    font-size: 2rem;
+}
+
 .valid.modified:not([type=checkbox]) {
     border-color: #26b050;
 }
@@ -152,17 +166,32 @@ h1:focus {
     z-index: 1000;
 }
 
+@media (min-width: 1006px){
+    .navbar li {
+        margin: 0 0.75em;
+    }
+}
+
+@media (min-width: 992px) {
+    .navbar li {
+        margin: 0 0.6em;
+    }
+}
+
 .navbar-brand {
     font-size: 2rem;
     padding: 0;
+    margin-right: 1.5rem;
 }
 
-.nav-item > a {
+.nav-item > a,
+.nav-item > button {
     font-weight: 600;
 }
 
 .navbar-brand,
-.nav-item > a {
+.nav-item > a,
+.nav-item > button {
     transition: font-weight 0.15s, color 0.15s, transform 0.15s;
 }
 
@@ -220,17 +249,19 @@ h2.pixeltext {
     margin: auto;
 }
 
-.navbar-brand:hover,
-.nav-item > a:hover {
+.navbar-brand:hover {
     color: var(--secondary-color);
 }
 
-.nav-item > a:hover {
+.nav-item > a:hover,
+.nav-item > button:hover {
     font-weight: 800;
+    color: var(--secondary-color);
 }
 
 .navbar-brand:active,
-.nav-item > a:active {
+.nav-item > a:active,
+.nav-item > button:active {
     color: var(--tertiary-color);
     transform: scale(1.1);
 }
@@ -245,7 +276,6 @@ h2.pixeltext {
     border: 0.2rem dashed var(--almost-black);
 }
 
-.form-control:focus,
 .form-control:focus {
     box-shadow: none;
 }
@@ -288,23 +318,32 @@ h2.pixeltext {
     background-color: var(--tertiary-color);
 }
 
-#formcenter a {
-    font-style: italic;
-    font-size: 10px;
-    color: slategrey;
+#formcenter > .link-container {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+#formcenter > .link-container > a {
     text-decoration: underline;
+    cursor: pointer;
+    font-style: normal;
+    color: var(--secondary-color);
+}
+
+#formcenter > .link-container > a:hover {
+    font-style: italic;
 }
 
 .input {
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 1.25em;
 }
 
 .delete {
     cursor: pointer;
     position: absolute; 
     right: 10px; 
-    top: 0px;
+    top: 0;
 }
 
 #trash:hover {
