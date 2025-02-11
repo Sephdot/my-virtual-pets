@@ -22,7 +22,7 @@ namespace my_virtual_pets_api.Entities
         [Column(TypeName = "int")]
         public Personality Personality { get; set; }
 
-        [JsonPropertyName("Description")]
+        [JsonPropertyName("description")]
         public string? Description { get; set; }
 
         [JsonPropertyName("type")]

@@ -13,7 +13,7 @@
                 <p>name (not visible to others): @UserDisplayDto.FirstName.ToLower() @UserDisplayDto.LastName.ToLower()</p>
                 <p>email: @UserDisplayDto.Email</p>
                 <p>pets owned: @UserDisplayDto.PetCount</p>
-                @* <p>The type of pet you've favourited the most: @FavePetType</p> *@
+                <p>The type of pet you've favourited the most: @FavePetType</p>
             </div>
         </div>
     </div>
@@ -44,7 +44,7 @@
             return UserFavePets[0].PetType.ToString();
         }
         
-        Dictionary<PetType, int> scores = Enum
+        Dictionary<PetType, int> scoreboard = Enum
             .GetValues(typeof(PetType))
             .Cast<PetType>()
             .SkipLast(1) // ignore "OTHER"
@@ -52,27 +52,27 @@
         
         foreach (PetCardDataDTO favePet in UserFavePets)
         {
-            scores[favePet.PetType]++;
+            scoreboard[favePet.PetType]++;
         }
         
-        var topScore = scores.OrderBy(kvp => kvp.Key).First().Value;
-        List<string> topPets = scores
+        var topScore = scoreboard.Values.Max();
+        List<string> topScoringPets = scoreboard
             .Where(kvp => kvp.Value >= topScore)
             .Select(kvp => kvp.Key.ToString())
             .ToList();
     
-        switch (topPets.Count)
+        switch (topScoringPets.Count)
         {
-            case 1: return topPets[0].ToLower();
-            case 2: return $"{topPets[0]} and {topPets[1]}";
+            case 1: return topScoringPets[0].ToLower();
+            case 2: return $"{topScoringPets[0]} and {topScoringPets[1]}";
             default:
             {
                 string result = "";
-                for (int i = 0; i < topPets.Count - 1; i++)
+                for (int i = 0; i < topScoringPets.Count - 1; i++)
                 {
-                    result += $"{topPets[i]}, ";
+                    result += $"{topScoringPets[i]}, ";
                 }
-                return result + $"and {topPets[^1]}";
+                return result + $"and {topScoringPets[^1]}";
             }
         }
     }
