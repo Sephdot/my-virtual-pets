@@ -5,7 +5,8 @@
 @inject NavigationManager Navigation
 @rendermode InteractiveServer
 
-<p><span class="badge bg-success">Score: @petCard.Score</span></p>
+@* <span class="badge bg-success">Score: </span> *@
+<p><Score petscore="@petCard.Score"></Score></p>
 <div @onclick="Pet">
     @if (IsPet)
     {
