@@ -3,6 +3,7 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using my_virtual_pets_class_library.Enums;
 using my_virtual_pets_api.Services.Interfaces;
+using Azure;
 
 namespace ImageRecognition
 {
@@ -77,10 +78,63 @@ namespace ImageRecognition
                 content.Add(new StringContent($"dragoneye/animals"), "model_name");
                 request.Content = content;
                 var response = await client.SendAsync(request);
-                // Console.WriteLine(await response.Content.ReadAsStringAsync());
+                Console.WriteLine($"\nDragonEye returns this string:\n{ await response.Content.ReadAsStringAsync()}\n");
                 response.EnsureSuccessStatusCode();
                 var result = await response.Content.ReadAsStringAsync();
                 return result;
+            }
+            catch (HttpRequestException)
+            {
+
+                    //We should throw an exception here to inform the user the API is down
+                    //HOWEVER for demo purposes, here is a dummy JSON for a cat
+                    string result = """
+                                {
+                    "predictions": [
+                        {
+                            "category": {
+                                "id": 713730275076072,
+                                "type": "category",
+                                "name": "mammals",
+                                "displayName": "Mammals",
+                                "score": null,
+                                "uncalibrated_score": -1.0,
+                                "children": [
+                                    {
+                                        "id": 713730275076072,
+                                        "type": "category",
+                                        "name": "mammals",
+                                        "displayName": "Carnivores",
+                                        "score": null,
+                                        "uncalibrated_score": -1.0,
+                                        "children": [
+                                            {
+                                                "id": 717939453480153,
+                                                "type": "category",
+                                                "name": "cat",
+                                                "displayName": "Cat",
+                                                "score": 1.0,
+                                                "uncalibrated_score": 0.1185302734375,
+                                                "children": []
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "traits": [],
+                            "normalizedBbox": [
+                                0.0517578125,
+                                0.06734816596512327,
+                                0.8818359375,
+                                0.9482862297053518
+                            ]
+                        }
+                    ]
+                }
+                """;
+                    Console.WriteLine($"\nThere was an HTTP Error with DragonEye, so we are returning this default string:\n{result}\n");
+                    return result;
+
             }
             catch (Exception ex)
             {
