@@ -46,6 +46,12 @@ In order to run this app, valid API keys must be provided into the ` my-virtual-
 
 `` {  "dragoneyeApiKey": "<your dragoneye api key>", 
   "BgRemoverApiKey": "<your bg remover api key>" } ``
+## 🖼️ Pixelate Function:
+
+This app uses pixelation functionality inspired from custom pixelation software. The core pixelation process was identified and adapted into our project, enabling users to transform uploaded images into pixel-style art.
+
+### PixelArt
+https://github.com/BrandonHilde/PixelArt?tab=readme-ov-file
 
 
 __________________________________
