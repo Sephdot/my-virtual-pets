@@ -1,19 +1,21 @@
 @page "/log-in"
 @using my_virtual_pets_frontend.Components.LoginSignupComponents
+@inject NavigationManager NavMan
+@inject AuthenticationStateProvider AuthStateProvider
 @rendermode InteractiveServer
 
+<PageTitle>log in | my-virtual-pets</PageTitle>
 <div class="container">
     <AuthorizeView>
         <NotAuthorized>
-            <PageTitle>log in | my-virtual-pets</PageTitle>
             <CascadingValue Value="Refresh">
                 <LoginSignupFormSwitcher></LoginSignupFormSwitcher>
             </CascadingValue>
         </NotAuthorized>
         <Authorized>
-            <PageTitle>already logged in! | my-virtual-pets</PageTitle>
             <div class="container text-center">
-                <h1 class="page-title">you're already logged in!</h1>
+                <h1 class="page-title">logged in, redirecting you to home now.</h1>
+                @{ NavMan.NavigateTo("/home"); }
             </div>
         </Authorized>
     </AuthorizeView>

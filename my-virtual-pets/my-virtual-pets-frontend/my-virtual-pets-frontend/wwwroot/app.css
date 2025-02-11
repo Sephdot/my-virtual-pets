@@ -247,7 +247,6 @@ h2.pixeltext {
     max-width: 70ch;
     word-wrap: break-word;
     margin: 0 auto 1rem;
-    font-size: 0.8rem;
 }
 
 .para > span {
@@ -332,6 +331,17 @@ h2.pixeltext {
     background-color: var(--tertiary-color);
 }
 
+#account-content {
+    margin-left:auto;
+    margin-right:auto;
+    width:600px;
+    margin-bottom: 15px;
+    padding: 25px;
+    border: 10px dashed var(--primary-color);
+    border-radius: 25px;
+    background-color: var(--tertiary-color);
+}
+
 #formcenter > .link-container {
     text-align: center;
     display: flex;
@@ -394,12 +404,13 @@ h2.pixeltext {
     margin-left:auto;
     margin-right:auto;
     width:600px;
-    height:100%;"
+    height:100%;
 }
 
 
 @media only screen and (max-width: 400px) {
-    #formcenter {
+    #formcenter,
+    #account-content {
         max-width:300px;
     }
 }

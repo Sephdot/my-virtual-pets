@@ -7,35 +7,27 @@
 @inject CustomAuthenticationService AuthService
 @rendermode InteractiveServer
 
-@if (_redirecting)
-{
-    <Cat_Loader></Cat_Loader>
-}
-else
-{
-    <EditForm FormName="Login" Model="@loginDetails" OnInvalidSubmit="HandleInvalidSubmit" OnValidSubmit="HandleValidSubmit">
-        <DataAnnotationsValidator/>
+<EditForm FormName="Login" Model="@loginDetails" OnInvalidSubmit="HandleInvalidSubmit" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator/>
 
-        <div class="input form-group">
-            <label for="InputUsername">username:</label>
-            <InputText id="InputUsername" class="form-control" @bind-Value="@loginDetails.Username"/>
-            <ValidationMessage For="@(() => loginDetails.Username)"/>
-        </div>
-    
-        <div class="input form-group">
-            <label for="InputPassword">password:</label>
-            <InputText type="password" id="InputPassword" class="form-control" @bind-Value="@loginDetails.Password"/>
-            <ValidationMessage For="@(() => loginDetails.Password)"/>
-        </div>
-    
-        <h6 class="text-danger">@Feedback</h6>
-    
-        <button id="loginbutton" class="btn btn-light d-block mx-auto mt-4" type="submit">log in</button>
+    <div class="input form-group">
+        <label for="InputUsername">username:</label>
+        <InputText id="InputUsername" class="form-control" @bind-Value="@loginDetails.Username"/>
+        <ValidationMessage For="@(() => loginDetails.Username)"/>
+    </div>
 
-        <button @onclick="LoginWithGoogle" class="btn btn-light d-block mx-auto mt-4">log in with google</button>
-    </EditForm>
-}
+    <div class="input form-group">
+        <label for="InputPassword">password:</label>
+        <InputText type="password" id="InputPassword" class="form-control" @bind-Value="@loginDetails.Password"/>
+        <ValidationMessage For="@(() => loginDetails.Password)"/>
+    </div>
 
+    <h6 class="text-danger">@Feedback</h6>
+
+    <button id="loginbutton" class="btn btn-light d-block mx-auto mt-4" type="submit">log in</button>
+
+    <button @onclick="LoginWithGoogle" class="btn btn-light d-block mx-auto mt-4">log in with google</button>
+</EditForm>
 
 
 
@@ -49,9 +41,6 @@ else
     public UserLoginDTO loginDetails { get; set; } 
     
     public string Feedback { get; set; }
-
-    private bool _redirecting;
-    
     
     
     protected override void OnInitialized()
@@ -61,15 +50,12 @@ else
 
     public void HandleInvalidSubmit()
     {
-        Feedback = "something has gone wrong"; 
+        Feedback = "something has gone wrong..."; 
     }
 
     public async Task HandleValidSubmit()
     {
-        _redirecting = true;
-        StateHasChanged();
         await OnLogInProcessing.InvokeAsync();
-        StateHasChanged();
         
         HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, "https://localhost:7091/api/user/login");
         requestMessage.Content = JsonContent.Create(loginDetails);
@@ -89,24 +75,15 @@ else
                     ],
                     "Custom Authentication");
 
-                AuthService.CurrentUser = new ClaimsPrincipal(identity);
+                AuthService.CurrentUser = new ClaimsPrincipal(identity); // this logs in and triggers auth view of login page
                 
-                Navigation.NavigateTo("/my-account");
-                
-                
-                
-                // if (Refresh)
-                // {
-                //     Navigation.Refresh(true);
-                // } 
-                // else 
-                // {                
-                //     Navigation.NavigateTo("/my-account");
-                // }
+                if (Refresh)
+                {
+                    Navigation.Refresh(true);
+                }
             }
             else
             {
-                _redirecting = false;
                 StateHasChanged();
                 await OnLogInFailed.InvokeAsync();
                 StateHasChanged();
@@ -118,8 +95,6 @@ else
         {
             Feedback = await response.Content.ReadAsStringAsync();
             
-            _redirecting = false;
-            StateHasChanged();
             await OnLogInFailed.InvokeAsync();
             StateHasChanged();
         }
@@ -127,8 +102,6 @@ else
         {
             Feedback = "something has gone wrong!";
             
-            _redirecting = false;
-            StateHasChanged();
             await OnLogInFailed.InvokeAsync();
             StateHasChanged();
         }
@@ -138,6 +111,5 @@ else
     {
         Navigation.NavigateTo("https://localhost:7091/login-google", forceLoad: true);
     }
-
 }
     

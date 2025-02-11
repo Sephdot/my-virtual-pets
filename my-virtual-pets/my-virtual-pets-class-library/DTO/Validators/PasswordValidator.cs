@@ -15,7 +15,8 @@ public class PasswordValidator : ValidationAttribute
                     return ValidationResult.Success;
                 }
             }
-            return new ValidationResult("Min. 8 characters & 1 number");
+            
+            return new ValidationResult("min. 8 characters & 1 number!");
         }
 
     
