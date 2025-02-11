@@ -30,12 +30,11 @@ public class ImagesService : IImagesService
         if (recognitionResult == null) throw new Exception("Something went wrong while recongnising the image.");
         bool isShiny = recognitionResult.rarity > 50;
 
-        //Remove backround
+        //Remove background
         var removeBgResult = await _removeBackgroundService.RemoveBackgroundAsync(inputImage);
         if (removeBgResult == null) throw new Exception("Something went wrong while removing the background."); ;
 
         //Pixelate image
-
         byte[] pixelResult = _pixelateService.PixelateImage(removeBgResult, 100, isShiny);
         if (pixelResult == null) throw new Exception("Something went wrong while pixelating the image.");
 

@@ -179,12 +179,23 @@
     {
       "id": "b7d4e5c6-1a2b-47f8-9c83-4e5d3f2a6b9c",
       "userid": "3e2db5ff-0ac8-48b9-b341-e14371c42e7a",
-      "name": "Mochi",
+      "name": "legs",
       "personality": 1,
       "description": "Shy but affectionate once comfortable.",
       "type": 4,
       "imageid": "a47d6f3c-2e9b-4c15-b87a-5d8f4e1a2b3c",
       "score": 17,
       "dateCreated": "2025-07-30T18:00:00.000Z"
-    }
+    },
+  {
+    "id": "b8d4e5c6-1a2b-47f8-9c83-4e5d3f2a6b9c",
+    "userid": "3e2db5ff-0ac8-48b9-b341-e14371c42e7a",
+    "name": "Squidward",
+    "personality": 4,
+    "description": "Shy but affectionate once comfortable.",
+    "type": 221,
+    "imageid": "a47d6f3c-2e9b-4c15-b87a-5d8f4e1a2b4c",
+    "score": 130,
+    "dateCreated": "2025-08-30T18:00:00.000Z"
+  }
   ]
