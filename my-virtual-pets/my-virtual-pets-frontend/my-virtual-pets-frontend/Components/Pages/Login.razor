@@ -2,12 +2,21 @@
 @using my_virtual_pets_frontend.Components.LoginSignupComponents
 @rendermode InteractiveServer
 
-<PageTitle>Log In</PageTitle>
-
 <div class="container">
-    <CascadingValue Value="Refresh">
-    <LoginSignupFormSwitcher></LoginSignupFormSwitcher>
-    </CascadingValue>
+    <AuthorizeView>
+        <NotAuthorized>
+            <PageTitle>Log In | MyVirtualPets</PageTitle>
+            <CascadingValue Value="Refresh">
+                <LoginSignupFormSwitcher></LoginSignupFormSwitcher>
+            </CascadingValue>
+        </NotAuthorized>
+        <Authorized>
+            <PageTitle>Already Logged In! | MyVirtualPets</PageTitle>
+            <div class="container text-center">
+                <h1 class="page-title">You're Already Logged In!</h1>
+            </div>
+        </Authorized>
+    </AuthorizeView>
 </div>
 
 @code {

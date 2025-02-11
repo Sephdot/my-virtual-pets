@@ -70,8 +70,8 @@
 
     private void Logout()
     {
-        var newUser = new ClaimsPrincipal();
-        AuthService.CurrentUser = newUser;
-        NavMan.NavigateTo("/");
+        NavMan.NavigateTo("/home");
+        AuthService.CurrentUser = new ClaimsPrincipal();
+        StateHasChanged();
     }
 }
