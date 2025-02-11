@@ -148,37 +148,20 @@ namespace my_virtual_pets_api.Repositories
 
         public async Task<List<PetCardDataDTO>> GetFavoritePetCards(Guid GlobalUserId)
         {
-            var user = await _context.GlobalUsers.Include(g => g.Favourites)
-                    .ThenInclude(f => f.Pet)
-                    .ThenInclude(p => p.Image)
-                    .SingleOrDefaultAsync(g => g.Id == GlobalUserId);
-            
-
+            var user = await _context.GlobalUsers
+                .Include(g => g.Favourites)
+                .ThenInclude(f => f.Pet)
+                .ThenInclude(p => p.GlobalUser)
+                .Include(g => g.Favourites)
+                .ThenInclude(f => f.Pet)
+                .ThenInclude(p => p.Image)
+                .SingleOrDefaultAsync(g => g.Id == GlobalUserId);
             if (user == null) throw new KeyNotFoundException("GlobalUser does not exist");
-                if (!user.Favourites.Any())
-                {
-                    return [];
-                }
-
-                
-           try
-                {
-                var favouritePets = user.Favourites.Select(f => f.Pet);
-                Console.WriteLine("PET COUNT IS" + favouritePets.Count().ToString());
-                // if (favouritePets.Count == 0) return [];
-                return  favouritePets.Select(p => Pet.CreatePetCardDto(p)).ToList();
-
-                }
-            catch (Exception e)
-            {
-                Console.WriteLine("ERROR ERROR ERROR ERROR IN GET FAVOURITE PETS SECOND BIT");
-                Console.WriteLine(e.Message);
-                Console.WriteLine(e.StackTrace);
-                return []; 
-            }
-            
-
+            var favouritePets = user.Favourites.Select(f => f.Pet).ToList();
+            if (favouritePets.Count == 0) return [];
+            return favouritePets.Select(p => Pet.CreatePetCardDto(p)).ToList();
         }
+        
 
         public async Task<bool> RemoveFromFavourites(Guid GlobalUserId, Guid PetId)
         {
