@@ -55,6 +55,7 @@ else
     app.UseHsts();
 }
 
+app.UseStatusCodePagesWithReExecute("/{0}");
 
 app.UseHttpsRedirection();
 

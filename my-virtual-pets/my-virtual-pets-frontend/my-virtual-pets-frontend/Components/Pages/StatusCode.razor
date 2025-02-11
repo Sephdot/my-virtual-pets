@@ -1,0 +1,26 @@
+@page "/{Status:int}"
+
+@if (Status == 404)
+{
+    <PageTitle>404 | MyVirtualPets</PageTitle>
+    <div class="container text-center">
+        <h1 class="fw-bold" style="margin: 0 0 3rem">Feeling Lost?</h1>
+        <img width="33%" height="auto" style="margin: 0 0 3rem" src="https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/506286d8-ee81-44f8-b7c6-665d93692f25.png" alt="a pixelated 404 prawn" class="img-fluid"/>
+        <p>Don't worry, it happens to the best of us.<br/>Click on one of the links in the navbar to get back on track.</p>
+    </div>
+}
+else
+{
+    <PageTitle>Oops! | MyVirtualPets</PageTitle>
+    <div class="container text-center">
+        <h1 class="fw-bold" style="margin: 0 0 3rem">Something Went Wrong!</h1>
+        <img width="33%" height="auto" style="margin: 0 0 3rem" src="https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/506286d8-ee81-44f8-b7c6-665d93692f25.png" alt="a pixelated error prawn" class="img-fluid"/>
+        <p>Don't worry, it happens to the best of us.<br/>Click on one of the links in the navbar to get back on track.</p>
+    </div>
+}
+
+
+@code {
+    [Parameter]
+    public int Status { get; set; }
+}
