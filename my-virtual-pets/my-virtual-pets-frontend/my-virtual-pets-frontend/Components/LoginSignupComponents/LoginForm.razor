@@ -17,22 +17,22 @@ else
         <DataAnnotationsValidator/>
 
         <div class="input form-group">
-            <label for="InputUsername">Username:</label>
+            <label for="InputUsername">username:</label>
             <InputText id="InputUsername" class="form-control" @bind-Value="@loginDetails.Username"/>
             <ValidationMessage For="@(() => loginDetails.Username)"/>
         </div>
     
         <div class="input form-group">
-            <label for="InputPassword">Password:</label>
+            <label for="InputPassword">password:</label>
             <InputText type="password" id="InputPassword" class="form-control" @bind-Value="@loginDetails.Password"/>
             <ValidationMessage For="@(() => loginDetails.Password)"/>
         </div>
     
         <h6 class="text-danger">@Feedback</h6>
     
-        <button id="loginbutton" class="btn btn-light d-block mx-auto mt-4" type="submit">Enter the doghouse</button>
+        <button id="loginbutton" class="btn btn-light d-block mx-auto mt-4" type="submit">log in</button>
 
-        <button @onclick="LoginWithGoogle" class="btn btn-light d-block mx-auto mt-4">Log in with Google</button>
+        <button @onclick="LoginWithGoogle" class="btn btn-light d-block mx-auto mt-4">log in with google</button>
     </EditForm>
 }
 
@@ -61,7 +61,7 @@ else
 
     public void HandleInvalidSubmit()
     {
-        Feedback = "Something has gone wrong"; 
+        Feedback = "something has gone wrong"; 
     }
 
     public async Task HandleValidSubmit()
@@ -125,7 +125,7 @@ else
         }
         else
         {
-            Feedback = "Something has gone wrong!";
+            Feedback = "something has gone wrong!";
             
             _redirecting = false;
             StateHasChanged();

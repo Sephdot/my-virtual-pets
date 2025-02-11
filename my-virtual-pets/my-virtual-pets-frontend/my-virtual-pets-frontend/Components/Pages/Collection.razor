@@ -9,13 +9,13 @@
 @inject NavigationManager Navigation
 @rendermode InteractiveServer
 
-<PageTitle>Collection | MyVirtualPets</PageTitle>
+<PageTitle>collection | my-virtual-pets</PageTitle>
 
 <AuthorizeView>
     <NotAuthorized>
         <section class="container text-center">
             <div class="container">
-                <h1 class="page-title">Your Collection</h1>
+                <h1 class="page-title">your collection</h1>
                 <CascadingValue Value="Refresh">
                 <LoginSignupFormSwitcher></LoginSignupFormSwitcher>
                 </CascadingValue>
@@ -31,8 +31,8 @@
         {
             <section class="container text-center">
                 <div class="container">
-                    <h1 class="page-title">@context.User.Identity?.Name's Collection</h1>
-                    <button @onclick="HandleAddPet" class="btn btn-light d-block mx-auto mt-4" >Add Pet</button></div>
+                    <h1 class="page-title">@(context.User.Identity?.Name)'s collection</h1>
+                    <button @onclick="HandleAddPet" class="btn btn-light d-block mx-auto mt-4" >add pet</button></div>
             </section>
 
             <div class="container">

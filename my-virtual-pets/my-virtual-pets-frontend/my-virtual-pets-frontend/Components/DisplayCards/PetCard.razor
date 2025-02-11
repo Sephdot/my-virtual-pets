@@ -13,15 +13,15 @@
         <DeletePopUp @ref="popupRef" Confirm="DeleteFromCollection" />
     </div>
     <div class="card-title text-center gap-3 m-3">
-        <h3 class="fw-bold">@PetCardData.PetName</h3>
+        <h3 class="fw-bold">@PetCardData.PetName.ToLower()</h3>
         <span class="badge bg-success">Score: @(PetCardData.Score)</span>
     </div>
     <div class="d-flex justify-content-center">
         <img class="card-img w-75" src="@PetCardData.ImageUrl" alt="Pet card image top"/>
     </div>
     <div class="card-body text-center">
-        <p class="text-muted">@PetCardData.Personality @PetCardData.PetType</p>
-        <p class="card-text text-justify">@PetCardData.Description</p>
+        <p class="text-muted">@PetCardData.Personality.ToString().ToLower() @PetCardData.PetType.ToString().ToLower().Replace('_', ' ')</p>
+        <p class="card-text text-justify">@PetCardData.Description.ToLower()</p>
     </div>
 </div>
 </div>
@@ -44,7 +44,7 @@
     
     private void PopupCall()
     {
-        popupRef.Show("This cannot be undone.", "Are you sure?");
+        popupRef.Show("this cannot be undone.", "are you sure? 🥲");
     }
 
     

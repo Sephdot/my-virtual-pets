@@ -12,7 +12,7 @@
     @if (_redirecting)
     {
         <div class="">
-            <h3 class="d-flex justify-content-center align-items-center mb-0 text-center">Success! Redirecting you to add your first pet: @_redirectSecondsRemaining</h3>
+            <h3 class="d-flex justify-content-center align-items-center mb-0 text-center">success! redirecting you to add your first pet: @_redirectSecondsRemaining</h3>
         </div>
     }
     else
@@ -22,13 +22,13 @@
 
         <div class="row">
             <div class="col-sm-12 col-md-6 input form-group">
-                <label for="InputFirstName">First Name:</label>
+                <label for="InputFirstName">first name:</label>
                 <InputText id="InputFirstName" class="form-control" @bind-Value="@userDetails.FirstName"/>
                 <ValidationMessage For="@(() => userDetails.FirstName)"/>
             </div>
 
             <div class="col-sm-12 col-md-6 input form-group">
-                <label for="InputLastName">Last Name:</label>
+                <label for="InputLastName">last name:</label>
                 <InputText id="InputLastName" class="form-control" @bind-Value="@userDetails.LastName"/>
                 <ValidationMessage For="@(() => userDetails.LastName)"/>
             </div>
@@ -39,13 +39,13 @@
 
         <div class="row">
             <div class="col-sm-12 col-md-6 input form-group">
-                <label for="InputEmail">Email:</label>
+                <label for="InputEmail">email:</label>
                 <InputText id="InputEmail" class="form-control" @bind-Value="@userDetails.Email"/>
                 <ValidationMessage For="@(() => userDetails.Email)"/>
             </div>
 
             <div class="col-sm-12 col-md-6 input form-group">
-                <label for="InputUsername">Username:</label>
+                <label for="InputUsername">username:</label>
                 <input type="text" id="InputUsername" class="form-control" @bind="Username" @bind:event="oninput"/>
                 <ValidationMessage For="@(() => userDetails.Username)"/>
                 <div style="height:8px">
@@ -56,13 +56,13 @@
 
         <div class="row">
             <div class="col-sm-12 col-md-6 input form-group">
-                <label for="InputPassword">Password:</label>
+                <label for="InputPassword">password:</label>
                 <InputText id="InputPassword" type="password" class="form-control" @bind-Value="@userDetails.Password"/>
                 <ValidationMessage For="@(() => userDetails.Password)"/>
             </div>
 
             <div class="col-sm-12 col-md-6 input form-group">
-                <label for="InputComparePassword">Confirm Password:</label>
+                <label for="InputComparePassword">confirm password:</label>
                 <InputText id="InputComparePassword" type="password" class="form-control" @bind-Value="@userDetails.ComparePassword"/>
                 <ValidationMessage For="@(() => userDetails.ComparePassword)"/>
             </div>
@@ -73,12 +73,12 @@
         </div>
 
         <div class="row">
-            <p>By submitting this form you are agreeing to our service and privacy policy</p>
+            <p class="mb-0 text-center">by submitting this form you are agreeing to our service and privacy policy</p>
         </div>
 
         <h6 class="text-danger">@Feedback</h6>
 
-        <button id="input registerbutton" class="btn btn-light d-block mx-auto mt-4" type="submit">Enter the doghouse</button>
+        <button id="input registerbutton" class="btn btn-light d-block mx-auto mt-4" type="submit">sign up</button>
 
     </EditForm>
     }
@@ -126,7 +126,7 @@
         {
             if (UsernameCheck.IsTrue)
             {
-                UsernameTaken = "Username is taken";
+                UsernameTaken = "username is taken...";
                 color = "red";
             }
             else
@@ -137,7 +137,7 @@
                 }
                 else
                 {
-                    UsernameTaken = "Username is free";
+                    UsernameTaken = "username is free!";
                     color = "green";
                 }
             }
@@ -147,7 +147,7 @@
     
     public void HandleInvalidSubmit()
     {
-        Feedback = "Oops let's try that again!"; 
+        Feedback = "oops let's try that again!"; 
     }
 
     public async Task HandleValidSubmit()
