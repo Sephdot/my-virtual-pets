@@ -23,6 +23,7 @@ __________________________________
 | State management to display authorized and unauthorized views of pages  | ![Authorized views](https://github.com/Sephdot/my-virtual-pets/blob/baf453fbd6738aab32a37bf7b9c68aeec9762642/my-virtual-pets/readme-images/auth%20page.png)    |
 | OAuth with Google | ![OAuth demo](https://github.com/Sephdot/my-virtual-pets/blob/baf453fbd6738aab32a37bf7b9c68aeec9762642/my-virtual-pets/readme-images/OAuth.gif)   |
 | 'Pet' virtual pets to increase their score    | ![Pet demo](https://github.com/Sephdot/my-virtual-pets/blob/baf453fbd6738aab32a37bf7b9c68aeec9762642/my-virtual-pets/readme-images/petting.gif)   |
+| Leadership board | ![Leadership board](https://github.com/Sephdot/my-virtual-pets/blob/9b7f5efd6bcf020b579e2197c1363aaf3f6ec76e/my-virtual-pets/readme-images/leaderboard.gif) |
 
 __________________________________
 ## 📋 Database set-up: 
@@ -55,8 +56,13 @@ This app makes use of the following APIs in order to fulfill some of its functio
 
 ### Dragoneye
 https://dragoneye.ai/
+
 ### Picsart Remove Background
 https://picsart.io/remove-background/
+
+### Google Cloud Console 
+
+### AWS 
 
 In order to run this app, valid API keys must be provided into the ` my-virtual-pets-api ` project's User Secrets. This can be done by navigating to the project's ` secrets.json ` file, and populating the following template.
 
