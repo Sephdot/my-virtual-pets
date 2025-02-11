@@ -3,6 +3,7 @@
 @using my_virtual_pets_frontend.Components.AddPetComponents
 @using my_virtual_pets_class_library.Enums
 @using my_virtual_pets_frontend.Components.LoginSignupComponents
+@using my_virtual_pets_class_library.FriendlyStringifiers
 @inject NavigationManager Navigation;
 @inject AuthenticationStateProvider AuthStateProvider;
 @rendermode InteractiveServer
@@ -32,7 +33,7 @@
                         <div class="d-flex justify-content-center">
                             <figure>
                                 <img src="@PetDetails.ImageUrl" alt="A pixelated version of the pet you just uploaded" width="300" height="auto"/>
-                                <figcaption class="text-success text-center mt-1"><i>your new @(PetDetails.PetType.ToString().ToLower().Replace('_', ' '))!</i></figcaption>
+                                <figcaption class="text-success text-center mt-1"><i>your new @(PetDetails.PetType.FriendlyStringify())!</i></figcaption>
                             </figure>
                         </div>
                     }

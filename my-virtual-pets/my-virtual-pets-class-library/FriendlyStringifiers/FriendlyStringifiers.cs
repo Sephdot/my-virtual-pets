@@ -1,6 +1,6 @@
 using my_virtual_pets_class_library.Enums;
 
-namespace my_virtual_pets_class_library.DTO.FriendlyStringifiers;
+namespace my_virtual_pets_class_library.FriendlyStringifiers;
 
 public static class FriendlyStringifiers
 {

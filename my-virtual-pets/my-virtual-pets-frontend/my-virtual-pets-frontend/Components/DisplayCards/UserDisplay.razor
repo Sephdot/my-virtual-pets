@@ -1,5 +1,6 @@
 @using my_virtual_pets_class_library.DTO
 @using my_virtual_pets_class_library.Enums
+@using my_virtual_pets_class_library.FriendlyStringifiers
 @using my_virtual_pets_frontend.Components.Icons;
 @rendermode InteractiveServer
 
@@ -10,10 +11,10 @@
                 <h3 class="fw-bold">hey, @(UserDisplayDto.Username)!</h3>
             </div>
             <div class="card-body text-center">
-                <p>name (not visible to others): @UserDisplayDto.FirstName.ToLower() @UserDisplayDto.LastName.ToLower()</p>
+                <p>name (invisible to others): @UserDisplayDto.FirstName.ToLower() @UserDisplayDto.LastName.ToLower()</p>
                 <p>email: @UserDisplayDto.Email</p>
                 <p>pets owned: @UserDisplayDto.PetCount</p>
-                <p>The type of pet you've favourited the most: @FavePetType</p>
+                <p>favourite pet type@(UserFavePets.Count <= 1 ? "" : "s"): @FavePetType</p>
             </div>
         </div>
     </div>
@@ -37,11 +38,11 @@
     {
         if (UserFavePets.Count == 0)
         {
-            return "No pets favourited yet...";
+            return "no pets favourited yet...";
         }
         if (UserFavePets.Count == 1)
         {
-            return UserFavePets[0].PetType.ToString();
+            return UserFavePets[0].PetType.FriendlyStringify();
         }
         
         Dictionary<PetType, int> scoreboard = Enum
@@ -58,12 +59,12 @@
         var topScore = scoreboard.Values.Max();
         List<string> topScoringPets = scoreboard
             .Where(kvp => kvp.Value >= topScore)
-            .Select(kvp => kvp.Key.ToString())
+            .Select(kvp => kvp.Key.FriendlyStringify())
             .ToList();
     
         switch (topScoringPets.Count)
         {
-            case 1: return topScoringPets[0].ToLower();
+            case 1: return topScoringPets[0];
             case 2: return $"{topScoringPets[0]} and {topScoringPets[1]}";
             default:
             {
