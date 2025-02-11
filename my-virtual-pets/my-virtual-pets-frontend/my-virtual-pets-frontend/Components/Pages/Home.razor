@@ -3,8 +3,9 @@
 @using my_virtual_pets_class_library.DTO
 @using my_virtual_pets_frontend.Components.Icons
 @using my_virtual_pets_frontend.Components.HomeComponents
-@inject AuthenticationStateProvider AuthState 
 @inject NavigationManager NavMan
+@using System.Security.Claims
+@inject AuthenticationStateProvider AuthStateProvider
 @rendermode InteractiveServer
 
 
@@ -65,7 +66,9 @@
         else
         {
             <div class="col-12 col-md-9 col-xl-7 carousel-col">
+                <CascadingValue Value="FavouriteList">
                 <HomeCarousel PetCardDataDTOs="@_petCardDataDTOs"></HomeCarousel>
+                </CascadingValue>
             </div>
         }
     </div>
@@ -73,12 +76,22 @@
 
 @code {
     private List<PetCardDataDTO>? _petCardDataDTOs;
+    
+    public List<Guid> FavouriteList { get; set; } = new List<Guid>(); 
 
     protected override async Task OnInitializedAsync()
     {
-        var getclient = new BackendClient<List<PetCardDataDTO>>($"api/pets/top10", AuthState);
+        var getclient = new BackendClient<List<PetCardDataDTO>>($"api/pets/top10", AuthStateProvider);
         _petCardDataDTOs = await getclient.GetRequest();
+        var user = (await AuthStateProvider.GetAuthenticationStateAsync()).User;
+        var UserId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (UserId != null)
+        {   
+            var getListClient = new BackendClient<List<Guid>>($"api/user/{UserId}/FavouritePetIds", AuthStateProvider);
+            FavouriteList = await getListClient.GetRequest(); 
+        }
     }
+
 
     private void HandleGetStarted()
     {

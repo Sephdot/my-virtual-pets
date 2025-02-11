@@ -1,0 +1,33 @@
+@using my_virtual_pets_class_library.DTO
+@using my_virtual_pets_frontend.Components.IsPetted
+@rendermode InteractiveServer
+
+<div class="leadercard">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                <div style="display:flex;justify-content:center;align-items:center;">
+                    <img   class="leaderimage" src="@petCard.ImageUrl">
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                <div class="leaderstats pixeltext"  style="display:flex;justify-content:left">
+                    <p>Name: @petCard.PetName</p>
+                    <p>Owner: @petCard.OwnerUsername</p>
+                    <p>Personality: @petCard.Personality</p>
+                    <div style="margin-left:auto;margin-right:auto;">
+                        <IsPetted petCard="petCard"></IsPetted>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    
+    [Parameter]
+    public PetCardDataDTO petCard { get; set; }
+
+    
+}
