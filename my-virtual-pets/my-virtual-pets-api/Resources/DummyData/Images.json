@@ -58,6 +58,14 @@
     {
       "id": "d4e5f678-9012-3456-789a-bcdef0123456",
       "imageurl": "https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/eb88f30d-675a-4528-bca6-fc160aa3f4a1.png"
-    }
+    },
+  {
+    "id": "f8c2a1b4-3d5e-47e1-9a89-2b6f8d4e3c71",
+    "imageurl": "https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/baa33bd1-18d3-498f-b6de-5674f3722d0c.png"
+  },
+  {
+    "id": "a47d6f3c-2e9b-4c15-b87a-5d8f4e1a2b3c",
+    "imageurl": "https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/3c8a5986-ffdf-479d-9d67-9bccecda2864.png"
+  }
   ]
 
