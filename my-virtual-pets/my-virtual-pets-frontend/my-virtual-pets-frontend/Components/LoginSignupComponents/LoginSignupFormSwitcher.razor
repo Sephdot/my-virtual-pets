@@ -3,15 +3,15 @@
 <div id="formcenter" class="robottext">
     @if (IsUser)
     {
-          <LoginForm></LoginForm>
+          <LoginForm OnLogInProcessing="HandleLoading" OnLogInFailed="HandleLogInFailed"></LoginForm>
     }
     else
     {
-          <SignupForm OnSignUpProcessing="HandleRedirectToAddPet"></SignupForm>
+          <SignupForm OnSignUpProcessing="HandleLoading"></SignupForm>
     }
-    <div class="@(IsRedirectingToAddPet ? "" : "link-container mt-4")">
+    <div class="@(IsLoading ? "" : "link-container mt-4")">
         <a @onclick="ToggleForm">
-            @(IsRedirectingToAddPet
+            @(IsLoading
                 ? ""
                 : IsUser
                     ? "New? Sign up now!"
@@ -21,16 +21,26 @@
 </div>
 
 @code{
-    public bool IsUser { get; set; } = true;
-    private bool IsRedirectingToAddPet { get; set; } = false;
     
+    [Parameter] public EventCallback<bool> OnLoggingIn { get; set; }
+    [Parameter] public EventCallback<bool> OnLoggingInFailed { get; set; }
+    
+    public bool IsUser { get; set; } = true;
+    private bool IsLoading { get; set; } = false;
+
     public void ToggleForm()
     {
         IsUser = !IsUser;
     }
 
-    public void HandleRedirectToAddPet()
+    public void HandleLoading()
     {
-        IsRedirectingToAddPet = true;
+        IsLoading = true;
     }
+
+    public void HandleLogInFailed()
+    {
+        IsLoading = false;
+    }
+
 }
