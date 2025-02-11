@@ -80,11 +80,13 @@ In order to run this app, valid API keys must be provided into the ` my-virtual-
 
 __________________________________
 
-### Running the app: 
+## Running the app: 
+
+<!-----info on running the app here backend & frontend ------>
 
 __________________________________
 
-## 👥 Dummy Data: 
+### 👥 Dummy Data: 
 
 The following logins have been prepopulated:
 
