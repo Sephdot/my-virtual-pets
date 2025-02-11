@@ -154,15 +154,37 @@
       "score": 110,
       "dateCreated": "2025-07-30T18:00:00.000Z"
     },
+  {
+    "id": "c4b5a678-9012-3456-789a-bcdef1234567",
+    "userid": "cb7153f7-3101-444b-a91d-8c45280672d6",
+    "name": "Pebbles",
+    "personality": 2,
+    "description": "Patient, wise, and enjoys a slow pace.",
+    "type": 235,
+    "imageid": "d4e5f678-9012-3456-789a-bcdef0123456",
+    "score": 200,
+    "dateCreated": "2025-07-30T18:00:00.000Z"
+  },
     {
-      "id": "c4b5a678-9012-3456-789a-bcdef1234567",
-      "userid": "cb7153f7-3101-444b-a91d-8c45280672d6",
-      "name": "Pebbles",
-      "personality": 2,
-      "description": "Patient, wise, and enjoys a slow pace.",
-      "type": 235,
-      "imageid": "d4e5f678-9012-3456-789a-bcdef0123456",
-      "score": 200,
+      "id": "e9f2c3b4-5d6e-47a1-8b79-3c5f8d2e1a47",
+      "userid": "3e2db5ff-0ac8-48b9-b341-e14371c42e7a",
+      "name": "Nimbus",
+      "personality": 3,
+      "description": "Energetic, curious, and always looking for adventure.",
+      "type": 47,
+      "imageid": "f8c2a1b4-3d5e-47e1-9a89-2b6f8d4e3c71",
+      "score": 150,
+      "dateCreated": "2025-07-30T18:00:00.000Z"
+    },
+    {
+      "id": "b7d4e5c6-1a2b-47f8-9c83-4e5d3f2a6b9c",
+      "userid": "3e2db5ff-0ac8-48b9-b341-e14371c42e7a",
+      "name": "Mochi",
+      "personality": 1,
+      "description": "Shy but affectionate once comfortable.",
+      "type": 4,
+      "imageid": "a47d6f3c-2e9b-4c15-b87a-5d8f4e1a2b3c",
+      "score": 180,
       "dateCreated": "2025-07-30T18:00:00.000Z"
     }
-]
+  ]
