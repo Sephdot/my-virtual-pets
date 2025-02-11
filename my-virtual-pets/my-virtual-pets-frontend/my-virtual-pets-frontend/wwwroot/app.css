@@ -247,7 +247,6 @@ h2.pixeltext {
     max-width: 70ch;
     word-wrap: break-word;
     margin: 0 auto 1rem;
-    font-size: 0.8rem;
 }
 
 .para > span {
