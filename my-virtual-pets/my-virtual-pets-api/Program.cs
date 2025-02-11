@@ -108,17 +108,15 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: "Frontend",
+    options.AddPolicy(name: "Frontend&OAuth",
         policy =>
         {
-            policy.WithOrigins("https://localhost:7247", "http://localhost:5092");
+            policy.WithOrigins("https://localhost:7247", "http://localhost:5092", "https://www.googleapis.com", "https://accounts.google.com")
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials();
         });
-    options.AddPolicy("AllowAll",
-        builder => builder
-            .SetIsOriginAllowed(_ => true)
-            .AllowAnyMethod()
-            .AllowAnyHeader()
-            .AllowCredentials());
+    
 });
 
 
@@ -133,7 +131,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 
-app.UseCors("AllowAll");
+app.UseCors("Frontend&OAuth");
 
 app.UseAuthentication();
 app.UseAuthorization();
