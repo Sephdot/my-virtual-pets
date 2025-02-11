@@ -26,7 +26,12 @@ __________________________________
 | Leadership board | ![Leadership board](https://github.com/Sephdot/my-virtual-pets/blob/9b7f5efd6bcf020b579e2197c1363aaf3f6ec76e/my-virtual-pets/readme-images/leaderboard.gif) |
 
 __________________________________
-## 📋 Database set-up: 
+
+## Running the app: 
+
+Clone this repository onto your local machine and follow the steps for setting up the database and API credentials set-out below. 
+
+### Database set-up: 
 
 Running in Development Mode: 
 
@@ -50,9 +55,15 @@ Value: `Server=<server_name>;Database=my_virtual_pets;User Id=sa;Password=<your_
 7. Run Program.cs 
 __________________________________
 
-## 📞 API Usage:
+### Security: 
 
-This app makes use of the following APIs in order to fulfill some of its functionality.
+<!--- Google cloud console and jwt token info here --->
+
+__________________________________
+
+### API Usage:
+
+This app makes use of the following APIs in order to fulfill some of its functionality. Please follow the links below to create your own API keys to run the app:
 
 ### Dragoneye
 https://dragoneye.ai/
@@ -60,23 +71,14 @@ https://dragoneye.ai/
 ### Picsart Remove Background
 https://picsart.io/remove-background/
 
-### Google Cloud Console 
-
 ### AWS 
+https://docs.aws.amazon.com/AmazonS3/latest/userguide/GetStartedWithS3.html
 
 In order to run this app, valid API keys must be provided into the ` my-virtual-pets-api ` project's User Secrets. This can be done by navigating to the project's ` secrets.json ` file, and populating the following template.
 
 `` {  "dragoneyeApiKey": "<your dragoneye api key>", 
   "BgRemoverApiKey": "<your bg remover api key>" } ``
   
-## 🖼️ Pixelate Function:
-
-This app uses pixelation functionality inspired from custom pixelation software. The core pixelation process was identified and adapted into our project, enabling users to transform uploaded images into pixel-style art.
-
-### PixelArt
-https://github.com/BrandonHilde/PixelArt?tab=readme-ov-file
-
-
 
 __________________________________
 
@@ -90,3 +92,17 @@ The following logins have been prepopulated:
 <br/>
 ` { "username": "AnimalEnthusiast", "password": "randompassword789" } `
 <br/>
+
+__________________________________
+
+
+## CREDITS: 
+
+This app was built by the following developers: 
+
+### 🖼️ Pixelate Function:
+
+This app uses pixelation functionality inspired from custom pixelation software. The core pixelation process was identified and adapted into our project, enabling users to transform uploaded images into pixel-style art.
+
+### PixelArt
+https://github.com/BrandonHilde/PixelArt?tab=readme-ov-file
