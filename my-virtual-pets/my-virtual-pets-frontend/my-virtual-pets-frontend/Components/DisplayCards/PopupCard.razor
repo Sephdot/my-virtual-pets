@@ -1,5 +1,7 @@
 @inject IJSRuntime JS
 @using my_virtual_pets_class_library.DTO
+@using my_virtual_pets_frontend.Components.IsPetted
+@using my_virtual_pets_frontend.Components.Icons
 @rendermode InteractiveServer
 
 @{
@@ -16,9 +18,10 @@
                             <img src="@petCard.ImageUrl" style="width:130px">
                     </div>
                     <div id="popuptext" class="col-6">
-                        <p>Name: @petCard.PetName.ToLower()</p>
-                        <p>Personality: @petCard.Personality.ToString().ToLower()</p>
-                        <p>Type: @petCard.PetType.ToString().ToLower().Replace('_', ' ')</p>
+                        <p>name: @petCard.PetName.ToLower()</p>
+                        <p>nature: @petCard.Personality.ToString().ToLower()</p>
+                        <p>type: @petCard.PetType.ToString().ToLower().Replace('_', ' ')</p>
+                        <Score petscore="@petCard.Score"></Score>
                     </div>
                 </div>
             </div>
