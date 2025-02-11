@@ -74,28 +74,43 @@ namespace my_virtual_pets_api.Repositories
                 .Where(u => u.Id == userId)
                 .FirstOrDefaultAsync();
 
-            var localUser = await _context.LocalUsers
-                .Where(lu => lu.GlobalUserId == userId)
-                .FirstOrDefaultAsync();
-
-            if (user == null || localUser == null)
-            {
-                return null;
-            }
-
+            if (user == null) return null; 
+            
             var petCount = await _context.Pets
                 .Where(p => p.GlobalUserId == userId)
                 .CountAsync();
+            
+            bool isLocalUser = await _context.LocalUsers.AnyAsync(u => u.GlobalUserId == userId);
 
+            bool isAuthUser = await _context.AuthUsers.AnyAsync(u => u.GlobalUserId == userId);
+            
             var userDisplayDTO = new UserDisplayDTO
             {
                 Username = user.Username,
-                FirstName = localUser.FirstName,
-                LastName = localUser.LastName,
                 Email = user.Email,
                 PetCount = petCount
             };
+            
+            if (isLocalUser)
+            {
+                var localUser = await _context.LocalUsers
+                    .Where(lu => lu.GlobalUserId == userId)
+                    .FirstOrDefaultAsync();
+                
+                userDisplayDTO.FirstName = localUser.FirstName;
+                userDisplayDTO.LastName = localUser.LastName;
+          
+            }
+            else if (isAuthUser)
+            {
+                var authUser = await _context.AuthUsers.Where(au => au.GlobalUserId == userId)
+                    .FirstOrDefaultAsync();
 
+                userDisplayDTO.FirstName = authUser.FullName;
+                userDisplayDTO.LastName = ""; 
+            }
+            
+   
             return userDisplayDTO;
         }
 
