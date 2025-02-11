@@ -1,5 +1,6 @@
 @using my_virtual_pets_frontend.Components.Icons
 @using my_virtual_pets_class_library.DTO;
+@using my_virtual_pets_class_library.FriendlyStringifiers
 @using my_virtual_pets_frontend.Components.Popups
 @rendermode InteractiveServer
 
@@ -20,8 +21,8 @@
         <img class="card-img w-75" src="@PetCardData.ImageUrl" alt="Pet card image top"/>
     </div>
     <div class="card-body text-center">
-        <p class="text-muted">@PetCardData.Personality.ToString().ToLower() @PetCardData.PetType.ToString().ToLower().Replace('_', ' ')</p>
-        @* <p class="card-text text-justify">@PetCardData.Description</p> *@
+        <p class="text-muted">@PetCardData.Personality.ToString().ToLower() @PetCardData.PetType.FriendlyStringify()</p>
+        <p class="card-text text-justify">@PetCardData.Description</p>
     </div>
 </div>
 </div>

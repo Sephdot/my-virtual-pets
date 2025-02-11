@@ -24,19 +24,18 @@
             }
             else
             {
-                @* @if (_userInfo == null || _favePets == null) *@
-                @if (_userInfo == null)
+                @if (_userInfo == null || _favePets == null)
                 {
                     <h3>loading your info...!</h3>
                     <Cat_Loader></Cat_Loader>
                 }
                 else
                 {
-                    <UserDisplay UserDisplayDto = "@_userInfo"/>
-                    @* <UserDisplay  *@
-                    @*     UserDisplayDto = "@_userInfo" *@
-                    @*     UserFavePets = "@_favePets" *@
-                    @* /> *@
+                    @* <UserDisplay UserDisplayDto = "@_userInfo"/> *@
+                    <UserDisplay
+                        UserDisplayDto = "@_userInfo"
+                        UserFavePets = "@_favePets"
+                    />
                 }
             }
         </div>
@@ -45,34 +44,44 @@
 
 @code {
     private UserDisplayDTO? _userInfo;
-    // private List<PetCardDataDTO>? _favePets;
+    private List<PetCardDataDTO>? _favePets;
+    public string userId; 
     private bool _exceptionHappened;
 
+    public async Task GetUserInfo()
+    {
+        var userClient = new BackendClient<UserDisplayDTO>($"api/User/{userId}", AuthStateProvider);
+        Console.WriteLine($"https://localhost:7091/api/User/{userId}");
+        _userInfo = await userClient.GetRequest();
+        Console.WriteLine(_userInfo.Username);
+    }
+        
+    async Task GetFavePets()
+    {
+        var favePetClient = new BackendClient<List<PetCardDataDTO>>($"api/User/{userId}/FavouritePets", AuthStateProvider);
+        _favePets = await favePetClient.GetRequest();
+        Console.WriteLine(_favePets.Count);
+    }
+    
     protected override async Task OnInitializedAsync()
     {
         var user = (await AuthStateProvider.GetAuthenticationStateAsync()).User;
-        string? userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-        if (userId == null)
-        {
-            Navigation.NavigateTo("/log-in");
-            Console.WriteLine("UserId was null trying to access my account");
-            return;
-        }
-
-
-        try
-        {
-            await GetUserInfo();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Exception when awaiting GetUserInfo(): {ex.Message}");
-            _exceptionHappened = true;
-        }
-        // try
+        userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        
+        await GetUserInfo();
+        await GetFavePets();
+    }
+    // try
         // {
-        //     await GetFavePets();
+            
+        // }
+        // catch (Exception ex)
+        // {
+        //     Console.WriteLine($"Exception when awaiting GetUserInfo(): {ex.Message}");
+        //     _exceptionHappened = true;
+        // }
+        // try
+        
         // }
         // catch (Exception ex)
         // {
@@ -81,19 +90,6 @@
         // }
         
         
-        async Task GetUserInfo()
-        {
-            var userClient = new BackendClient<UserDisplayDTO>($"api/User/{userId}", AuthStateProvider);
-            Console.WriteLine($"https://localhost:7091/{userId}");
-            _userInfo = await userClient.GetRequest();
-            Console.WriteLine(_userInfo.Username);
-        }
-        
-        // async Task GetFavePets()
-        // {
-        //     var favePetClient = new BackendClient<List<PetCardDataDTO>>($"api/User/{userId}/FavouritePets", AuthStateProvider);
-        //     _favePets = await favePetClient.GetRequest();
-        //     Console.WriteLine(_favePets.Count);
-        // }
-    }
+       
+    
 }
