@@ -10,7 +10,11 @@
 @page "/add-pet"
 
 <PageTitle>add pet | my-virtual-pets</PageTitle>
+
+
 <AuthorizeView>
+    
+    
     <NotAuthorized>
         <section class="container text-center">
             <div class="container">
@@ -21,6 +25,8 @@
             </div>
         </section>
     </NotAuthorized>
+
+
     <Authorized>
         <div class="container">
             <h1 class="page-title text-center">add pet</h1>
@@ -36,6 +42,7 @@
                             </figure>
                         </div>
                     }
+
                     <CascadingValue Value="PetDetails">
                         @if (!_isSuccessfulUpload)
                         {

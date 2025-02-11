@@ -66,6 +66,10 @@
   {
     "id": "a47d6f3c-2e9b-4c15-b87a-5d8f4e1a2b3c",
     "imageurl": "https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/3c8a5986-ffdf-479d-9d67-9bccecda2864.png"
+  },
+  {
+    "id": "a47d6f3c-2e9b-4c15-b87a-5d8f4e1a2b4c",
+    "imageurl": "https://my-virtual-pets-images.s3.eu-west-2.amazonaws.com/21ce6db5-a065-4381-ab18-8d27e5f01652.png"
   }
   ]
 
