@@ -1,14 +1,19 @@
 @using System.Net
 @using System.Security.Claims
-@using Microsoft.AspNetCore.Components.WebAssembly.Http
 @using my_virtual_pets_class_library.DTO
-@inject HttpClient Http
+@using my_virtual_pets_frontend.Components.Icons
 @inject NavigationManager Navigation
 @inject AuthenticationStateProvider CustomAuth
 @inject CustomAuthenticationService AuthService
 @rendermode InteractiveServer
 
-<EditForm FormName="Login" Model="@loginDetails" OnInvalidSubmit="HandleInvalidSubmit" OnValidSubmit="HandleValidSubmit">
+@if (_redirecting)
+{
+    <Cat_Loader></Cat_Loader>
+}
+else
+{
+    <EditForm FormName="Login" Model="@loginDetails" OnInvalidSubmit="HandleInvalidSubmit" OnValidSubmit="HandleValidSubmit">
         <DataAnnotationsValidator/>
 
         <div class="input form-group">
@@ -17,31 +22,37 @@
             <ValidationMessage For="@(() => loginDetails.Username)"/>
         </div>
     
-    <div class="input form-group">
-        <label for="InputPassword">Password:</label>
-        <InputText type="password" id="InputPassword" class="form-control" @bind-Value="@loginDetails.Password"/>
-        <ValidationMessage For="@(() => loginDetails.Password)"/>
-    </div>
+        <div class="input form-group">
+            <label for="InputPassword">Password:</label>
+            <InputText type="password" id="InputPassword" class="form-control" @bind-Value="@loginDetails.Password"/>
+            <ValidationMessage For="@(() => loginDetails.Password)"/>
+        </div>
     
-    <h6 style="color:red">@Feedback</h6>
+        <h6 class="text-danger">@Feedback</h6>
     
-    <button id="loginbutton" class="btn btn-light d-block mx-auto mt-4" type="submit">Enter the doghouse</button>
+        <button id="loginbutton" class="btn btn-light d-block mx-auto mt-4" type="submit">Enter the doghouse</button>
 
-    <button @onclick="LoginWithGoogle" class="btn btn-light d-block mx-auto mt-4">Log in with Google</button>
+        <button @onclick="LoginWithGoogle" class="btn btn-light d-block mx-auto mt-4">Log in with Google</button>
+    </EditForm>
+}
 
-
-</EditForm>
 
 
 
 @code {
+    [CascadingParameter] public bool Refresh { get; set; }
+    
+    [Parameter] public EventCallback<bool> OnLogInProcessing { get; set; }
+    
+    [Parameter] public EventCallback<bool> OnLogInFailed { get; set; }
 
     public UserLoginDTO loginDetails { get; set; } 
     
     public string Feedback { get; set; }
+
+    private bool _redirecting;
     
-    [CascadingParameter]
-    public bool Refresh { get; set; }
+    
     
     protected override void OnInitialized()
     {
@@ -55,6 +66,11 @@
 
     public async Task HandleValidSubmit()
     {
+        _redirecting = true;
+        StateHasChanged();
+        await OnLogInProcessing.InvokeAsync();
+        StateHasChanged();
+        
         HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, "https://localhost:7091/api/user/login");
         requestMessage.Content = JsonContent.Create(loginDetails);
         var client = new HttpClient();
@@ -65,34 +81,57 @@
             var tokenResponse = await response.Content.ReadFromJsonAsync<TokenResponse>();
             if (tokenResponse != null)
             {
-                var token = tokenResponse.Token;
-                var userid = tokenResponse.UserId;
-
                 var identity = new ClaimsIdentity(
                     [
                         new Claim(ClaimTypes.Name, loginDetails.Username),
-                        new Claim(ClaimTypes.Hash, token),
-                        new Claim(ClaimTypes.NameIdentifier, userid)
+                        new Claim(ClaimTypes.Hash, tokenResponse.Token),
+                        new Claim(ClaimTypes.NameIdentifier, tokenResponse.UserId)
                     ],
                     "Custom Authentication");
+
+                AuthService.CurrentUser = new ClaimsPrincipal(identity);
                 
-                var newUser = new ClaimsPrincipal(identity);
-                AuthService.CurrentUser = newUser;
+                Navigation.NavigateTo("/my-account");
                 
-                if (Refresh)
-                {
-                    Navigation.Refresh(true);
-                } else 
-                {                
-                    Navigation.NavigateTo("/my-account");
-                }
+                
+                
+                // if (Refresh)
+                // {
+                //     Navigation.Refresh(true);
+                // } 
+                // else 
+                // {                
+                //     Navigation.NavigateTo("/my-account");
+                // }
+            }
+            else
+            {
+                _redirecting = false;
+                StateHasChanged();
+                await OnLogInFailed.InvokeAsync();
+                StateHasChanged();
             }
            loginDetails = new UserLoginDTO(); 
-        } else if (response.StatusCode == HttpStatusCode.BadRequest)
+           
+        } 
+        else if (response.StatusCode == HttpStatusCode.BadRequest)
         {
-            Feedback = await response.Content.ReadAsStringAsync();   
+            Feedback = await response.Content.ReadAsStringAsync();
+            
+            _redirecting = false;
+            StateHasChanged();
+            await OnLogInFailed.InvokeAsync();
+            StateHasChanged();
         }
-
+        else
+        {
+            Feedback = "Something has gone wrong!";
+            
+            _redirecting = false;
+            StateHasChanged();
+            await OnLogInFailed.InvokeAsync();
+            StateHasChanged();
+        }
     }
     
     public void LoginWithGoogle()
