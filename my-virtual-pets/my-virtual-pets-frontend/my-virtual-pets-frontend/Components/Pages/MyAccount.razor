@@ -15,8 +15,8 @@
         }
     </NotAuthorized>
     <Authorized>
-        <div class="container">
-            <h1 class="page-title text-center">my account</h1>
+        <h1 class="page-title text-center">my account</h1>
+        <div id="formcenter">
             @if (_exceptionHappened)
             {
                 <h3>something went wrong!</h3>
@@ -24,18 +24,18 @@
             }
             else
             {
-                @if (_userInfo == null || _favePets == null)
+                @if (true)
                 {
-                    <h3>loading your info...!</h3>
-                    <Cat_Loader></Cat_Loader>
+                    <div class="text-center">
+                        <h3>loading your info...!</h3>
+                        <Cat_Loader></Cat_Loader>
+                    </div>
                 }
                 else
                 {
-                    @* <UserDisplay UserDisplayDto = "@_userInfo"/> *@
                     <UserDisplay
-                        UserDisplayDto = "@_userInfo"
-                        UserFavePets = "@_favePets"
-                    />
+                        UserDisplayDto="@_userInfo"
+                        UserFavePets="@_favePets"/>
                 }
             }
         </div>

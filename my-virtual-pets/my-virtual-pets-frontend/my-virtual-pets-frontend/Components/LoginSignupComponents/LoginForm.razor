@@ -67,7 +67,6 @@ else
     public async Task HandleValidSubmit()
     {
         _redirecting = true;
-        StateHasChanged();
         await OnLogInProcessing.InvokeAsync();
         StateHasChanged();
         
@@ -91,18 +90,14 @@ else
 
                 AuthService.CurrentUser = new ClaimsPrincipal(identity);
                 
-                Navigation.NavigateTo("/my-account");
-                
-                
-                
-                // if (Refresh)
-                // {
-                //     Navigation.Refresh(true);
-                // } 
-                // else 
-                // {                
-                //     Navigation.NavigateTo("/my-account");
-                // }
+                if (Refresh)
+                {
+                    Navigation.Refresh(true);
+                } 
+                else 
+                {                
+                    Navigation.NavigateTo("/my-account");
+                }
             }
             else
             {
