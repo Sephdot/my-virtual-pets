@@ -14,7 +14,8 @@
         </NotAuthorized>
         <Authorized>
             <div class="container text-center">
-                <h1 class="page-title">logged in, redirecting you to home in: @(_redirectSecondsRemaining)</h1>
+                <h1 class="page-title">logged in, redirecting you to home now.</h1>
+                @{ NavMan.NavigateTo("/home"); }
             </div>
         </Authorized>
     </AuthorizeView>
@@ -23,24 +24,5 @@
 @code {
 
     public bool Refresh { get; set; } = false; 
-
-    private int _redirectSecondsRemaining = 3;
-
-    protected override async Task OnInitializedAsync()
-    {
-        // if logged in, kick off redirecttohome
-    }
-    
-    private async Task RedirectToHome()
-    {
-        int initial = _redirectSecondsRemaining;
-        for (int i = 0; i < initial; i++)
-        {
-            await Task.Delay(1000);
-            _redirectSecondsRemaining--;
-            StateHasChanged();
-        }
-        NavMan.NavigateTo("/home");
-    }
 
 }

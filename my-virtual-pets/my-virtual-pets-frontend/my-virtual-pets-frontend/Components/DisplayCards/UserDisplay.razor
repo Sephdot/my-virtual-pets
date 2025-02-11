@@ -66,14 +66,15 @@
         {
             case 1: return topScoringPets[0];
             case 2: return $"{topScoringPets[0]} and {topScoringPets[1]}";
+            case 3: return $"{topScoringPets[0]}, {topScoringPets[1]} and {topScoringPets[2]}";
             default:
             {
                 string result = "";
-                for (int i = 0; i < topScoringPets.Count - 1; i++)
+                for (int i = 0; i < topScoringPets.Count - 2; i++)
                 {
                     result += $"{topScoringPets[i]}, ";
                 }
-                return result + $"and {topScoringPets[^1]}";
+                return $"{result}{topScoringPets[^2]} and {topScoringPets[^1]}";
             }
         }
     }
