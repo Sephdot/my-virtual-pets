@@ -24,19 +24,18 @@
             }
             else
             {
-                @* @if (_userInfo == null || _favePets == null) *@
-                @if (_userInfo == null)
+                @if (_userInfo == null || _favePets == null)
                 {
                     <h3>Loading your info...!</h3>
                     <Cat_Loader></Cat_Loader>
                 }
                 else
                 {
-                    <UserDisplay UserDisplayDto = "@_userInfo"/>
-                    @* <UserDisplay  *@
-                    @*     UserDisplayDto = "@_userInfo" *@
-                    @*     UserFavePets = "@_favePets" *@
-                    @* /> *@
+                    @* <UserDisplay UserDisplayDto = "@_userInfo"/> *@
+                    <UserDisplay
+                        UserDisplayDto = "@_userInfo"
+                        UserFavePets = "@_favePets"
+                    />
                 }
             }
         </div>
@@ -45,7 +44,7 @@
 
 @code {
     private UserDisplayDTO? _userInfo;
-    // private List<PetCardDataDTO>? _favePets;
+    private List<PetCardDataDTO>? _favePets;
     private bool _exceptionHappened;
 
     protected override async Task OnInitializedAsync()
@@ -70,15 +69,15 @@
             Console.WriteLine($"Exception when awaiting GetUserInfo(): {ex.Message}");
             _exceptionHappened = true;
         }
-        // try
-        // {
-        //     await GetFavePets();
-        // }
-        // catch (Exception ex)
-        // {
-        //     Console.WriteLine($"Exception when awaiting GetFavePets(): {ex.Message}");
-        //     _exceptionHappened = true;
-        // }
+        try
+        {
+            await GetFavePets();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Exception when awaiting GetFavePets(): {ex.Message}");
+            _exceptionHappened = true;
+        }
         
         
         async Task GetUserInfo()
@@ -89,11 +88,11 @@
             Console.WriteLine(_userInfo.Username);
         }
         
-        // async Task GetFavePets()
-        // {
-        //     var favePetClient = new BackendClient<List<PetCardDataDTO>>($"api/User/{userId}/FavouritePets", AuthStateProvider);
-        //     _favePets = await favePetClient.GetRequest();
-        //     Console.WriteLine(_favePets.Count);
-        // }
+        async Task GetFavePets()
+        {
+            var favePetClient = new BackendClient<List<PetCardDataDTO>>($"api/User/{userId}/FavouritePets", AuthStateProvider);
+            _favePets = await favePetClient.GetRequest();
+            Console.WriteLine(_favePets.Count);
+        }
     }
 }
