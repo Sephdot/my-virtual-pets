@@ -17,7 +17,7 @@ public class EmailValidator : ValidationAttribute
                 return ValidationResult.Success;
             }
         }
-        return new ValidationResult("This is not a valid email");
+        return new ValidationResult("this is not a valid email!");
     }
     
     public bool isValidEmail(string email) {
