@@ -29,7 +29,7 @@ else
             <InputSelect id="InputPersonality" class="form-select" @bind-Value="@PetDetails.Personality">
                 @foreach (Personality p in _personalities)
                 {
-                    <option value="@p">@p.ToString()</option>
+                    <option value="@p">@p.ToString().ToLower()</option>
                 }
             </InputSelect>
             <ValidationMessage For="@(() => PetDetails.Personality)"/>
