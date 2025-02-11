@@ -6,7 +6,7 @@
 @rendermode InteractiveServer
 @inject NavigationManager Navigation
 @inject AuthenticationStateProvider AuthStateProvider
-<PageTitle>My Account | MyVirtualPets</PageTitle>
+<PageTitle>my account | my-virtual-pets</PageTitle>
 
 <AuthorizeView>
     <NotAuthorized>
@@ -19,15 +19,15 @@
             <h1 class="page-title text-center">My Account</h1>
             @if (_exceptionHappened)
             {
-                <h3>Something went wrong!</h3>
-                <p>Click on a link in the navbar or try refreshing to get back on track.</p>
+                <h3>something went wrong!</h3>
+                <p>click on a link in the navbar or try refreshing to get back on track.</p>
             }
             else
             {
                 @* @if (_userInfo == null || _favePets == null) *@
                 @if (_userInfo == null)
                 {
-                    <h3>Loading your info...!</h3>
+                    <h3>loading your info...!</h3>
                     <Cat_Loader></Cat_Loader>
                 }
                 else

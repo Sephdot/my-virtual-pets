@@ -16,9 +16,9 @@
                             <img src="@petCard.ImageUrl" style="width:130px">
                     </div>
                     <div id="popuptext" class="col-6">
-                        <p>Name: @petCard.PetName</p>
-                        <p>Personality: @petCard.Personality</p>
-                        <p>Type: @petCard.PetType</p>
+                        <p>Name: @petCard.PetName.ToLower()</p>
+                        <p>Personality: @petCard.Personality.ToString().ToLower()</p>
+                        <p>Type: @petCard.PetType.ToString().ToLower().Replace('_', ' ')</p>
                     </div>
                 </div>
             </div>

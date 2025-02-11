@@ -9,12 +9,12 @@
 @rendermode InteractiveServer
 
 
-<PageTitle>Home | MyVirtualPets</PageTitle>
+<PageTitle>home | my-virtual-pets</PageTitle>
 <div class="fluid-container text-center">
     <!-- heading for home page --->
     <div class="row home_row">
         <div class="col head-col">
-            <h1 class="fw-bold home_title">Create & Collect Cute Pixel Pets!</h1>
+            <h1 class="fw-bold home_title">create & collect cute pixel pets!</h1>
         </div>
     </div>
     
@@ -22,14 +22,13 @@
         <div class="col sales-col">
             <!-- sales pitch --->
             <p class="para">
-                Want a pet but your landlord won't let you? Or maybe your boyfriend's allergic
-                or you've already killed three peace lilies this week. Welcome to My-Virtual_Pets. 
-                Your online pet collection.
-            </p>
+                want a pet but your landlord won't let you? or maybe your boyfriend's allergic
+                or you've already killed three peace lilies this week.</p>
+            <p class="para">welcome to <span style="font-weight: bold; font-size: 1.5rem; color: black; font-family: 'Pixelify_Sans', serif">my-virtual-pets</span>: your online pet collection.</p>
 
             <!-- call to action --->
             <div id="cta-btn-container">
-                <button @onclick="HandleGetStarted" class="btn">Get Started!</button>
+                <button @onclick="HandleGetStarted" class="btn">get started!</button>
             </div>
         </div>
     </div>
@@ -37,7 +36,7 @@
     <!-- "how to" -->
     <div class="row home_row">
         <div class="col-12">
-            <h2 class="pixeltext">How To</h2>
+            <h2 class="pixeltext">how to</h2>
         </div>
         <div class="row img-container">
             <div class="col-12 col-md-4 col-lg-4 col-xl-3">
@@ -55,7 +54,7 @@
     <!-- carousel --->
     <div class="row home_row">
         <div class="col-12">
-            <h2 class="pixeltext">Recently Created</h2>
+            <h2 class="pixeltext">recent creations</h2>
         </div>
         @if (_petCardDataDTOs == null)
         {
