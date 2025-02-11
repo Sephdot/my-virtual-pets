@@ -1,9 +1,9 @@
-@using my_virtual_pets_class_library.Enums;
 @using my_virtual_pets_frontend.Components.Icons
 @using my_virtual_pets_class_library.DTO;
 @using my_virtual_pets_frontend.Components.Popups
 @rendermode InteractiveServer
 
+    
 <div class="col-md-4">
 <div class="collectioncard pixeltext">
     <div class="delete" @onclick="PopupCall">
@@ -21,7 +21,7 @@
     </div>
     <div class="card-body text-center">
         <p class="text-muted">@PetCardData.Personality.ToString().ToLower() @PetCardData.PetType.ToString().ToLower().Replace('_', ' ')</p>
-        <p class="card-text text-justify">@PetCardData.Description.ToLower()</p>
+        @* <p class="card-text text-justify">@PetCardData.Description</p> *@
     </div>
 </div>
 </div>
@@ -31,14 +31,13 @@
     public DeletePopUp popupRef { get; set; }
     
     [Parameter] 
-    public required PetCardDataDTO PetCardData { get; set; }
+    public PetCardDataDTO PetCardData { get; set; }
 
     [Parameter]
     public EventCallback<Guid> DeleteMethod { get; set; }
     
     public async Task DeleteFromCollection()
     {
-        Console.WriteLine("CLICKED");
         await DeleteMethod.InvokeAsync(PetCardData.PetId); 
     }
     
