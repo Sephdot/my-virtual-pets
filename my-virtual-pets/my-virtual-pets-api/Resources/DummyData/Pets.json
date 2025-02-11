@@ -5,7 +5,7 @@
     "name": "Whiskers",
     "personality": 2,
     "description": "A playful and curious tabby cat.",
-    "type": 0,
+    "type": 79,
     "imageid": "550e8400-e29b-41d4-a716-446655440000",
     "score": 100,
     "dateCreated": "2025-07-30T18:00:00.000Z"
@@ -16,7 +16,7 @@
     "name": "Buddy",
     "personality": 3,
     "description": "A loyal golden retriever who loves fetch.",
-    "type": 1,
+    "type": 92,
     "imageid": "a9bcbce5-bc93-49d0-b7cd-68442ad73bb5",
     "score": 90,
     "dateCreated": "2025-06-30T18:00:00.000Z"
@@ -27,7 +27,7 @@
     "name": "Floppy",
     "personality": 1,
     "description": "A shy but affectionate rabbit.",
-    "type": 2,
+    "type": 66,
     "imageid": "fa4b84c6-e4c9-4ab4-b47a-9238a499c52f",
     "score": 85,
     "dateCreated": "2024-07-30T18:00:00.000Z"
@@ -38,7 +38,7 @@
     "name": "Mittens",
     "personality": 3,
     "description": "A cuddly cat who loves sleeping in the sun.",
-    "type": 0,
+    "type": 79,
     "imageid": "865fcd99-c3b7-49a4-b813-81fae96b577d",
     "score": 80,
     "dateCreated": "2024-04-30T18:00:00.000Z"
@@ -49,7 +49,7 @@
     "name": "Rocky",
     "personality": 2,
     "description": "A small but brave terrier mix.",
-    "type": 1,
+    "type": 92,
     "imageid": "e2d7c9b9-607f-4289-bf44-fc0e35ffcf67",
     "score": 10,
     "dateCreated": "2024-03-30T18:00:00.000Z"
@@ -60,7 +60,7 @@
     "name": "Hopper",
     "personality": 1,
     "description": "An energetic rabbit that loves to explore.",
-    "type": 2,
+    "type": 66,
     "imageid": "d7f7c57b-472f-4237-b464-caeacdb46738",
     "score": 20,
     "dateCreated": "2023-01-30T18:00:00.000Z"
@@ -71,7 +71,7 @@
     "name": "Shadow",
     "personality": 2,
     "description": "A sleek black cat with a mysterious aura.",
-    "type": 0,
+    "type": 79,
     "imageid": "9deefb0a-f90f-4f33-9379-c9f1b45d05ea",
     "score": 30,
     "dateCreated": "2020-07-30T18:00:00.000Z"
@@ -82,7 +82,7 @@
     "name": "Luna",
     "personality": 3,
     "description": "A gentle husky with a love for the snow.",
-    "type": 1,
+    "type": 92,
     "imageid": "89a7cc4d-f68e-4650-b098-90a9f881f70a",
     "score": 45,
     "dateCreated": "2022-07-30T18:00:00.000Z"
@@ -93,7 +93,7 @@
     "name": "Cocoa",
     "personality": 1,
     "description": "A tiny brown rabbit who loves carrots.",
-    "type": 2,
+    "type": 66,
     "imageid": "9e58b73d-2e74-4c80-a19e-9b4c818d4cc4",
     "score": 40,
     "dateCreated": "2021-07-30T18:00:00.000Z"
@@ -104,7 +104,7 @@
     "name": "Tiger",
     "personality": 3,
     "description": "An adventurous cat who loves climbing trees.",
-    "type": 0,
+    "type": 79,
     "imageid": "d93e2be0-3a04-4f2f-9f4d-9ff45e17da1d",
     "score": 60,
     "dateCreated": "2019-07-30T18:00:00.000Z"
@@ -115,9 +115,53 @@
     "name": "Baxter",
     "personality": 2,
     "description": "A cheerful beagle who loves sniffing out treats.",
-    "type": 1,
+    "type": 92,
     "imageid": "ce34c78f-6f2f-4ea9-9fa9-730b504ad202",
     "score": 55,
     "dateCreated": "2018-07-30T18:00:00.000Z"
-  }
+  },
+    {
+      "id": "f1e2d3c4-b567-8901-2345-6789abcdef12",
+      "userid": "cb7153f7-3101-444b-a91d-8c45280672d6",
+      "name": "Bolt",
+      "personality": 4,
+      "description": "Fast and full of energy, always on the move.",
+      "type": 31,
+      "imageid": "a1b2c3d4-e5f6-7890-1234-56789abcdef0",
+      "score": 120,
+      "dateCreated": "2025-07-30T18:00:00.000Z"
+    },
+    {
+      "id": "e2d3c4b5-a678-9012-3456-789abcdef123",
+      "userid": "cb7153f7-3101-444b-a91d-8c45280672d6",
+      "name": "Mochi",
+      "personality": 3,
+      "description": "Soft, calm, and enjoys quiet moments.",
+      "type": 96,
+      "imageid": "b2c3d4e5-f678-9012-3456-789abcdef012",
+      "score": 95,
+      "dateCreated": "2025-07-30T18:00:00.000Z"
+    },
+    {
+      "id": "d3c4b5a6-7890-1234-5678-9abcdef12345",
+      "userid": "cb7153f7-3101-444b-a91d-8c45280672d6",
+      "name": "Sunny",
+      "personality": 5,
+      "description": "Lively and expressive, always making noise.",
+      "type": 92,
+      "imageid": "c3d4e5f6-7890-1234-5678-9abcdef01234",
+      "score": 110,
+      "dateCreated": "2025-07-30T18:00:00.000Z"
+    },
+    {
+      "id": "c4b5a678-9012-3456-789a-bcdef1234567",
+      "userid": "cb7153f7-3101-444b-a91d-8c45280672d6",
+      "name": "Pebbles",
+      "personality": 2,
+      "description": "Patient, wise, and enjoys a slow pace.",
+      "type": 235,
+      "imageid": "d4e5f678-9012-3456-789a-bcdef0123456",
+      "score": 200,
+      "dateCreated": "2025-07-30T18:00:00.000Z"
+    }
 ]
