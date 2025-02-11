@@ -117,18 +117,31 @@ namespace my_virtual_pets_api.Repositories
         public async Task<bool> AddToFavourites(Guid GlobalUserId, Guid PetId)
         {
             //TO DO: better error handling
-            var user = await _context.GlobalUsers.SingleOrDefaultAsync(g => g.Id == GlobalUserId);
-            if (user == null) throw new KeyNotFoundException("GlobalUser does not exist");
+            try
+            {
+                var user = await _context.GlobalUsers.SingleOrDefaultAsync(g => g.Id == GlobalUserId);
+                if (user == null) throw new KeyNotFoundException("GlobalUser does not exist");
 
-            var pet = await _context.Pets.SingleOrDefaultAsync(p => p.Id == PetId);
-            if (pet == null) throw new KeyNotFoundException("Pet not exist");
+                var pet = await _context.Pets.SingleOrDefaultAsync(p => p.Id == PetId);
+                if (pet == null) throw new KeyNotFoundException("Pet not exist");
 
-            var existingFavourite = await _context.Favorites.SingleOrDefaultAsync(f => f.GlobalUserId == GlobalUserId && f.PetId == PetId);
-            if (existingFavourite != null) return false;
+                var existingFavourite =
+                    await _context.Favorites.SingleOrDefaultAsync(f =>
+                        f.GlobalUserId == GlobalUserId && f.PetId == PetId);
+                if (existingFavourite != null) return false;
 
-            var favourite = new Favourite { GlobalUserId = GlobalUserId, PetId = PetId };
-            _context.Favorites.Add(favourite);
-           await _context.SaveChangesAsync();
+                var favourite = new Favourite { GlobalUserId = GlobalUserId, PetId = PetId };
+                _context.Favorites.Add(favourite);
+                await _context.SaveChangesAsync();
+                Console.WriteLine("ADD TO FAVS COMPLETED NO ISSUE");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("ERROR ERROR ERROR ERROR");
+                Console.WriteLine("ADDING TO FAVOURITES HAS FAILED");
+                Console.WriteLine(e.Message);
+            }
+
             return true;
         }
 
@@ -138,7 +151,6 @@ namespace my_virtual_pets_api.Repositories
             if (user == null) throw new KeyNotFoundException("GlobalUser does not exist");
             return user.Favourites.Any(f => f.PetId == PetId);
         }
-
         
         
         public async Task<List<Guid>> GetFavoritePetIds(Guid GlobalUserId)
@@ -151,16 +163,20 @@ namespace my_virtual_pets_api.Repositories
 
         public async Task<List<PetCardDataDTO>> GetFavoritePetCards(Guid GlobalUserId)
         {
-            var user = await _context.GlobalUsers.Include(g => g.Favourites)
-                                            .ThenInclude(f => f.Pet)
-                                            .ThenInclude(p => p.Image)
-                                            .SingleOrDefaultAsync(g => g.Id == GlobalUserId);
+            var user = await _context.GlobalUsers
+                .Include(g => g.Favourites)
+                .ThenInclude(f => f.Pet)
+                .ThenInclude(p => p.GlobalUser)
+                .Include(g => g.Favourites)
+                .ThenInclude(f => f.Pet)
+                .ThenInclude(p => p.Image)
+                .SingleOrDefaultAsync(g => g.Id == GlobalUserId);
             if (user == null) throw new KeyNotFoundException("GlobalUser does not exist");
             var favouritePets = user.Favourites.Select(f => f.Pet).ToList();
             if (favouritePets.Count == 0) return [];
             return favouritePets.Select(p => Pet.CreatePetCardDto(p)).ToList();
-
         }
+        
 
         public async Task<bool> RemoveFromFavourites(Guid GlobalUserId, Guid PetId)
         {
@@ -174,7 +190,7 @@ namespace my_virtual_pets_api.Repositories
             if (existingFavourite == null) return false;
 
             _context.Favorites.Remove(existingFavourite);
-           await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return true;
         }
 

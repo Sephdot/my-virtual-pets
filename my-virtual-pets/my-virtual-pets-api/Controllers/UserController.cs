@@ -141,7 +141,7 @@ namespace my_virtual_pets_api.Controllers
             });
         }
         
-        [Authorize(AuthenticationSchemes = "loginjwt")]
+        // [Authorize(AuthenticationSchemes = "loginjwt")]
         [HttpGet("{userId}")]
         public async Task<IActionResult> GetUserDetailsByUserId(Guid userId)
         {
@@ -161,7 +161,7 @@ namespace my_virtual_pets_api.Controllers
             }
         }
 
-        [Authorize(AuthenticationSchemes = "loginjwt")]
+        // [Authorize(AuthenticationSchemes = "loginjwt")]
         [HttpPost]
         [Route("AddToFavourites")]
         public async Task<IActionResult> AddPetToFavourites(Favourites favourites)
@@ -202,7 +202,7 @@ namespace my_virtual_pets_api.Controllers
             }
         }
 
-        [Authorize(AuthenticationSchemes = "loginjwt")]
+        // [Authorize(AuthenticationSchemes = "loginjwt")]
         [HttpGet]
         [Route("{GlobalUserId}/FavouritePets")]
         public async Task<IActionResult> GetFavouritePets(Guid GlobalUserId)

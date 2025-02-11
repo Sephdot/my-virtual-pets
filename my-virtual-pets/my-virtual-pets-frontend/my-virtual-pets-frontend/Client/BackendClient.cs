@@ -34,8 +34,9 @@ public class BackendClient<T>
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
             try
             {
+                Console.WriteLine(await client.GetStringAsync(Url));
                 T response = await client.GetFromJsonAsync<T>(Url);
-                Console.WriteLine($"Response {(response == null ? "is" : "isn't")} null here");
+                Console.WriteLine("Response isn't null here");
                 return response;
             }
             catch (HttpRequestException ex)
