@@ -27,8 +27,19 @@
         {
             <Cat_Loader></Cat_Loader>
         } 
-        else if (_petCardDataDTOs.Count >= 0)
+        else if (_petCardDataDTOs.Count == 0)
         {
+            <section class="container text-center">
+                <div class="container">
+                    <h1 class="page-title">@(context.User.Identity?.Name)'s collection</h1>
+                    <h6 class="robottext">Looks like you don't have any pets yet!</h6>
+                    <div style="height:10px"></div>
+                    <button @onclick="HandleAddPet" class="btn btn-light d-block mx-auto mt-4" >add pet</button></div>
+            </section>
+            
+        }
+            
+        else {
             <section class="container text-center">
                 <div class="container">
                     <h1 class="page-title">@(context.User.Identity?.Name)'s collection</h1>
