@@ -27,7 +27,7 @@ __________________________________
 
 __________________________________
 
-## Running the app: 
+## Setting up the app: 
 
 Clone this repository onto your local machine and follow the steps for setting up the database and API credentials set-out below. 
 
@@ -36,7 +36,6 @@ Clone this repository onto your local machine and follow the steps for setting u
 Running in Development Mode: 
 
 1. Go to launch settings and change the environment to 'Development'
-2. Run Program.cs 
 
 Running in Production Mode: 
 1. On a Windows Laptop, go to "Advanced System settings"
@@ -52,7 +51,7 @@ Value: `Server=<server_name>;Database=my_virtual_pets;User Id=sa;Password=<your_
   `Update-Database -Context VPSqlServerContext`
 
 6. Go to launch settings and change the environment to 'Production'
-7. Run Program.cs 
+
 __________________________________
 
 ### Security: 
@@ -78,7 +77,10 @@ In order to run this app, valid API keys must be provided into the ` my-virtual-
 
 `` {  "dragoneyeApiKey": "<your dragoneye api key>", 
   "BgRemoverApiKey": "<your bg remover api key>" } ``
-  
+
+__________________________________
+
+### Running the app: 
 
 __________________________________
 
