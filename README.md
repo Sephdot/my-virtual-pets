@@ -1,13 +1,29 @@
-# my-virtual-pets  ૮･ﻌ･ა
-## 🐱 About:
+# my-virtual-pets
+
+![Website homepage](https://github.com/Sephdot/my-virtual-pets/blob/baf453fbd6738aab32a37bf7b9c68aeec9762642/my-virtual-pets/readme-images/homepage.gif)
+
+## About:
 
 <b>My Virtual Pets</b> is a fun web app that allows users to upload and collect 'virtual pets'.
 
-Virtual Pets are created by users uploading a photo, name, description, and personality for their pet. This information is then used to generate a pixel-style image of the pet, as well as assigning the pet a randomly-generated score based on their inputs. A user's complete collection of Virtual Pets can be viewed on the Collection page.
+Virtual Pets are created by users uploading an image, name, description, and personality for their pet. This information is then used to generate a pixel-style image of the pet, as well as assigning the pet a randomly-generated score based on their inputs. A user's complete collection of Virtual Pets can be viewed on the Collection page.
 
 A Virtual Pet's score can be further influenced by other users, who can 'pet' other Virtual Pets. A 'petted' Virtual Pet is added to the user's list of favourite Virtual Pets, and that Virtual Pet's score is increased for each 'pet' it receives.
 
 The app also contains a Leaderboards page, where users can view the top 10 highest-scoring Virtual Pets.
+
+__________________________________
+
+## Key Features: 
+
+| Feature    | Image |
+| -------- | ------- |
+| Homepage carousel of recently created pets | ![Carousel](https://github.com/Sephdot/my-virtual-pets/blob/881910e0acd4136d36184b6ea698d3852479f5a0/my-virtual-pets/readme-images/carousel.gif) |
+| Collection page where users can view and delete their pets | ![Collection page](https://github.com/Sephdot/my-virtual-pets/blob/881910e0acd4136d36184b6ea698d3852479f5a0/my-virtual-pets/readme-images/collection.gif) |
+| State management to display authorized and unauthorized views of pages  | ![Authorized views](https://github.com/Sephdot/my-virtual-pets/blob/baf453fbd6738aab32a37bf7b9c68aeec9762642/my-virtual-pets/readme-images/auth%20page.png)    |
+| OAuth with Google | ![OAuth demo](https://github.com/Sephdot/my-virtual-pets/blob/baf453fbd6738aab32a37bf7b9c68aeec9762642/my-virtual-pets/readme-images/OAuth.gif)   |
+| 'Pet' virtual pets to increase their score    | ![Pet demo](https://github.com/Sephdot/my-virtual-pets/blob/baf453fbd6738aab32a37bf7b9c68aeec9762642/my-virtual-pets/readme-images/petting.gif)   |
+
 __________________________________
 ## 📋 Database set-up: 
 
@@ -46,12 +62,14 @@ In order to run this app, valid API keys must be provided into the ` my-virtual-
 
 `` {  "dragoneyeApiKey": "<your dragoneye api key>", 
   "BgRemoverApiKey": "<your bg remover api key>" } ``
+  
 ## 🖼️ Pixelate Function:
 
 This app uses pixelation functionality inspired from custom pixelation software. The core pixelation process was identified and adapted into our project, enabling users to transform uploaded images into pixel-style art.
 
 ### PixelArt
 https://github.com/BrandonHilde/PixelArt?tab=readme-ov-file
+
 
 
 __________________________________
