@@ -1,5 +1,5 @@
 @rendermode InteractiveServer
-<h1 class="page-title text-center">@(IsUser ? "Log In" : "Sign Up")</h1>
+<h1 class="page-title text-center">@(IsUser ? "log in" : "sign up")</h1>
 <div id="formcenter" class="robottext">
     @if (IsUser)
     {
@@ -14,8 +14,8 @@
             @(IsLoading
                 ? ""
                 : IsUser
-                    ? "New? Sign up now!"
-                    : "Been here before? Log in now!")
+                    ? "new? sign up now!"
+                    : "been here before? log in now!")
         </a>
     </div>
 </div>

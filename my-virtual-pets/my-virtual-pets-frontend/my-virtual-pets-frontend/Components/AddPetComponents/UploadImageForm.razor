@@ -11,23 +11,23 @@
 <EditForm Model="@_formModel" OnInvalidSubmit="HandleInvalidSubmit" OnValidSubmit="HandleValidSubmit">
     @if (_isFileBeingProcessed)
     {
-        <h3 class="text-center mb-4">Uploading Image...</h3>
+        <h3 class="text-center mb-4">uploading image...</h3>
         <div class="d-block mx-auto my-6">
             <Cat_Loader></Cat_Loader>
         </div>
     }
     else
     {
-        <h3 class="text-center mb-4">Upload Image!</h3>
+        <h3 class="text-center mb-4">upload image!</h3>
         <DataAnnotationsValidator/>
         <div class="form-group">
             <div>
-                Top Tips:
+                top tips:
                 <ul>
-                    <li>JPG or PNG image type</li>
-                    <li>One pet per picture</li>
-                    <li>Plain background, coloured differently to your pet</li>
-                    <li>Upload a square image</li>
+                    <li>jpg or png image type</li>
+                    <li>one pet per picture</li>
+                    <li>plain background, coloured differently to your pet</li>
+                    <li>upload a square image</li>
                 </ul>
             </div>
             <InputFile
@@ -37,7 +37,7 @@
             <ValidationMessage For="@(() => _file)"/>
         </div>
         <h6 class="mt-1 @_feedbackCssStyle"><i>@_feedbackMessage</i></h6>
-        <button id="uploadimagebutton" class="btn btn-light d-block mx-auto mt-4" type="submit">Upload Image</button>
+        <button id="uploadimagebutton" class="btn btn-light d-block mx-auto mt-4" type="submit">upload</button>
     }
 </EditForm>
 
@@ -72,25 +72,25 @@
         {
             if (_isFileSizeValid(_file))
             {
-                _feedbackMessage = "Image size and type are ok! ✅";
+                _feedbackMessage = "image size and type are ok! ✅";
                 _feedbackCssStyle = "text-success";
             }
             else
             {
-                _feedbackMessage = "That picture is too heavy for the server hamsters to carry... try a smaller picture. ❌";
+                _feedbackMessage = "that picture is too heavy for the server hamsters to carry... try a smaller picture. ❌";
                 _feedbackCssStyle = "text-warning";
             }
         }
         else
         {
-            _feedbackMessage = "That picture isn't a valid image type: the server hamsters won't know what to do with it! ❌";
+            _feedbackMessage = "that picture isn't a valid image type: the server hamsters won't know what to do with it! ❌";
             _feedbackCssStyle = "text-warning";
         }
     }
 
     public void HandleInvalidSubmit()
     {
-        _feedbackMessage = "Invalid image uploaded, try again. ❌";
+        _feedbackMessage = "invalid image uploaded, try again. ❌";
         _feedbackCssStyle = "text-danger";
     }
 
@@ -105,7 +105,7 @@
                     using var memoryStream = new MemoryStream();
                     await new StreamReader(_file.OpenReadStream()).BaseStream.CopyToAsync(memoryStream);
                     byte[] bytes = memoryStream.ToArray();
-                    _feedbackMessage = "Submitted!";
+                    _feedbackMessage = "submitted! ✅";
                     _feedbackCssStyle = "text-success";
                     _isFileBeingProcessed = true;
                     StateHasChanged();
@@ -113,19 +113,19 @@
                 }
                 else
                 {
-                    _feedbackMessage = "We tried to warn you... That pic's too big! ❌";
+                    _feedbackMessage = "we tried to warn you... That pic's too big! ❌";
                     _feedbackCssStyle = "text-danger";
                 }
             }
             else
             {
-                _feedbackMessage = "Oi! That's not a jpg or png; try again. ❌";
+                _feedbackMessage = "oi! that's not a jpg or png; try again. ❌";
                 _feedbackCssStyle = "text-danger";
             }
         }
         else
         {
-            _feedbackMessage = "You haven't selected an image yet! ❌";
+            _feedbackMessage = "you haven't selected an image yet! ❌";
             _feedbackCssStyle = "text-danger";
         }
 
@@ -138,7 +138,7 @@
             {
                 Stream responseStream = await postResponse.Content.ReadAsStreamAsync();
                 ImagesResponseDTO imagesResponseDto = await JsonSerializer.DeserializeAsync<ImagesResponseDTO>(responseStream) 
-                                                      ?? throw new Exception("Something went wrong!");
+                                                      ?? throw new Exception("something went wrong!");
                 PetDetails.PetType = imagesResponseDto.PetType;
                 PetDetails.ImageUrl = imagesResponseDto.ImageUrl;
             
@@ -149,8 +149,8 @@
                 Console.WriteLine($"HELLO FROM FRONTEND: {postResponse.StatusCode} {await postResponse.Content.ReadAsStringAsync()}");
 
                 _feedbackMessage = postResponse.StatusCode == HttpStatusCode.BadRequest
-                    ? "Too many pets in that pic, try a different shot!"
-                    : "Try again, that image wasn't accepted.";
+                    ? "too many pets in that pic, try a different shot!"
+                    : "try again, that image wasn't accepted.";
                 _feedbackCssStyle = "text-danger";
             }
             

@@ -7,12 +7,12 @@
     <div class="container">
         <div class="card">
             <div class="card-title text-center gap-3 m-3">
-                <h3 class="fw-bold">Hello, @(UserDisplayDto.Username)!</h3>
+                <h3 class="fw-bold">hey, @(UserDisplayDto.Username)!</h3>
             </div>
             <div class="card-body text-center">
-                <p>Name (not visible to others): @UserDisplayDto.FirstName @UserDisplayDto.LastName</p>
-                <p>Email: @UserDisplayDto.Email</p>
-                <p>Pets Owned: @UserDisplayDto.PetCount</p>
+                <p>name (not visible to others): @UserDisplayDto.FirstName.ToLower() @UserDisplayDto.LastName.ToLower()</p>
+                <p>email: @UserDisplayDto.Email</p>
+                <p>pets owned: @UserDisplayDto.PetCount</p>
                 @* <p>The type of pet you've favourited the most: @FavePetType</p> *@
             </div>
         </div>
