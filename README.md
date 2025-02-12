@@ -105,7 +105,6 @@ https://dragoneye.ai/
 https://picsart.io/remove-background/
 
 ### AWS 
-https://docs.aws.amazon.com/AmazonS3/latest/userguide/GetStartedWithS3.html
 
 The app uses an AWS S3 bucket to store processed images. To set this up: 
 
