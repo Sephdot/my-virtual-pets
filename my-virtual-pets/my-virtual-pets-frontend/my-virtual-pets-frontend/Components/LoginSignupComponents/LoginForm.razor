@@ -48,11 +48,6 @@
         loginDetails = new UserLoginDTO();
     }
 
-    public void HandleInvalidSubmit()
-    {
-        Feedback = "something has gone wrong..."; 
-    }
-
     public async Task HandleValidSubmit()
     {
         await OnLogInProcessing.InvokeAsync();
