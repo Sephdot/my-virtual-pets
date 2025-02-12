@@ -118,6 +118,12 @@ __________________________________
 
 <!-----info on running the app here backend & frontend ------>
 
+1. Run both my-virtual-pets-api and my-virtual-pets-frontend
+
+2. Navigate to http://localhost:5092/ (if running HTTP) or  https://localhost:7247 (if running HTTPS)
+
+3. Create a new account or use the dummy logins below to get started
+
 __________________________________
 
 ### 👥 Dummy Data: 
