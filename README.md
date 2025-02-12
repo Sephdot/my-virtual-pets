@@ -107,6 +107,27 @@ https://picsart.io/remove-background/
 ### AWS 
 https://docs.aws.amazon.com/AmazonS3/latest/userguide/GetStartedWithS3.html
 
+The app uses an AWS S3 bucket to store processed images. To set this up: 
+
+1. Create an AWS S3 bucket:
+
+When setting up S3, ensure that the bucket visibility settings are set to public so that the frontend can access images without requiring credentials.
+
+https://docs.aws.amazon.com/AmazonS3/latest/userguide/GetStartedWithS3.html
+
+2. Use AWS IAM to create credentials which can access the bucket: 
+
+https://docs.aws.amazon.com/AmazonS3/latest/userguide/security-iam.html
+
+3. Store credentials in Environment Variables
+
+| Variable name                 | Variable value      |
+| ----------------------------- | ------------------- |
+| `ACCESS_KEY__my_virtual_pets` | `[your-access-key]` |
+| `SECRET_KEY__my_virtual_pets` | `[your-secret-key]` |
+
+__________________________________
+
 In order to run this app, valid API keys must be provided into the ` my-virtual-pets-api ` project's User Secrets. This can be done by navigating to the project's ` secrets.json ` file, and populating the following template.
 
 `` {  "dragoneyeApiKey": "<your dragoneye api key>", 
