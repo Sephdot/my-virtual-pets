@@ -67,11 +67,15 @@ https://jwtsecret.com/generate
 https://developers.google.com/identity/protocols/oauth2
 
 Required details: 
+<br/>
 Project name: my-virtual-pets
+<br/>
 Test email: <your-gmail>
+<br/>
 Authorized JavaScript origins: https://localhost:7247, http://localhost:5092, https://localhost:7091
+<br/>
 Authorized redirect URIs: https://localhost:7091/google-callback, http://localhost:5138/google-callback, https://localhost:7091/signin-google, http://localhost:5138/signin-google
-
+<br/>
 
 4. Generate your Client Id and Secret 
 
