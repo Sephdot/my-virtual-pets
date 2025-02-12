@@ -56,7 +56,37 @@ __________________________________
 
 ### Security: 
 
-<!--- Google cloud console and jwt token info here --->
+The app uses JWT tokens and Asp.Net core's Identity system for authoorisation, as well as OAuth2.0 with Google Cloud. To set this up: 
+
+1. Generate a JWT secret below:
+
+https://jwtsecret.com/generate
+
+2. Create an account with Google Cloud and follow these steps to set up a project with OAuth2.0: 
+
+https://developers.google.com/identity/protocols/oauth2
+
+Required details: 
+Project name: my-virtual-pets
+Test email: <your-gmail>
+Authorized JavaScript origins: https://localhost:7247, http://localhost:5092, https://localhost:7091
+Authorized redirect URIs: https://localhost:7091/google-callback, http://localhost:5138/google-callback, https://localhost:7091/signin-google, http://localhost:5138/signin-google
+
+
+4. Generate your Client Id and Secret 
+
+
+5. Populate the following template with your credentials and add this to your User Secrets. This can be done by navigating to the project's ` secrets.json ` file. 
+
+`"Authentication": {
+  "Google": {
+    "ClientId": <your-client-id>,
+    "ClientSecret":  <your-client-secret>  },
+  "jwt": {
+    "SecretKey" :  <your-jwt-key>
+  }
+}
+`
 
 __________________________________
 
