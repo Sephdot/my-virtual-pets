@@ -126,8 +126,6 @@ https://docs.aws.amazon.com/AmazonS3/latest/userguide/security-iam.html
 | `ACCESS_KEY__my_virtual_pets` | `[your-access-key]` |
 | `SECRET_KEY__my_virtual_pets` | `[your-secret-key]` |
 
-__________________________________
-
 In order to run this app, valid API keys must be provided into the ` my-virtual-pets-api ` project's User Secrets. This can be done by navigating to the project's ` secrets.json ` file, and populating the following template.
 
 `` {  "dragoneyeApiKey": "<your dragoneye api key>", 
