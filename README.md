@@ -162,6 +162,12 @@ __________________________________
 
 This app was built by the following developers: 
 
+- https://github.com/Sephdot
+- https://github.com/Rachel-Tookey
+- https://github.com/padlichan
+- https://github.com/kkaisi3
+- https://github.com/stripi
+
 ### Pixelate Function:
 
 This app uses pixelation functionality inspired from custom pixelation software. The core pixelation process was identified and adapted into our project, enabling users to transform uploaded images into pixel-style art. Credit to PixelArt: https://github.com/BrandonHilde/PixelArt?tab=readme-ov-file
