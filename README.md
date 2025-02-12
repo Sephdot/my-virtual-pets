@@ -56,7 +56,7 @@ __________________________________
 
 ### Security: 
 
-The app uses JWT tokens and Asp.Net core's Identity system for authoorisation, as well as OAuth2.0 with Google Cloud. To set this up: 
+The app uses JWT tokens for authoorisation, as well as OAuth2.0 with Google Cloud. To set this up: 
 
 1. Generate a JWT secret below:
 
