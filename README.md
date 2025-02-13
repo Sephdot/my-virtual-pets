@@ -158,15 +158,15 @@ The following logins have been prepopulated:
 __________________________________
 
 
-## CREDITS: 
+## Credits: 
 
 This app was built by the following developers: 
 
-- https://github.com/Sephdot
-- https://github.com/Rachel-Tookey
-- https://github.com/padlichan
-- https://github.com/kkaisi3
-- https://github.com/stripi
+[Joe](https://github.com/Sephdot)
+[Rachel](https://github.com/Rachel-Tookey)
+[Lili](https://github.com/padlichan)
+[Kuma](https://github.com/kkaisi3)
+[Callum](https://github.com/stripi)
 
 ### Pixelate Function:
 
